@@ -78,7 +78,7 @@ pub fn classify_process(
     // TODO: Check user_overrides map when settings are wired up
 
     // Priority 2: Exact executable name match against known AI tools
-    if KNOWN_AI_PROCESSES.iter().any(|&ai| name_stem == ai) {
+    if KNOWN_AI_PROCESSES.contains(&name_stem) {
         return ProcessCategory::Ai;
     }
 
@@ -91,12 +91,12 @@ pub fn classify_process(
     }
 
     // Priority 4: Command-line keyword match for Python processes
-    if name_stem == "python" || name_stem == "python3" || name_stem.starts_with("python3.") {
-        if let Some(cmd) = command_line {
-            let cmd_lower = cmd.to_lowercase();
-            if AI_CMD_KEYWORDS.iter().any(|kw| cmd_lower.contains(kw)) {
-                return ProcessCategory::Ai;
-            }
+    if (name_stem == "python" || name_stem == "python3" || name_stem.starts_with("python3."))
+        && let Some(cmd) = command_line
+    {
+        let cmd_lower = cmd.to_lowercase();
+        if AI_CMD_KEYWORDS.iter().any(|kw| cmd_lower.contains(kw)) {
+            return ProcessCategory::Ai;
         }
     }
 
@@ -106,7 +106,7 @@ pub fn classify_process(
     }
 
     // Priority 6: Known system processes
-    if KNOWN_SYSTEM_PROCESSES.iter().any(|&sys| name_stem == sys) {
+    if KNOWN_SYSTEM_PROCESSES.contains(&name_stem) {
         return ProcessCategory::System;
     }
 

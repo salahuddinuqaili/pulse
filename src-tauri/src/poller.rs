@@ -65,7 +65,7 @@ pub fn start_polling(app_handle: AppHandle, state: Arc<AppState>) {
             };
 
             // === Medium tier (every 2nd tick): process info ===
-            if tick_count % 2 == 0 {
+            if tick_count.is_multiple_of(2) {
                 match process::get_gpu_processes() {
                     Ok(procs) => cached_processes = procs,
                     Err(e) => {
@@ -76,7 +76,7 @@ pub fn start_polling(app_handle: AppHandle, state: Arc<AppState>) {
             }
 
             // === Slow tier (every 5th tick): fan, PCIe ===
-            if tick_count % 5 == 0 {
+            if tick_count.is_multiple_of(5) {
                 cached_fan_speed = nvml::get_fan_speed();
                 let (pcie_gen, width) = nvml::get_pcie_info();
                 cached_pcie_gen = pcie_gen;
