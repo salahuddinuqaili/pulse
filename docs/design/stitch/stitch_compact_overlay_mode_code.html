@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Neon Studio Hybrid - Compact Overlay</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Manrope:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "inverse-surface": "#e5e1e4",
+                    "inverse-primary": "#006e27",
+                    "inverse-on-surface": "#313032",
+                    "primary-fixed": "#6bff83",
+                    "surface-bright": "#39393b",
+                    "on-primary-container": "#007128",
+                    "on-tertiary": "#412d00",
+                    "on-primary-fixed-variant": "#00531b",
+                    "on-secondary-container": "#ffe6e8",
+                    "secondary-fixed-dim": "#ffb2ba",
+                    "surface-container-high": "#2a2a2c",
+                    "error": "#ffb4ab",
+                    "secondary-fixed": "#ffd9dc",
+                    "error-container": "#93000a",
+                    "surface-variant": "#353437",
+                    "on-surface": "#e5e1e4",
+                    "primary-container": "#00ff66",
+                    "secondary": "#ffb2ba",
+                    "on-error": "#690005",
+                    "on-primary": "#003911",
+                    "primary": "#edffe8",
+                    "secondary-container": "#d4004b",
+                    "outline-variant": "#3b4b3a",
+                    "on-error-container": "#ffdad6",
+                    "surface-container": "#201f21",
+                    "outline": "#849581",
+                    "surface-tint": "#00e55b",
+                    "on-tertiary-fixed-variant": "#5c4209",
+                    "surface-container-lowest": "#0e0e10",
+                    "surface-dim": "#131315",
+                    "primary-fixed-dim": "#00e55b",
+                    "on-background": "#e5e1e4",
+                    "on-tertiary-container": "#795d23",
+                    "on-surface-variant": "#b9ccb5",
+                    "tertiary": "#fff9f4",
+                    "tertiary-fixed-dim": "#e7c17d",
+                    "on-primary-fixed": "#002107",
+                    "tertiary-container": "#ffd892",
+                    "surface": "#131315",
+                    "tertiary-fixed": "#ffdea5",
+                    "background": "#131315",
+                    "on-secondary": "#670020",
+                    "on-secondary-fixed-variant": "#910030",
+                    "surface-container-highest": "#353437",
+                    "on-tertiary-fixed": "#271900",
+                    "surface-container-low": "#1c1b1d",
+                    "on-secondary-fixed": "#400011"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Space Grotesk"],
+                    "body": ["Manrope"],
+                    "label": ["Space Grotesk"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .neon-glow-text {
+            text-shadow: 0 0 15px rgba(0, 255, 102, 0.4);
+        }
+        .glass-overlay {
+            background: rgba(20, 21, 25, 0.6);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+        }
+    </style>
+</head>
+<body class="bg-[#0A0A0C] min-h-screen flex items-center justify-center font-body p-8">
+<!-- Compact Overlay Window -->
+<div class="relative w-[320px] h-[480px] glass-overlay rounded-xl border border-primary-container/30 flex flex-col overflow-hidden shadow-[0_20px_40px_rgba(0,255,102,0.08)]">
+<!-- Minimal Header -->
+<header class="flex items-center justify-between px-4 h-12 border-b border-outline-variant/10">
+<span class="font-headline font-bold text-xs uppercase tracking-widest text-on-surface/80">Neon Overlay</span>
+<div class="flex items-center gap-3">
+<button class="text-on-surface/40 hover:text-primary-container transition-colors">
+<span class="material-symbols-outlined text-[18px]">open_in_full</span>
+</button>
+<button class="text-on-surface/40 hover:text-secondary-container transition-colors">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col p-6 gap-8">
+<!-- Metrics Section -->
+<div class="space-y-6">
+<!-- FPS -->
+<div class="relative group">
+<div class="absolute -left-4 top-1/2 -translate-y-1/2 w-1 h-8 bg-primary-container glow-sm rounded-full"></div>
+<div class="flex flex-col">
+<span class="font-label text-[10px] uppercase tracking-[0.2em] text-on-surface/40 mb-1">Frame Rate</span>
+<div class="flex items-baseline gap-2">
+<h1 class="font-headline text-5xl font-bold tracking-tighter text-on-surface neon-glow-text">144</h1>
+<span class="font-headline text-primary-container font-medium text-sm">FPS</span>
+</div>
+</div>
+</div>
+<!-- GPU Temp -->
+<div class="flex flex-col">
+<span class="font-label text-[10px] uppercase tracking-[0.2em] text-on-surface/40 mb-1">Thermal State</span>
+<div class="flex items-baseline gap-2">
+<h2 class="font-headline text-3xl font-semibold tracking-tight text-on-surface">72</h2>
+<span class="font-headline text-on-surface/60 font-medium text-lg">°C</span>
+</div>
+</div>
+</div>
+<!-- VRAM Allocation Bar -->
+<div class="space-y-3">
+<div class="flex justify-between items-end">
+<span class="font-label text-[10px] uppercase tracking-[0.2em] text-on-surface/40">VRAM Allocation</span>
+<span class="font-label text-xs font-bold text-primary-container">18.4 <span class="text-on-surface/20">/ 24 GB</span></span>
+</div>
+<div class="h-1.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary-container w-[76%] shadow-[0_0_10px_rgba(0,255,102,0.5)]"></div>
+</div>
+</div>
+<!-- Quick-Tune Grid -->
+<div class="mt-auto grid grid-cols-3 gap-3">
+<!-- Silent Button -->
+<button class="aspect-square bg-surface-container-low border border-outline-variant/10 rounded-lg flex flex-col items-center justify-center gap-2 hover:bg-primary-container/5 hover:border-primary-container/40 transition-all duration-300 group">
+<span class="material-symbols-outlined text-on-surface/40 group-hover:text-primary-container transition-colors" data-icon="shutter_speed">shutter_speed</span>
+<span class="font-label text-[9px] uppercase tracking-wider text-on-surface/60">Silent</span>
+</button>
+<!-- Max Fans Button -->
+<button class="aspect-square bg-surface-container-low border border-outline-variant/10 rounded-lg flex flex-col items-center justify-center gap-2 hover:bg-primary-container/5 hover:border-primary-container/40 transition-all duration-300 group">
+<span class="material-symbols-outlined text-on-surface/40 group-hover:text-primary-container transition-colors" data-icon="cyclone">cyclone</span>
+<span class="font-label text-[9px] uppercase tracking-wider text-on-surface/60">Max Fans</span>
+</button>
+<!-- Clear VRAM Button -->
+<button class="aspect-square bg-surface-container-low border border-outline-variant/10 rounded-lg flex flex-col items-center justify-center gap-2 hover:bg-primary-container/5 hover:border-primary-container/40 transition-all duration-300 group">
+<span class="material-symbols-outlined text-on-surface/40 group-hover:text-primary-container transition-colors" data-icon="cleaning_services">cleaning_services</span>
+<span class="font-label text-[9px] uppercase tracking-wider text-on-surface/60">Clear</span>
+</button>
+</div>
+</main>
+<!-- Decorative Kinetic Elements -->
+<div class="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-primary-container/40 to-transparent"></div>
+</div>
+<!-- Background Decoration (Perspective) -->
+<div class="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+<div class="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-primary-container/5 blur-[120px] rounded-full"></div>
+<div class="absolute bottom-1/4 left-1/4 w-[600px] h-[600px] bg-secondary-container/5 blur-[150px] rounded-full"></div>
+<!-- Grid Background -->
+<div class="absolute inset-0 opacity-[0.03]" style="background-image: linear-gradient(#e5e1e4 1px, transparent 1px), linear-gradient(90deg, #e5e1e4 1px, transparent 1px); background-size: 40px 40px;"></div>
+<!-- Placeholder for background image of a workstation -->
+<img alt="High-end workstation background" class="absolute inset-0 w-full h-full object-cover opacity-10 mix-blend-luminosity" data-alt="cinematic close-up of a high-end liquid cooled gaming PC with glowing green internal hardware in a dark room" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDSQ0pNf8qD2qX2z8r5t9CvAXkOc9SNSHbNoK1jjf9GupMu0Cs7ExSBzIhQdKy7zCUy1CDgUOxXut8QPOBs3gK8eMJNqjzT82O-9lgctuPo6t9E1S-_YudyrbWtNAS2px2SlesOd17E7Kimg56o4U-pf9DPQGSTiH82Iq4gnxbrnXBOQGbes9UhxMxqnIn1CSTlmLLuGEVHx2N_W5GAMCC_wZxFhTesg0T3mioLoJNoeKcdqOJPiIm-yiMQVaxti6rChnG7byJkAfA"/>
+</div>
+<!-- Quick Stats Floating Indicator (Bottom Right) -->
+<div class="fixed bottom-8 right-8 flex items-center gap-4 bg-surface-container-high/80 backdrop-blur-md px-4 py-2 rounded-full border border-outline-variant/20">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></div>
+<span class="font-label text-[10px] font-bold text-on-surface uppercase tracking-widest">System Live</span>
+</div>
+<div class="h-4 w-px bg-outline-variant/30"></div>
+<span class="font-label text-[10px] text-on-surface/60 uppercase">V.2.0.4</span>
+</div>
+</body></html>

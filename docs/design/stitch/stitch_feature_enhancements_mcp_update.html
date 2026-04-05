@@ -1,0 +1,28 @@
+# Neon Studio Hybrid: Feature Enhancements & Overlay Mode
+
+## 1. Contextual "Glow" States
+- **Implementation:** The background will now feature a subtle, large-radius radial gradient (glow) that reflects the active profile.
+- **Gaming Profile:** A vibrant `#00FF66` (Neon Green) pulse.
+- **AI Workload Profile:** A steady, deep teal/emerald pulse.
+
+## 2. Interactive Fan Splines (Gaming Profile)
+- **Implementation:** Enhancement of the fan curve graph.
+    - **Hover Nodes:** Interactive points that display `[Temp]°C / [RPM]%` on hover.
+    - **Comparison Line:** A dimmed "Ghost" spline showing the previously saved configuration.
+
+## 3. VRAM Heatmap Depth (AI Workload Profile)
+- **Implementation:** Interactive VRAM block map.
+    - **Tooltips:** Hovering over active blocks reveals the specific process (e.g., `llama-3-70b.bin`, `System UI`, `CUDA Buffer`).
+    - **Fragmentation:** Visual indicators for non-contiguous memory allocation.
+
+## 4. Global "Quick-Tune" Sidebar
+- **Implementation:** A collapsible right-hand sidebar (width: 60px collapsed, 240px expanded).
+- **Functionality:** Accessible from *all* screens. Contains instant toggles for "Silent Mode", "Max Fans", "Clear VRAM", and "Profile Switcher".
+
+## 5. NEW: Compact Overlay Mode
+- **Purpose:** A minimal, always-on-top window (approx. 300x450px) that sits in a corner of the screen.
+- **Content:** Key telemetry (FPS, GPU Temp, VRAM Usage) and the most critical "Quick-Tune" buttons.
+
+## 6. MCP (Model Context Protocol) Integration
+- **Implementation:** Added to the 'External Integrations' section in Settings.
+- **Benefit:** Allows local or cloud-based AI models to query the PC's hardware state (e.g., "How much VRAM do I have left for this prompt?") to optimize model selection and execution parameters.

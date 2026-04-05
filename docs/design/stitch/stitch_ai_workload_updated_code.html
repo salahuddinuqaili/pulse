@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Manrope:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "inverse-surface": "#e5e1e4",
+                    "inverse-primary": "#006e27",
+                    "inverse-on-surface": "#313032",
+                    "primary-fixed": "#6bff83",
+                    "surface-bright": "#39393b",
+                    "on-primary-container": "#007128",
+                    "on-tertiary": "#412d00",
+                    "on-primary-fixed-variant": "#00531b",
+                    "on-secondary-container": "#ffe6e8",
+                    "secondary-fixed-dim": "#ffb2ba",
+                    "surface-container-high": "#2a2a2c",
+                    "error": "#ffb4ab",
+                    "secondary-fixed": "#ffd9dc",
+                    "error-container": "#93000a",
+                    "surface-variant": "#353437",
+                    "on-surface": "#e5e1e4",
+                    "primary-container": "#00ff66",
+                    "secondary": "#ffb2ba",
+                    "on-error": "#690005",
+                    "on-primary": "#003911",
+                    "primary": "#edffe8",
+                    "secondary-container": "#d4004b",
+                    "outline-variant": "#3b4b3a",
+                    "on-error-container": "#ffdad6",
+                    "surface-container": "#201f21",
+                    "outline": "#849581",
+                    "surface-tint": "#00e55b",
+                    "on-tertiary-fixed-variant": "#5c4209",
+                    "surface-container-lowest": "#0e0e10",
+                    "surface-dim": "#131315",
+                    "primary-fixed-dim": "#00e55b",
+                    "on-background": "#e5e1e4",
+                    "on-tertiary-container": "#795d23",
+                    "on-surface-variant": "#b9ccb5",
+                    "tertiary": "#fff9f4",
+                    "tertiary-fixed-dim": "#e7c17d",
+                    "on-primary-fixed": "#002107",
+                    "tertiary-container": "#ffd892",
+                    "surface": "#131315",
+                    "tertiary-fixed": "#ffdea5",
+                    "background": "#131315",
+                    "on-secondary": "#670020",
+                    "on-secondary-fixed-variant": "#910030",
+                    "surface-container-highest": "#353437",
+                    "on-tertiary-fixed": "#271900",
+                    "surface-container-low": "#1c1b1d",
+                    "on-secondary-fixed": "#400011"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Space Grotesk"],
+                    "body": ["Manrope"],
+                    "label": ["Space Grotesk"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glow-sm { box-shadow: 0 0 10px rgba(0, 255, 102, 0.3); }
+        .emerald-pulse {
+            animation: pulse-emerald 8s infinite ease-in-out;
+        }
+        @keyframes pulse-emerald {
+            0%, 100% { background: radial-gradient(circle at 50% 50%, rgba(0, 255, 102, 0.03) 0%, transparent 70%); }
+            50% { background: radial-gradient(circle at 50% 50%, rgba(0, 255, 102, 0.08) 0%, transparent 80%); }
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body selection:bg-primary-container selection:text-on-primary-container">
+<!-- Background Pulse Layer -->
+<div class="fixed inset-0 emerald-pulse pointer-events-none z-0"></div>
+<!-- TopNavBar -->
+<header class="bg-[#0A0A0C]/80 backdrop-blur-xl border-b border-[#353437]/10 docked full-width top-0 z-50 fixed left-0 right-0">
+<div class="flex justify-between items-center w-full px-6 h-16">
+<div class="flex items-center gap-8">
+<span class="text-xl font-bold tracking-tighter text-[#e5e1e4] font-headline uppercase">Neon Studio Hybrid</span>
+<nav class="hidden md:flex gap-6">
+<a class="text-[#e5e1e4]/60 font-['Space_Grotesk'] tracking-tighter uppercase text-sm hover:text-[#00FF66] transition-colors" href="#">Compact Mode</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-[#e5e1e4]/60 hover:text-[#00FF66] transition-colors" data-icon="notifications">notifications</button>
+<div class="w-8 h-8 rounded-full bg-surface-container-highest overflow-hidden border border-outline-variant/20">
+<img alt="User Profile Pill" class="w-full h-full object-cover" data-alt="portrait of a futuristic user with neon highlights on skin and dark techwear" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBwvACsQ-mw2oJYaD87tnrGT8IL4mDCx-Lxp43QfVgd49Rg-VBy8dUjO8oa4IcCXoQzWk6cD9NzwoLLF7y7l-6is1nAMv2zWU1iaM9sUIBK8IFdPQ4dHBKVnJLL6eqgKJw_HBlxdQ4jqYAuaKUb3_pTJQ-nwE0Q-x0cuIqIFQumzKn_6i3ED4Tz-6ayRLiBtTLxsQAIWyXfUuGqJNARFfsnM2EtenxT-VLhVqe3bcuS3pbrr6R-orpMg6E5Dtolw0D8W2x210AkGAQ"/>
+</div>
+</div>
+</div>
+</header>
+<!-- SideNavBar (Left) -->
+<aside class="bg-[#141519] fixed left-0 top-0 h-full flex flex-col w-64 z-40">
+<div class="p-6 pb-2">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[#00FF66] text-3xl" data-icon="memory">memory</span>
+<div>
+<h1 class="text-lg font-black text-[#00FF66] font-headline leading-tight">Neon Studio</h1>
+<p class="text-[10px] text-on-surface-variant/40 font-label tracking-widest uppercase">V.2.0.4</p>
+</div>
+</div>
+</div>
+<nav class="mt-8 flex-grow">
+<div class="px-3 space-y-1">
+<a class="flex items-center gap-4 px-4 py-3 text-sm font-medium transition-all duration-300 ease-in-out text-[#e5e1e4]/40 hover:bg-[#353437]/20 hover:text-[#00FF66] font-label" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+                    Dashboard
+                </a>
+<a class="flex items-center gap-4 px-4 py-3 text-sm font-medium transition-all duration-300 ease-in-out text-[#e5e1e4]/40 hover:bg-[#353437]/20 hover:text-[#00FF66] font-label" href="#">
+<span class="material-symbols-outlined" data-icon="sports_esports">sports_esports</span>
+                    Gaming Profile
+                </a>
+<a class="flex items-center gap-4 px-4 py-3 text-sm font-medium transition-all duration-300 ease-in-out text-[#00FF66] border-l-2 border-[#00FF66] bg-gradient-to-r from-[#00FF66]/10 to-transparent font-label" href="#">
+<span class="material-symbols-outlined" data-icon="memory">memory</span>
+                    AI Workload
+                </a>
+<a class="flex items-center gap-4 px-4 py-3 text-sm font-medium transition-all duration-300 ease-in-out text-[#e5e1e4]/40 hover:bg-[#353437]/20 hover:text-[#00FF66] font-label" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+                    Analytics
+                </a>
+<a class="flex items-center gap-4 px-4 py-3 text-sm font-medium transition-all duration-300 ease-in-out text-[#e5e1e4]/40 hover:bg-[#353437]/20 hover:text-[#00FF66] font-label" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+                    Settings
+                </a>
+</div>
+</nav>
+</aside>
+<!-- SideNavBar (Right Quick-Tune) -->
+<aside class="bg-[#0F0F12] fixed right-0 top-0 h-full flex flex-col w-[240px] z-40 border-l border-outline-variant/5 shadow-[-20px_0_40px_rgba(0,255,102,0.05)]">
+<div class="p-6 h-16 flex items-center justify-between border-b border-outline-variant/10">
+<span class="text-xs uppercase tracking-widest font-label font-bold text-[#FF3366]">Quick-Tune</span>
+<span class="material-symbols-outlined text-on-surface-variant/40 text-sm" data-icon="shutter_speed">shutter_speed</span>
+</div>
+<div class="mt-4 px-4 space-y-4">
+<div class="p-3 rounded-lg border border-[#00FF66]/20 bg-[#00FF66]/5 glow-sm group cursor-pointer transition-all">
+<div class="flex items-center gap-3 text-[#00FF66]">
+<span class="material-symbols-outlined text-lg" data-icon="shutter_speed">shutter_speed</span>
+<span class="text-xs font-bold uppercase tracking-widest font-label">Silent Mode</span>
+</div>
+</div>
+<div class="p-3 rounded-lg border border-transparent hover:border-[#00FF66]/20 hover:bg-[#00FF66]/5 group cursor-pointer transition-all">
+<div class="flex items-center gap-3 text-[#e5e1e4]/30 group-hover:text-[#00FF66]">
+<span class="material-symbols-outlined text-lg" data-icon="cyclone">cyclone</span>
+<span class="text-xs font-bold uppercase tracking-widest font-label">Max Fans</span>
+</div>
+</div>
+<div class="p-3 rounded-lg border border-transparent hover:border-[#00FF66]/20 hover:bg-[#00FF66]/5 group cursor-pointer transition-all">
+<div class="flex items-center gap-3 text-[#e5e1e4]/30 group-hover:text-[#00FF66]">
+<span class="material-symbols-outlined text-lg" data-icon="cleaning_services">cleaning_services</span>
+<span class="text-xs font-bold uppercase tracking-widest font-label">Clear VRAM</span>
+</div>
+</div>
+<div class="p-3 rounded-lg border border-transparent hover:border-[#00FF66]/20 hover:bg-[#00FF66]/5 group cursor-pointer transition-all">
+<div class="flex items-center gap-3 text-[#e5e1e4]/30 group-hover:text-[#00FF66]">
+<span class="material-symbols-outlined text-lg" data-icon="account_circle">account_circle</span>
+<span class="text-xs font-bold uppercase tracking-widest font-label">Profile Switcher</span>
+</div>
+</div>
+</div>
+<div class="mt-auto p-4">
+<button class="w-full py-3 border border-outline-variant/30 rounded-full text-[10px] uppercase tracking-widest font-bold hover:bg-on-surface/5 transition-all text-on-surface-variant">Expand Panel</button>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="pl-64 pr-[240px] pt-16 min-h-screen relative z-10">
+<div class="p-8 max-w-7xl mx-auto space-y-10">
+<!-- Header & VRAM Status Section -->
+<section class="space-y-6">
+<div class="flex items-end justify-between">
+<div>
+<h2 class="text-4xl font-headline font-bold tracking-tight text-on-surface">VRAM Block Map</h2>
+<p class="text-on-surface-variant font-body">Real-time memory allocation across 24GB GDDR6X pool</p>
+</div>
+<div class="text-right">
+<span class="block text-2xl font-headline font-medium text-primary-container">16.8 GB / 24.0 GB</span>
+<span class="text-[10px] uppercase tracking-widest text-on-surface-variant/60 font-label">Active Allocation</span>
+</div>
+</div>
+<!-- VRAM Grid -->
+<div class="bg-surface-container-low p-8 rounded-xl border border-outline-variant/5">
+<div class="grid grid-cols-12 md:grid-cols-24 lg:grid-cols-48 gap-1.5">
+<!-- System Blocks (Grey) -->
+<div class="aspect-square bg-surface-container-highest rounded-sm border border-white/5"></div>
+<div class="aspect-square bg-surface-container-highest rounded-sm border border-white/5"></div>
+<div class="aspect-square bg-surface-container-highest rounded-sm border border-white/5"></div>
+<div class="aspect-square bg-surface-container-highest rounded-sm border border-white/5"></div>
+<!-- Active AI (White) -->
+<div class="aspect-square bg-white rounded-sm"></div>
+<div class="aspect-square bg-white rounded-sm"></div>
+<div class="aspect-square bg-white rounded-sm"></div>
+<div class="aspect-square bg-white rounded-sm"></div>
+<div class="aspect-square bg-white rounded-sm"></div>
+<div class="aspect-square bg-white rounded-sm relative group">
+<div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 px-3 py-2 bg-surface-container-highest text-white text-xs rounded-lg shadow-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 whitespace-nowrap border border-primary-container/20">
+<div class="font-bold text-primary-container mb-1">Model: llama-3-70b.bin</div>
+<div class="text-white/60">Size: 14.2 GB</div>
+<div class="text-white/60">Status: Active Inference</div>
+<div class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-surface-container-highest rotate-45 border-r border-b border-primary-container/20"></div>
+</div>
+<div class="absolute inset-0 bg-white ring-2 ring-primary-container ring-offset-2 ring-offset-background"></div>
+</div>
+<!-- Fill remaining with a mix for visual density -->
+<div class="aspect-square bg-white rounded-sm"></div>
+<div class="aspect-square bg-white rounded-sm"></div>
+<div class="aspect-square bg-white rounded-sm"></div>
+<div class="aspect-square bg-white rounded-sm"></div>
+<div class="aspect-square bg-white rounded-sm"></div>
+<div class="aspect-square bg-white rounded-sm"></div>
+<div class="aspect-square bg-white rounded-sm"></div>
+<div class="aspect-square bg-white rounded-sm"></div>
+<div class="aspect-square bg-white rounded-sm"></div>
+<div class="aspect-square bg-white rounded-sm"></div>
+<div class="aspect-square bg-white rounded-sm"></div>
+<div class="aspect-square bg-white rounded-sm"></div>
+<div class="aspect-square bg-white rounded-sm"></div>
+<div class="aspect-square bg-white rounded-sm"></div>
+<div class="aspect-square bg-white rounded-sm"></div>
+<div class="aspect-square bg-white rounded-sm"></div>
+<div class="aspect-square bg-white rounded-sm"></div>
+<div class="aspect-square bg-white rounded-sm"></div>
+<div class="aspect-square bg-white rounded-sm"></div>
+<div class="aspect-square bg-white rounded-sm"></div>
+<div class="aspect-square bg-white rounded-sm"></div>
+<div class="aspect-square bg-white rounded-sm"></div>
+<div class="aspect-square bg-white rounded-sm"></div>
+<div class="aspect-square bg-white rounded-sm"></div>
+<div class="aspect-square bg-white rounded-sm"></div>
+<div class="aspect-square bg-white rounded-sm"></div>
+<div class="aspect-square bg-white rounded-sm"></div>
+<div class="aspect-square bg-white rounded-sm"></div>
+<div class="aspect-square bg-white rounded-sm"></div>
+<div class="aspect-square bg-white rounded-sm"></div>
+<div class="aspect-square bg-white rounded-sm"></div>
+<div class="aspect-square bg-white rounded-sm"></div>
+<div class="aspect-square bg-white rounded-sm"></div>
+<div class="aspect-square bg-white rounded-sm"></div>
+<div class="aspect-square bg-white rounded-sm"></div>
+<div class="aspect-square bg-white rounded-sm"></div>
+<div class="aspect-square bg-white rounded-sm"></div>
+<div class="aspect-square bg-white rounded-sm"></div>
+<div class="aspect-square bg-white rounded-sm"></div>
+<div class="aspect-square bg-white rounded-sm"></div>
+<!-- Free Blocks (Green) -->
+<div class="aspect-square bg-primary-container/20 rounded-sm"></div>
+<div class="aspect-square bg-primary-container/20 rounded-sm"></div>
+<div class="aspect-square bg-primary-container/20 rounded-sm"></div>
+<div class="aspect-square bg-primary-container/20 rounded-sm"></div>
+<div class="aspect-square bg-primary-container/20 rounded-sm"></div>
+<div class="aspect-square bg-primary-container/20 rounded-sm"></div>
+<div class="aspect-square bg-primary-container/20 rounded-sm"></div>
+<div class="aspect-square bg-primary-container/20 rounded-sm"></div>
+<div class="aspect-square bg-primary-container/20 rounded-sm"></div>
+<div class="aspect-square bg-primary-container/20 rounded-sm"></div>
+<div class="aspect-square bg-primary-container/20 rounded-sm"></div>
+<div class="aspect-square bg-primary-container/20 rounded-sm"></div>
+<div class="aspect-square bg-primary-container/20 rounded-sm"></div>
+<div class="aspect-square bg-primary-container/20 rounded-sm"></div>
+<div class="aspect-square bg-primary-container/20 rounded-sm"></div>
+<div class="aspect-square bg-primary-container/20 rounded-sm"></div>
+<div class="aspect-square bg-primary-container/20 rounded-sm"></div>
+<div class="aspect-square bg-primary-container/20 rounded-sm"></div>
+<div class="aspect-square bg-primary-container/20 rounded-sm"></div>
+<div class="aspect-square bg-primary-container/20 rounded-sm"></div>
+<div class="aspect-square bg-primary-container/20 rounded-sm"></div>
+<div class="aspect-square bg-primary-container/20 rounded-sm"></div>
+<div class="aspect-square bg-primary-container/20 rounded-sm"></div>
+<div class="aspect-square bg-primary-container/20 rounded-sm"></div>
+</div>
+<div class="mt-8 flex gap-8 items-center border-t border-outline-variant/10 pt-6">
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 bg-primary-container/20 rounded-sm"></div>
+<span class="text-xs font-label uppercase tracking-widest text-on-surface-variant">Free</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 bg-surface-container-highest rounded-sm"></div>
+<span class="text-xs font-label uppercase tracking-widest text-on-surface-variant">System</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 bg-white rounded-sm"></div>
+<span class="text-xs font-label uppercase tracking-widest text-on-surface-variant">Active AI</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Middle Row: Power & Timeline -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<!-- Power Draw Gauge -->
+<div class="bg-surface-container-low p-6 rounded-xl border border-outline-variant/5 flex flex-col justify-between">
+<div class="space-y-1">
+<h3 class="text-xs uppercase tracking-widest font-label font-bold text-on-surface-variant">Power Draw</h3>
+<div class="text-3xl font-headline font-bold text-white">320W <span class="text-sm font-normal text-on-surface-variant/40">/ 450W</span></div>
+</div>
+<div class="mt-4 relative h-3 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="absolute inset-y-0 left-0 bg-primary-container shadow-[0_0_15px_rgba(0,255,102,0.4)] transition-all duration-1000" style="width: 71%;"></div>
+</div>
+<div class="mt-2 flex justify-between text-[10px] font-label text-on-surface-variant/40 uppercase">
+<span>Idle (15W)</span>
+<span>Peak (450W)</span>
+</div>
+</div>
+<!-- Tensor Core Timeline -->
+<div class="lg:col-span-2 bg-surface-container-low p-6 rounded-xl border border-outline-variant/5">
+<div class="flex justify-between items-center mb-6">
+<h3 class="text-xs uppercase tracking-widest font-label font-bold text-on-surface-variant">Tensor Core Load Timeline</h3>
+<div class="flex gap-2">
+<span class="px-2 py-0.5 rounded bg-primary-container/10 text-[#00FF66] text-[10px] font-bold uppercase tracking-tighter">Live Trace</span>
+</div>
+</div>
+<div class="h-32 flex items-end gap-1 px-2">
+<!-- Mock Bars for Timeline -->
+<div class="flex-1 bg-primary-container/10 h-[20%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary-container/15 h-[25%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary-container/20 h-[30%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary-container/30 h-[45%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary-container/25 h-[40%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary-container/60 h-[70%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary-container/80 h-[85%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary-container/90 h-[95%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary-container/70 h-[80%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary-container/40 h-[50%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary-container/20 h-[30%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary-container/15 h-[25%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary-container/30 h-[40%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary-container/50 h-[60%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary-container h-full rounded-t-sm shadow-[0_0_10px_rgba(0,255,102,0.2)]"></div>
+<div class="flex-1 bg-primary-container/80 h-[90%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary-container/60 h-[75%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary-container/30 h-[40%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary-container/15 h-[20%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary-container/10 h-[10%] rounded-t-sm"></div>
+</div>
+</div>
+</div>
+<!-- Bottom Section: Process Table -->
+<section class="bg-surface-container-low rounded-xl border border-outline-variant/5 overflow-hidden">
+<div class="p-6 border-b border-outline-variant/5 flex justify-between items-center">
+<h3 class="text-xs uppercase tracking-widest font-label font-bold text-on-surface-variant">Active AI Processes</h3>
+<div class="flex gap-4">
+<button class="text-xs text-primary-container font-label uppercase tracking-widest hover:underline transition-all">Export Logs</button>
+<button class="text-xs text-secondary font-label uppercase tracking-widest hover:underline transition-all">Clear Zombies</button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left font-body">
+<thead>
+<tr class="text-[10px] uppercase tracking-widest text-on-surface-variant/40 border-b border-outline-variant/5">
+<th class="px-6 py-4 font-bold">Process Name</th>
+<th class="px-6 py-4 font-bold">Memory Load</th>
+<th class="px-6 py-4 font-bold">Core ID</th>
+<th class="px-6 py-4 font-bold">Uptime</th>
+<th class="px-6 py-4 font-bold text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/5">
+<tr class="group hover:bg-white/5 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-primary-container"></div>
+<span class="text-sm font-medium">ollama_server.exe</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm font-label">14,240 MB</td>
+<td class="px-6 py-4 text-xs text-on-surface-variant/60">CUDA:0</td>
+<td class="px-6 py-4 text-xs text-on-surface-variant/60">04:22:15</td>
+<td class="px-6 py-4 text-right">
+<button class="opacity-0 group-hover:opacity-100 px-4 py-1.5 rounded bg-secondary-container/10 text-secondary text-[10px] font-bold uppercase tracking-widest border border-secondary/20 hover:bg-secondary-container hover:text-white transition-all">Kill</button>
+</td>
+</tr>
+<tr class="group hover:bg-white/5 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-primary-container"></div>
+<span class="text-sm font-medium">python.exe (torch)</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm font-label">1,820 MB</td>
+<td class="px-6 py-4 text-xs text-on-surface-variant/60">CUDA:0</td>
+<td class="px-6 py-4 text-xs text-on-surface-variant/60">00:15:02</td>
+<td class="px-6 py-4 text-right">
+<button class="opacity-0 group-hover:opacity-100 px-4 py-1.5 rounded bg-secondary-container/10 text-secondary text-[10px] font-bold uppercase tracking-widest border border-secondary/20 hover:bg-secondary-container hover:text-white transition-all">Kill</button>
+</td>
+</tr>
+<tr class="group hover:bg-white/5 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-primary-container/20"></div>
+<span class="text-sm font-medium">python.exe (gradio)</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm font-label">420 MB</td>
+<td class="px-6 py-4 text-xs text-on-surface-variant/60">SYSTEM</td>
+<td class="px-6 py-4 text-xs text-on-surface-variant/60">04:22:14</td>
+<td class="px-6 py-4 text-right">
+<button class="opacity-0 group-hover:opacity-100 px-4 py-1.5 rounded bg-secondary-container/10 text-secondary text-[10px] font-bold uppercase tracking-widest border border-secondary/20 hover:bg-secondary-container hover:text-white transition-all">Kill</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</div>
+</main>
+<!-- Success Feedback Overlay (Visual Only) -->
+<div class="fixed bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-4 bg-primary-container/90 backdrop-blur-md px-6 py-3 rounded-full text-on-primary font-label text-sm font-bold shadow-[0_0_30px_rgba(0,255,102,0.3)] z-[100] border border-white/20">
+<span class="material-symbols-outlined" data-icon="check_circle">check_circle</span>
+        AI PROFILE OPTIMIZED: CUDA 12.4 DETECTED
+    </div>
+</body></html>

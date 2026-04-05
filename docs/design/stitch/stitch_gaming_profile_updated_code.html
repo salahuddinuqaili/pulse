@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;900&amp;family=Manrope:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "inverse-surface": "#e5e1e4",
+                    "inverse-primary": "#006e27",
+                    "inverse-on-surface": "#313032",
+                    "primary-fixed": "#6bff83",
+                    "surface-bright": "#39393b",
+                    "on-primary-container": "#007128",
+                    "on-tertiary": "#412d00",
+                    "on-primary-fixed-variant": "#00531b",
+                    "on-secondary-container": "#ffe6e8",
+                    "secondary-fixed-dim": "#ffb2ba",
+                    "surface-container-high": "#2a2a2c",
+                    "error": "#ffb4ab",
+                    "secondary-fixed": "#ffd9dc",
+                    "error-container": "#93000a",
+                    "surface-variant": "#353437",
+                    "on-surface": "#e5e1e4",
+                    "primary-container": "#00ff66",
+                    "secondary": "#ffb2ba",
+                    "on-error": "#690005",
+                    "on-primary": "#003911",
+                    "primary": "#edffe8",
+                    "secondary-container": "#d4004b",
+                    "outline-variant": "#3b4b3a",
+                    "on-error-container": "#ffdad6",
+                    "surface-container": "#201f21",
+                    "outline": "#849581",
+                    "surface-tint": "#00e55b",
+                    "on-tertiary-fixed-variant": "#5c4209",
+                    "surface-container-lowest": "#0e0e10",
+                    "surface-dim": "#131315",
+                    "primary-fixed-dim": "#00e55b",
+                    "on-background": "#e5e1e4",
+                    "on-tertiary-container": "#795d23",
+                    "on-surface-variant": "#b9ccb5",
+                    "tertiary": "#fff9f4",
+                    "tertiary-fixed-dim": "#e7c17d",
+                    "on-primary-fixed": "#002107",
+                    "tertiary-container": "#ffd892",
+                    "surface": "#131315",
+                    "tertiary-fixed": "#ffdea5",
+                    "background": "#131315",
+                    "on-secondary": "#670020",
+                    "on-secondary-fixed-variant": "#910030",
+                    "surface-container-highest": "#353437",
+                    "on-tertiary-fixed": "#271900",
+                    "surface-container-low": "#1c1b1d",
+                    "on-secondary-fixed": "#400011"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Space Grotesk"],
+                    "body": ["Manrope"],
+                    "label": ["Space Grotesk"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #0A0A0C;
+            background-image: radial-gradient(circle at 50% 50%, rgba(0, 255, 102, 0.03) 0%, transparent 70%);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glow-sm { box-shadow: 0 0 15px rgba(0, 255, 102, 0.4); }
+        .text-neon { color: #00FF66; text-shadow: 0 0 10px rgba(0, 255, 102, 0.3); }
+        .dashed-path { stroke-dasharray: 4 4; }
+    </style>
+</head>
+<body class="font-body text-on-surface selection:bg-primary-container selection:text-on-primary">
+<!-- TopNavBar -->
+<nav class="bg-[#0A0A0C]/80 backdrop-blur-xl text-[#00FF66] font-['Space_Grotesk'] tracking-tighter uppercase text-sm fixed top-0 z-50 flex justify-between items-center w-full px-6 h-16 border-b border-[#353437]/10">
+<div class="text-xl font-bold tracking-tighter text-[#e5e1e4] flex items-center gap-2">
+<span class="material-symbols-outlined text-[#00FF66]" style="font-variation-settings: 'FILL' 1;">dataset</span>
+            Neon Studio Hybrid
+        </div>
+<div class="flex items-center gap-8">
+<div class="hidden md:flex gap-6">
+<a class="text-[#00FF66] font-bold hover:text-[#00FF66] transition-colors" href="#">Compact Mode</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined hover:text-[#00FF66] transition-colors scale-95 duration-200" data-icon="notifications">notifications</button>
+<div class="h-8 w-8 rounded-full bg-surface-container-highest border border-outline-variant flex items-center justify-center overflow-hidden">
+<img alt="User Profile Pill" data-alt="Stylized geometric avatar with neon green accents on a dark background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDKey0z0j8KdqBIABejdJkY8ijxbf8lteDpuD5TKtvi83Iv1D1PiZ7GNcPxnKW0LPrk3M7DczRwbtZeeNLHtJRpTpQGPIdGTaKMvVmswftyxiJPra9WfZOqV-h3p3gHEBMymoet3h-hXlAXcTny-c31BRL6aWtYyZk4XHHoaD8z1soT5FRXW6Bl5swU61QDvF9dC0ylZzUXlCffRIv7-ltUVlgha4RviZ_lQAJcRxZff_AvKhbiTHjotB-AVf9Z0wrYNZhFK1SpG0M"/>
+</div>
+</div>
+</div>
+</nav>
+<!-- SideNavBar (Left) -->
+<aside class="bg-[#141519] font-['Space_Grotesk'] text-sm font-medium fixed left-0 top-0 h-full w-64 flex flex-col pt-20 border-r border-outline-variant/10 hidden lg:flex">
+<div class="px-6 mb-8">
+<h2 class="text-lg font-black text-[#00FF66]">Neon Studio</h2>
+<p class="text-xs text-on-surface-variant/40">V.2.0.4</p>
+</div>
+<div class="flex flex-col gap-1 px-4">
+<a class="flex items-center gap-3 px-4 py-3 text-[#e5e1e4]/40 hover:bg-[#353437]/20 hover:text-[#00FF66] transition-all duration-300 ease-in-out rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span> Dashboard
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#00FF66] border-l-2 border-[#00FF66] bg-gradient-to-r from-[#00FF66]/10 to-transparent transition-all duration-300 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="sports_esports" style="font-variation-settings: 'FILL' 1;">sports_esports</span> Gaming Profile
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#e5e1e4]/40 hover:bg-[#353437]/20 hover:text-[#00FF66] transition-all duration-300 ease-in-out rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="memory">memory</span> AI Workload
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#e5e1e4]/40 hover:bg-[#353437]/20 hover:text-[#00FF66] transition-all duration-300 ease-in-out rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span> Analytics
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#e5e1e4]/40 hover:bg-[#353437]/20 hover:text-[#00FF66] transition-all duration-300 ease-in-out rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span> Settings
+            </a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="lg:pl-64 pr-[240px] pt-16 min-h-screen">
+<div class="p-8 max-w-7xl mx-auto">
+<header class="mb-12 flex justify-between items-end">
+<div>
+<h1 class="font-headline text-4xl font-bold tracking-tighter uppercase text-on-surface">Profile Tuning</h1>
+<p class="text-on-surface-variant font-body mt-2">NVIDIA GeForce RTX 4090 • Ultra Performance Profile</p>
+</div>
+<div class="flex gap-4">
+<button class="px-6 py-2 rounded-lg bg-surface-container-high border border-outline-variant font-headline text-xs uppercase tracking-widest text-[#e5e1e4]/60 hover:text-[#00FF66] transition-colors">Discard</button>
+<button class="px-6 py-2 rounded-lg bg-primary-container text-on-primary font-headline text-xs uppercase font-bold tracking-widest glow-sm">Apply Settings</button>
+</div>
+</header>
+<div class="grid grid-cols-12 gap-8">
+<!-- Left: Overclock Dials -->
+<div class="col-span-12 xl:col-span-3 flex flex-col gap-8">
+<div class="bg-surface-container-low rounded-xl p-6 border border-outline-variant/10">
+<div class="flex justify-between items-start mb-6">
+<span class="font-headline text-xs uppercase tracking-widest text-on-surface-variant/60">Core Offset</span>
+<span class="font-headline text-xl font-bold text-[#00FF66]">+120MHz</span>
+</div>
+<div class="relative w-full aspect-square flex items-center justify-center">
+<svg class="w-48 h-48 transform -rotate-90" viewbox="0 0 100 100">
+<circle cx="50" cy="50" fill="none" r="45" stroke="#353437" stroke-width="4"></circle>
+<circle class="drop-shadow-[0_0_5px_#00FF66]" cx="50" cy="50" fill="none" r="45" stroke="#00FF66" stroke-dasharray="210 282" stroke-width="4"></circle>
+<circle class="glow-sm" cx="95" cy="50" fill="#00FF66" r="4" transform="rotate(270, 50, 50)"></circle>
+</svg>
+<div class="absolute flex flex-col items-center">
+<span class="material-symbols-outlined text-4xl text-[#00FF66]">bolt</span>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-low rounded-xl p-6 border border-outline-variant/10">
+<div class="flex justify-between items-start mb-6">
+<span class="font-headline text-xs uppercase tracking-widest text-on-surface-variant/60">Memory Offset</span>
+<span class="font-headline text-xl font-bold text-[#00FF66]">+850MHz</span>
+</div>
+<div class="relative w-full aspect-square flex items-center justify-center">
+<svg class="w-48 h-48 transform -rotate-90" viewbox="0 0 100 100">
+<circle cx="50" cy="50" fill="none" r="45" stroke="#353437" stroke-width="4"></circle>
+<circle class="drop-shadow-[0_0_5px_#00FF66]" cx="50" cy="50" fill="none" r="45" stroke="#00FF66" stroke-dasharray="180 282" stroke-width="4"></circle>
+<circle class="glow-sm" cx="95" cy="50" fill="#00FF66" r="4" transform="rotate(230, 50, 50)"></circle>
+</svg>
+<div class="absolute flex flex-col items-center">
+<span class="material-symbols-outlined text-4xl text-[#00FF66]">memory</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Center: Interactive Fan Curve -->
+<div class="col-span-12 xl:col-span-6">
+<div class="bg-surface-container rounded-xl p-8 border border-outline-variant/10 relative overflow-hidden h-full min-h-[500px]">
+<div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(0,255,102,0.05),transparent)]"></div>
+<div class="relative z-10">
+<div class="flex justify-between items-center mb-10">
+<div>
+<h3 class="font-headline text-sm uppercase tracking-[0.2em] text-[#00FF66]">Fan Curve Optimizer</h3>
+<p class="text-xs text-on-surface-variant font-body">Dynamic RPM Adjustment Spline</p>
+</div>
+<div class="flex gap-2">
+<div class="flex items-center gap-2 text-[10px] uppercase tracking-widest text-on-surface-variant">
+<div class="w-2 h-2 rounded-full border border-dashed border-on-surface-variant"></div> Previous
+                                    </div>
+<div class="flex items-center gap-2 text-[10px] uppercase tracking-widest text-[#00FF66]">
+<div class="w-2 h-2 rounded-full bg-[#00FF66]"></div> Active
+                                    </div>
+</div>
+</div>
+<div class="relative w-full h-[320px] mt-4 border-l border-b border-outline-variant/20">
+<!-- Grid Lines -->
+<div class="absolute inset-0 flex flex-col justify-between opacity-5">
+<div class="h-px w-full bg-on-surface"></div>
+<div class="h-px w-full bg-on-surface"></div>
+<div class="h-px w-full bg-on-surface"></div>
+<div class="h-px w-full bg-on-surface"></div>
+<div class="h-px w-full bg-on-surface"></div>
+</div>
+<!-- Chart SVG -->
+<svg class="w-full h-full overflow-visible" preserveaspectratio="none">
+<!-- Ghost Line (Dimmed, Dashed) -->
+<path class="dashed-path opacity-40" d="M 0 320 Q 150 300, 300 180 T 600 50" fill="none" stroke="#353437" stroke-width="2"></path>
+<!-- Active Spline -->
+<path class="drop-shadow-[0_0_10px_rgba(0,255,102,0.3)]" d="M 0 320 Q 120 280, 280 150 T 600 20" fill="none" stroke="#00FF66" stroke-width="3"></path>
+<!-- Nodes -->
+<circle cx="0" cy="320" fill="#141519" r="4" stroke="#00FF66" stroke-width="2"></circle>
+<circle cx="120" cy="280" fill="#141519" r="4" stroke="#00FF66" stroke-width="2"></circle>
+<circle class="cursor-pointer glow-sm" cx="280" cy="150" fill="#00FF66" r="6"></circle> <!-- Hovered Node -->
+<circle cx="480" cy="80" fill="#141519" r="4" stroke="#00FF66" stroke-width="2"></circle>
+<circle cx="600" cy="20" fill="#141519" r="4" stroke="#00FF66" stroke-width="2"></circle>
+</svg>
+<!-- Tooltip for Hovered Node -->
+<div class="absolute left-[280px] top-[100px] -translate-x-1/2 p-3 rounded-xl bg-surface-container-highest border border-[#00FF66]/30 backdrop-blur-md shadow-2xl z-20">
+<p class="font-headline text-[10px] text-on-surface-variant uppercase mb-1">Point Node 03</p>
+<p class="font-headline text-sm font-bold text-[#00FF66]">72°C / 85% RPM</p>
+<div class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 rotate-45 bg-surface-container-highest border-r border-b border-[#00FF66]/30"></div>
+</div>
+<!-- Axis Labels -->
+<div class="absolute -bottom-6 left-0 text-[10px] font-headline text-on-surface-variant uppercase">30°C</div>
+<div class="absolute -bottom-6 right-0 text-[10px] font-headline text-on-surface-variant uppercase">100°C</div>
+<div class="absolute -left-10 top-0 text-[10px] font-headline text-on-surface-variant uppercase rotate-90 origin-right">100%</div>
+<div class="absolute -left-10 bottom-0 text-[10px] font-headline text-on-surface-variant uppercase rotate-90 origin-right">0%</div>
+</div>
+<div class="mt-12 flex gap-12">
+<div class="flex flex-col">
+<span class="text-[10px] text-on-surface-variant uppercase tracking-widest mb-1">Fan Speed</span>
+<span class="font-headline text-2xl font-bold">2,450 RPM</span>
+</div>
+<div class="flex flex-col border-l border-outline-variant/20 pl-12">
+<span class="text-[10px] text-on-surface-variant uppercase tracking-widest mb-1">Junction Temp</span>
+<span class="font-headline text-2xl font-bold">68°C</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right: FPS Graph -->
+<div class="col-span-12 xl:col-span-3">
+<div class="bg-surface-container-low rounded-xl p-6 border border-outline-variant/10 h-full">
+<div class="flex justify-between items-center mb-8">
+<h3 class="font-headline text-xs uppercase tracking-widest text-on-surface-variant">Live Performance</h3>
+<div class="bg-primary-container/10 px-2 py-1 rounded text-[10px] font-bold text-[#00FF66]">LIVE</div>
+</div>
+<div class="mb-10 text-center">
+<span class="font-headline text-6xl font-black text-neon tracking-tighter">184</span>
+<span class="font-headline text-xl font-bold text-on-surface-variant ml-2 uppercase">fps</span>
+<p class="text-[10px] text-on-surface-variant mt-2 uppercase tracking-widest">99th Percentile: 162 FPS</p>
+</div>
+<!-- FPS Graph -->
+<div class="relative h-48 w-full border-b border-outline-variant/10">
+<svg class="w-full h-full" preserveaspectratio="none">
+<defs>
+<lineargradient id="fpsGradient" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#00FF66" stop-opacity="0.2"></stop>
+<stop offset="100%" stop-color="#00FF66" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+<path d="M0 100 L20 85 L40 95 L60 40 L80 60 L100 20 L120 45 L140 30 L160 50 L180 15 L200 40 L220 30 L240 60 L260 20 L280 40 L300 100 Z" fill="url(#fpsGradient)" stroke="none"></path>
+<path d="M0 100 L20 85 L40 95 L60 40 L80 60 L100 20 L120 45 L140 30 L160 50 L180 15 L200 40 L220 30 L240 60 L260 20 L280 40" fill="none" stroke="#00FF66" stroke-width="2"></path>
+</svg>
+</div>
+<div class="mt-8 grid grid-cols-2 gap-4">
+<div class="bg-surface-container-highest/30 p-3 rounded-lg border border-outline-variant/5">
+<span class="text-[9px] text-on-surface-variant uppercase block mb-1">Power Draw</span>
+<span class="font-headline font-bold">342W</span>
+</div>
+<div class="bg-surface-container-highest/30 p-3 rounded-lg border border-outline-variant/5">
+<span class="text-[9px] text-on-surface-variant uppercase block mb-1">VRAM Use</span>
+<span class="font-headline font-bold">12.4GB</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Dashboard Bottom Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
+<div class="bg-surface-container-low/50 border border-outline-variant/10 rounded-xl p-6 flex items-center gap-6 group hover:border-[#00FF66]/30 transition-colors">
+<div class="w-12 h-12 rounded-full bg-[#00FF66]/5 flex items-center justify-center text-[#00FF66] group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined">cyclone</span>
+</div>
+<div>
+<h4 class="font-headline font-bold">Fan Profiles</h4>
+<p class="text-xs text-on-surface-variant">Switch to 'Stealth' or 'Max'</p>
+</div>
+</div>
+<div class="bg-surface-container-low/50 border border-outline-variant/10 rounded-xl p-6 flex items-center gap-6 group hover:border-[#00FF66]/30 transition-colors">
+<div class="w-12 h-12 rounded-full bg-[#00FF66]/5 flex items-center justify-center text-[#00FF66] group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined">shutter_speed</span>
+</div>
+<div>
+<h4 class="font-headline font-bold">Benchmark Mode</h4>
+<p class="text-xs text-on-surface-variant">Stress test current profile</p>
+</div>
+</div>
+<div class="bg-surface-container-low/50 border border-outline-variant/10 rounded-xl p-6 flex items-center gap-6 group hover:border-[#00FF66]/30 transition-colors">
+<div class="w-12 h-12 rounded-full bg-[#00FF66]/5 flex items-center justify-center text-[#00FF66] group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined">history</span>
+</div>
+<div>
+<h4 class="font-headline font-bold">Version History</h4>
+<p class="text-xs text-on-surface-variant">Restore previous stable OC</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- SideNavBar (Right - Quick Tune) -->
+<aside class="bg-[#0F0F12] font-['Space_Grotesk'] text-xs uppercase tracking-widest fixed right-0 top-0 h-full w-[240px] flex flex-col z-40 pt-20 border-l border-outline-variant/10 shadow-[-20px_0_40px_rgba(0,255,102,0.05)]">
+<div class="px-6 mb-8 flex flex-col gap-1">
+<h2 class="text-sm font-bold text-[#FF3366]">Quick-Tune</h2>
+<p class="text-[10px] text-[#e5e1e4]/30">System Stats</p>
+</div>
+<div class="flex flex-col gap-1 px-4">
+<button class="flex items-center gap-3 px-4 py-4 text-[#e5e1e4]/30 hover:border-l-2 hover:border-[#00FF66] hover:bg-[#00FF66]/5 transition-all duration-300">
+<span class="material-symbols-outlined">shutter_speed</span> Silent Mode
+            </button>
+<button class="flex items-center gap-3 px-4 py-4 text-[#00FF66] glow-sm ring-1 ring-[#00FF66]/40 transition-all duration-300 bg-[#00FF66]/5 border-l-2 border-[#00FF66]">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">cyclone</span> Max Fans
+            </button>
+<button class="flex items-center gap-3 px-4 py-4 text-[#e5e1e4]/30 hover:border-l-2 hover:border-[#00FF66] hover:bg-[#00FF66]/5 transition-all duration-300">
+<span class="material-symbols-outlined">cleaning_services</span> Clear VRAM
+            </button>
+<button class="flex items-center gap-3 px-4 py-4 text-[#e5e1e4]/30 hover:border-l-2 hover:border-[#00FF66] hover:bg-[#00FF66]/5 transition-all duration-300">
+<span class="material-symbols-outlined">account_circle</span> Profile Switcher
+            </button>
+</div>
+<div class="mt-auto p-6">
+<button class="w-full py-4 rounded-xl border border-outline-variant/20 text-[#e5e1e4]/40 hover:text-[#00FF66] hover:border-[#00FF66]/50 transition-all text-center">
+                Expand Panel
+            </button>
+</div>
+</aside>
+</body></html>

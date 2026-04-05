@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800;900&amp;family=Manrope:wght@200;300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "outline-variant": "#3b4b3a",
+                    "secondary-container": "#d4004b",
+                    "primary": "#edffe8",
+                    "on-primary": "#003911",
+                    "on-error": "#690005",
+                    "secondary": "#ffb2ba",
+                    "primary-container": "#00ff66",
+                    "on-primary-container": "#007128",
+                    "on-surface": "#e5e1e4",
+                    "surface-variant": "#353437",
+                    "error-container": "#93000a",
+                    "error": "#ffb4ab",
+                    "surface-container-high": "#2a2a2c",
+                    "on-secondary-container": "#ffe6e8",
+                    "surface-bright": "#39393b",
+                    "surface-container-low": "#1c1b1d",
+                    "surface-container-highest": "#353437",
+                    "background": "#0A0A0C",
+                    "surface": "#131315",
+                    "surface-container-lowest": "#0e0e10",
+                    "outline": "#849581",
+                    "surface-container": "#201f21"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "1rem",
+                    "xl": "1.5rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Space Grotesk"],
+                    "body": ["Manrope"],
+                    "label": ["Space Grotesk"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .neon-pulse {
+            background: radial-gradient(circle at 50% 50%, rgba(0, 255, 102, 0.03) 0%, transparent 70%);
+        }
+        .chromatic-noise {
+            position: relative;
+            box-shadow: -2px 0 0 rgba(255, 51, 102, 0.4), 2px 0 0 rgba(0, 255, 102, 0.4);
+        }
+        .glass-panel {
+            background: rgba(53, 52, 55, 0.6);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(0, 255, 102, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body selection:bg-primary-container selection:text-on-primary-container overflow-hidden">
+<!-- SideNavBar (Rail) -->
+<aside class="fixed left-0 top-0 h-full flex flex-col py-6 bg-[#0A0A0C] h-full w-20 flex-col border-r border-[#353437]/10 z-50">
+<div class="flex items-center justify-center mb-10">
+<span class="text-2xl font-bold text-[#00FF66] drop-shadow-[0_0_10px_rgba(0,255,102,0.4)] font-headline tracking-tighter">NS</span>
+</div>
+<nav class="flex flex-col items-center gap-8 flex-1">
+<!-- Active Tab: Dashboard -->
+<button class="w-full py-4 text-[#00FF66] border-l-2 border-[#00FF66] bg-gradient-to-r from-[#00FF66]/10 to-transparent transition-all duration-300">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+</button>
+<button class="w-full py-4 text-[#e5e1e4]/50 hover:text-[#00FF66] hover:bg-[#353437]/20 transition-all duration-300">
+<span class="material-symbols-outlined" data-icon="sports_esports">sports_esports</span>
+</button>
+<button class="w-full py-4 text-[#e5e1e4]/50 hover:text-[#00FF66] hover:bg-[#353437]/20 transition-all duration-300">
+<span class="material-symbols-outlined" data-icon="memory">memory</span>
+</button>
+<button class="w-full py-4 text-[#e5e1e4]/50 hover:text-[#00FF66] hover:bg-[#353437]/20 transition-all duration-300">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+</button>
+</nav>
+<div class="flex flex-col items-center gap-6 mt-auto pb-4">
+<button class="text-[#e5e1e4]/50 hover:text-[#00FF66] transition-all">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<div class="w-10 h-10 rounded-full border border-primary-container/20 overflow-hidden">
+<img alt="User profile" data-alt="Close-up portrait of a tech-focused professional with neon green ambient lighting reflecting on their face, cyber-punk aesthetic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8_B5lRrfaJ_G0nSmwY_9whvh7XhOE_I1ZvN_lNgXKMGgLXv8Xc1FJOBIkOJmG29aQLQEAB9nXWlWSPfTmWW9_aAn7XOymz2NA9pk_APkU1rms4cStqjeOJd4Q3sPIKmz_joH5WCiyH65_GsLF0w313umit7wYjUu2kjqYR1o-G6-nKIK4M_vMoiPm0BPcVBaHBA3tiNjXKHtMXcbDAyYcsXWdgvlGR5P-8eCpgHE-WLJt2TggdVsEgoSAaC-pVr4ULCMbfJ9Z4CU"/>
+</div>
+</div>
+</aside>
+<!-- TopNavBar -->
+<header class="fixed top-0 right-0 left-20 z-40 flex items-center justify-between px-8 bg-[#141519]/80 backdrop-blur-xl w-full h-16 shadow-[0_20px_40px_rgba(0,255,102,0.05)]">
+<div class="flex items-center gap-4">
+<span class="text-lg font-black tracking-tighter text-[#e5e1e4] font-headline">NVIDIA KINETIC</span>
+<span class="bg-primary-container/10 text-primary-container text-[10px] px-2 py-0.5 rounded font-headline font-bold">V0.1.2-BETA</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:flex items-center bg-surface-container-highest/50 rounded-full px-4 py-1.5 border border-outline-variant/10">
+<span class="material-symbols-outlined text-sm text-on-surface-variant mr-2" data-icon="search">search</span>
+<input class="bg-transparent border-none text-xs focus:ring-0 text-on-surface placeholder:text-on-surface-variant/40 w-48 font-label uppercase tracking-widest" placeholder="SYSTEM_OPTIMIZED" type="text"/>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-[#e5e1e4]/70 hover:text-[#00FF66] transition-transform hover:scale-105">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="text-[#e5e1e4]/70 hover:text-[#00FF66] transition-transform hover:scale-105">
+<span class="material-symbols-outlined" data-icon="bolt">bolt</span>
+</button>
+<div class="h-4 w-[1px] bg-outline-variant/20"></div>
+<span class="font-headline text-[10px] font-medium tracking-widest text-primary-container">SYSTEM READY</span>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-20 mr-80 pt-16 h-screen overflow-y-auto neon-pulse">
+<div class="p-10 max-w-7xl mx-auto">
+<!-- Header Section -->
+<div class="mb-12 flex justify-between items-end">
+<div>
+<h1 class="font-headline text-5xl font-bold tracking-tighter mb-2 text-on-surface">Visual Stress</h1>
+<p class="font-body text-on-surface-variant max-w-md">Real-time telemetry and kinetic hardware diagnostics for the Neon Studio cluster.</p>
+</div>
+<div class="flex gap-4">
+<div class="bg-surface-container-high p-4 rounded-lg border border-outline-variant/10 flex items-center gap-4">
+<div class="text-right">
+<p class="text-[10px] font-headline text-on-surface-variant uppercase tracking-widest">Global Thermal</p>
+<p class="text-2xl font-headline font-bold text-primary-container">64°C</p>
+</div>
+<div class="w-12 h-12 rounded-full border-2 border-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-primary-container" data-icon="device_thermostat">device_thermostat</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Bento Grid Content -->
+<div class="grid grid-cols-12 gap-6">
+<!-- Primary GPU Card (RTX 4090) -->
+<div class="col-span-8 bg-surface-container px-8 py-10 rounded-xl relative overflow-hidden group">
+<div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary-container to-transparent opacity-50"></div>
+<div class="flex justify-between items-start mb-8">
+<div>
+<span class="text-[10px] font-headline text-primary-container uppercase tracking-[0.2em] font-bold">Primary Rendering Unit</span>
+<h2 class="text-3xl font-headline font-bold text-on-surface mt-1">RTX 4090 KINETIC</h2>
+</div>
+<div class="text-right">
+<span class="material-symbols-outlined text-primary-container text-4xl" data-icon="memory" data-weight="fill">memory</span>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-8">
+<div class="space-y-1">
+<p class="text-[10px] font-headline text-on-surface-variant uppercase tracking-widest">Clock Speed</p>
+<p class="text-4xl font-headline font-medium">2.84<span class="text-lg ml-1 text-on-surface-variant">GHz</span></p>
+</div>
+<div class="space-y-1">
+<p class="text-[10px] font-headline text-on-surface-variant uppercase tracking-widest">VRAM Usage</p>
+<p class="text-4xl font-headline font-medium">18.2<span class="text-lg ml-1 text-on-surface-variant">GB</span></p>
+</div>
+<div class="space-y-1">
+<p class="text-[10px] font-headline text-on-surface-variant uppercase tracking-widest">Fan Speed</p>
+<p class="text-4xl font-headline font-medium">65<span class="text-lg ml-1 text-on-surface-variant">%</span></p>
+</div>
+</div>
+<div class="mt-10 h-32 w-full bg-surface-container-lowest rounded-lg border border-outline-variant/10 flex items-end p-4 gap-1">
+<!-- Simplified Waveform -->
+<div class="flex-1 bg-primary-container/20 h-[40%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary-container/30 h-[60%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary-container/20 h-[45%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary-container/40 h-[70%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary-container/60 h-[85%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary-container/40 h-[65%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary-container/20 h-[30%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary-container/50 h-[75%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary-container h-[100%] rounded-t-sm shadow-[0_0_15px_rgba(0,255,102,0.4)]"></div>
+</div>
+</div>
+<!-- Secondary GPU Card (RTX 3060 AI Dedicated) -->
+<div class="col-span-4 bg-surface-container-high p-8 rounded-xl border border-outline-variant/10 relative">
+<div class="flex flex-col h-full justify-between">
+<div>
+<div class="flex items-center gap-2 mb-4">
+<span class="w-2 h-2 rounded-full bg-primary-container"></span>
+<span class="text-[10px] font-headline text-on-surface-variant uppercase tracking-widest">AI Offload Unit</span>
+</div>
+<h3 class="text-xl font-headline font-bold mb-1">RTX 3060 T-CORE</h3>
+<p class="text-xs text-on-surface-variant font-body">Dedicated Tensor compute for real-time noise reduction.</p>
+</div>
+<div class="py-6">
+<div class="flex justify-between items-end mb-2">
+<span class="text-[10px] font-headline uppercase">Tensor Load</span>
+<span class="text-lg font-headline text-primary-container">42%</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container-lowest rounded-full overflow-hidden">
+<div class="h-full bg-primary-container w-[42%]"></div>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-4 rounded-lg">
+<div class="flex items-center justify-between">
+<span class="text-[10px] font-headline uppercase text-on-surface-variant">Status</span>
+<span class="text-[10px] font-headline uppercase text-primary-container font-bold">SYNCHRONIZED</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Thermal Stress Card (CPU) - Critical State -->
+<div class="col-span-4 bg-surface-container-high p-8 rounded-xl chromatic-noise border border-error/30">
+<div class="flex justify-between items-start mb-6">
+<div>
+<span class="text-[10px] font-headline text-error uppercase tracking-widest font-bold">Thermal Limit Breach</span>
+<h3 class="text-2xl font-headline font-bold text-on-surface mt-1">CORE i9 14900K</h3>
+</div>
+<span class="material-symbols-outlined text-error" data-icon="warning">warning</span>
+</div>
+<div class="flex items-center justify-center py-4 relative">
+<div class="text-center">
+<p class="text-5xl font-headline font-black text-error">98<span class="text-xl ml-1">°C</span></p>
+<p class="text-[10px] font-headline text-on-surface-variant uppercase tracking-[0.3em] mt-2">Critical Heat</p>
+</div>
+<!-- Stress indicators -->
+<div class="absolute inset-0 flex items-center justify-center opacity-10">
+<div class="w-24 h-24 border-4 border-error rounded-full animate-ping"></div>
+</div>
+</div>
+<div class="mt-4 flex gap-2">
+<button class="flex-1 py-2 bg-error/10 hover:bg-error/20 text-error text-[10px] font-headline font-bold uppercase rounded transition-all">Emergency Throttle</button>
+</div>
+</div>
+<!-- RAM Card -->
+<div class="col-span-4 bg-surface-container p-8 rounded-xl border border-outline-variant/10">
+<div class="flex justify-between items-center mb-8">
+<h3 class="text-xl font-headline font-bold">DOMINATOR DDR5</h3>
+<span class="text-[10px] font-headline bg-primary-container/10 text-primary-container px-2 py-0.5 rounded">64GB TOTAL</span>
+</div>
+<div class="space-y-6">
+<div>
+<div class="flex justify-between mb-2">
+<span class="text-xs font-body text-on-surface-variant">Active Memory</span>
+<span class="text-xs font-headline font-bold">24.5 GB</span>
+</div>
+<div class="w-full h-2 bg-surface-container-lowest rounded-full overflow-hidden">
+<div class="h-full bg-primary-container w-[38%] shadow-[0_0_10px_rgba(0,255,102,0.5)]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between mb-2">
+<span class="text-xs font-body text-on-surface-variant">Cached</span>
+<span class="text-xs font-headline font-bold">12.1 GB</span>
+</div>
+<div class="w-full h-2 bg-surface-container-lowest rounded-full overflow-hidden">
+<div class="h-full bg-on-surface-variant w-[18%] opacity-50"></div>
+</div>
+</div>
+</div>
+<div class="mt-8 grid grid-cols-2 gap-4">
+<div class="bg-surface-container-lowest p-3 rounded text-center">
+<p class="text-[10px] font-headline text-on-surface-variant uppercase">Latency</p>
+<p class="text-lg font-headline font-bold">32<span class="text-[10px] font-normal ml-0.5">ms</span></p>
+</div>
+<div class="bg-surface-container-lowest p-3 rounded text-center">
+<p class="text-[10px] font-headline text-on-surface-variant uppercase">Voltage</p>
+<p class="text-lg font-headline font-bold">1.4<span class="text-[10px] font-normal ml-0.5">V</span></p>
+</div>
+</div>
+</div>
+<!-- Networking / I/O Panel -->
+<div class="col-span-4 bg-surface-container p-8 rounded-xl border border-outline-variant/10">
+<div class="flex justify-between items-center mb-6">
+<h3 class="text-xl font-headline font-bold">I/O THROUGHPUT</h3>
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="router">router</span>
+</div>
+<div class="space-y-4">
+<div class="flex items-center justify-between p-3 bg-surface-container-lowest rounded">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-container" data-icon="download">download</span>
+<span class="text-[10px] font-headline uppercase">Incoming</span>
+</div>
+<span class="text-sm font-headline font-bold">940 MB/s</span>
+</div>
+<div class="flex items-center justify-between p-3 bg-surface-container-lowest rounded">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-container/40" data-icon="upload">upload</span>
+<span class="text-[10px] font-headline uppercase">Outgoing</span>
+</div>
+<span class="text-sm font-headline font-bold">120 MB/s</span>
+</div>
+<div class="flex items-center justify-between p-3 bg-surface-container-lowest rounded">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-container" data-icon="hub">hub</span>
+<span class="text-[10px] font-headline uppercase">PCI-E Bus</span>
+</div>
+<span class="text-sm font-headline font-bold">GEN 5.0</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Quick-Tune SideDrawer (Right) -->
+<aside class="fixed right-0 top-0 h-full w-80 bg-[#141519] border-l border-[#353437]/20 z-50 flex flex-col p-6 shadow-[-10px_0_30px_rgba(0,0,0,0.5)]">
+<div class="mb-10">
+<h2 class="font-headline text-sm font-bold text-[#00FF66] uppercase tracking-tight mb-1">QUICK-TUNE</h2>
+<p class="font-headline text-[10px] text-[#e5e1e4]/60 uppercase tracking-widest">System Override Active</p>
+</div>
+<nav class="flex flex-col gap-2 mb-10">
+<button class="flex items-center gap-4 px-4 py-3 bg-[#00FF66]/10 text-[#00FF66] rounded-lg transition-all">
+<span class="material-symbols-outlined text-xl" data-icon="tune">tune</span>
+<span class="text-sm font-headline uppercase tracking-tight">Quick-Tune</span>
+</button>
+<button class="flex items-center gap-4 px-4 py-3 text-[#e5e1e4]/60 hover:border-l-2 hover:border-[#00FF66] hover:bg-[#353437]/30 transition-all">
+<span class="material-symbols-outlined text-xl" data-icon="speed">speed</span>
+<span class="text-sm font-headline uppercase tracking-tight">GPU Clock</span>
+</button>
+<button class="flex items-center gap-4 px-4 py-3 text-[#e5e1e4]/60 hover:border-l-2 hover:border-[#00FF66] hover:bg-[#353437]/30 transition-all">
+<span class="material-symbols-outlined text-xl" data-icon="thermostat">thermostat</span>
+<span class="text-sm font-headline uppercase tracking-tight">Thermal Limit</span>
+</button>
+<button class="flex items-center gap-4 px-4 py-3 text-[#e5e1e4]/60 hover:border-l-2 hover:border-[#00FF66] hover:bg-[#353437]/30 transition-all">
+<span class="material-symbols-outlined text-xl" data-icon="air">air</span>
+<span class="text-sm font-headline uppercase tracking-tight">Fan Curve</span>
+</button>
+</nav>
+<div class="space-y-8 flex-1">
+<!-- Tuning Sliders -->
+<div class="space-y-4">
+<div class="flex justify-between items-center">
+<label class="text-[10px] font-headline uppercase tracking-widest text-on-surface-variant">Core Offset</label>
+<span class="text-xs font-headline font-bold text-primary-container">+150 MHz</span>
+</div>
+<input class="w-full h-1 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-primary-container" type="range"/>
+<div class="flex justify-between items-center pt-2">
+<label class="text-[10px] font-headline uppercase tracking-widest text-on-surface-variant">Voltage Target</label>
+<span class="text-xs font-headline font-bold text-primary-container">105%</span>
+</div>
+<input class="w-full h-1 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-primary-container" type="range"/>
+<div class="flex justify-between items-center pt-2">
+<label class="text-[10px] font-headline uppercase tracking-widest text-on-surface-variant">Memory Clock</label>
+<span class="text-xs font-headline font-bold text-on-surface">+0 MHz</span>
+</div>
+<input class="w-full h-1 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-primary-container" type="range"/>
+</div>
+<!-- Profile Selection -->
+<div class="bg-surface-container-lowest p-4 rounded-lg space-y-3">
+<p class="text-[10px] font-headline uppercase tracking-widest text-on-surface-variant mb-2">Preset Profiles</p>
+<div class="flex flex-wrap gap-2">
+<span class="bg-primary-container/20 border border-primary-container/40 text-primary-container px-2 py-1 rounded text-[10px] font-headline font-bold cursor-pointer">CINEMATIC</span>
+<span class="bg-surface-container-highest border border-outline-variant/20 text-on-surface-variant px-2 py-1 rounded text-[10px] font-headline font-bold cursor-pointer hover:border-primary-container/40 transition-all">AI_TRAIN</span>
+<span class="bg-surface-container-highest border border-outline-variant/20 text-on-surface-variant px-2 py-1 rounded text-[10px] font-headline font-bold cursor-pointer hover:border-primary-container/40 transition-all">STABLE</span>
+</div>
+</div>
+</div>
+<div class="mt-auto pt-6">
+<button class="w-full py-4 bg-primary-container text-on-primary font-headline font-bold uppercase tracking-widest rounded shadow-[0_0_15px_rgba(0,255,102,0.4)] hover:scale-[1.02] active:scale-[0.98] transition-all">
+                Apply Tuning
+            </button>
+</div>
+</aside>
+<!-- Visual Floating Noise Overlay (Subtle Aesthetic Effect) -->
+<div class="fixed top-0 left-0 w-full h-full pointer-events-none opacity-[0.03] mix-blend-overlay">
+<img alt="Film grain texture" class="w-full h-full object-cover" data-alt="High resolution grey film grain and static noise texture with vertical digital scanning lines" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAB86DKvDtRvqwOA9vh9w4OUI7f3Qz0NsouH5pgk1haGKJtkss-9r4D6Ml7MDdqVOU-EM7yWoBgWTCdzcfXgRNo-1g6rjpg1gcgjLiouJO13OoZmynfkLxmYwePPaulG0XUmohMhB14Sb0LzcG8chWU5mk_FmJpBb7zAYDh4CqTowhuRjxKEUiHnTGVAW6Qmg6VZ8W7biNb_6Aeo8-Fymh0rrAJt5LYfJvyh0Uyt0lrjL-3p13oGrp0ZUfZKepyPcwZNAnPp0i-kDs"/>
+</div>
+</body></html>

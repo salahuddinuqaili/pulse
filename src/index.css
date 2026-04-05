@@ -1,0 +1,61 @@
+@import "tailwindcss";
+
+/* Google Fonts — Space Grotesk (metrics/display) + Manrope (body) */
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+/* ── Design System: "The Kinetic Darkroom" ── */
+@theme {
+  /* Colors */
+  --color-primary: #00FF66;
+  --color-background: #0A0A0C;
+  --color-surface: #141519;
+  --color-surface-low: #111114;
+  --color-surface-elevate: #1D1E24;
+  --color-surface-highest: #353437;
+  --color-on-surface: #e5e1e4;
+  --color-text: #F3F4F6;
+  --color-muted: #8B909A;
+  --color-warning: #FF3366;
+
+  /* Typography */
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-body: 'Manrope', sans-serif;
+
+  /* Border Radii */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+}
+
+/* ── Base Styles ── */
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: var(--color-background);
+  color: var(--color-on-surface);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* No pure white — enforced at body level */
+* {
+  border-color: transparent;
+}
+
+/* Scrollbar styling for dark theme */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-background);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-surface-highest);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-muted);
+}

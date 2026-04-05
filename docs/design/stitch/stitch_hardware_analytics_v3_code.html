@@ -1,0 +1,374 @@
+<html class="dark"><head>
+<meta charset="utf-8"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Manrope:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline-variant": "#3b4b3a",
+                        "secondary-container": "#d4004b",
+                        "primary": "#edffe8",
+                        "on-primary": "#003911",
+                        "on-error": "#690005",
+                        "secondary": "#ffb2ba",
+                        "primary-container": "#00ff66",
+                        "on-surface": "#e5e1e4",
+                        "surface-variant": "#353437",
+                        "error-container": "#93000a",
+                        "secondary-fixed": "#ffd9dc",
+                        "error": "#ffb4ab",
+                        "surface-container-high": "#2a2a2c",
+                        "secondary-fixed-dim": "#ffb2ba",
+                        "on-secondary-container": "#ffe6e8",
+                        "on-primary-fixed-variant": "#00531b",
+                        "on-tertiary": "#412d00",
+                        "on-primary-container": "#007128",
+                        "surface-bright": "#39393b",
+                        "primary-fixed": "#6bff83",
+                        "inverse-on-surface": "#313032",
+                        "inverse-primary": "#006e27",
+                        "inverse-surface": "#e5e1e4",
+                        "on-secondary-fixed": "#400011",
+                        "surface-container-low": "#1c1b1d",
+                        "surface-container-highest": "#353437",
+                        "on-tertiary-fixed": "#271900",
+                        "on-secondary-fixed-variant": "#910030",
+                        "on-secondary": "#670020",
+                        "background": "#131315",
+                        "tertiary-fixed": "#ffdea5",
+                        "surface": "#131315",
+                        "tertiary-container": "#ffd892",
+                        "on-primary-fixed": "#002107",
+                        "tertiary-fixed-dim": "#e7c17d",
+                        "tertiary": "#fff9f4",
+                        "on-surface-variant": "#b9ccb5",
+                        "on-tertiary-container": "#795d23",
+                        "primary-fixed-dim": "#00e55b",
+                        "on-background": "#e5e1e4",
+                        "surface-dim": "#131315",
+                        "surface-container-lowest": "#0e0e10",
+                        "surface-tint": "#00e55b",
+                        "on-tertiary-fixed-variant": "#5c4209",
+                        "outline": "#849581",
+                        "surface-container": "#201f21",
+                        "on-error-container": "#ffdad6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Manrope"],
+                        "label": ["Space Grotesk"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .neon-glow {
+            box-shadow: 0 0 15px rgba(0, 255, 102, 0.4);
+        }
+        .glass-panel {
+            background: rgba(53, 52, 55, 0.6);
+            backdrop-filter: blur(12px);
+            border-top: 1px solid rgba(0, 255, 102, 0.2);
+        }
+        .ghost-line {
+            stroke-dasharray: 4 2;
+            opacity: 0.3;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body selection:bg-primary-container selection:text-on-primary">
+<!-- Rail Navigation (SideNavBar) -->
+<nav class="fixed left-0 top-0 h-full w-20 flex flex-col py-6 bg-[#0A0A0C] border-r border-[#353437]/10 z-50">
+<div class="flex flex-col items-center gap-8 h-full">
+<div class="text-2xl font-bold text-[#00FF66] drop-shadow-[0_0_10px_rgba(0,255,102,0.4)] font-headline tracking-tighter">NS</div>
+<div class="flex flex-col gap-4 w-full px-2">
+<button class="flex flex-col items-center py-3 rounded-lg text-[#e5e1e4]/50 hover:text-[#00FF66] hover:bg-[#353437]/20 transition-all duration-300">
+<span class="material-symbols-outlined mb-1" data-icon="dashboard">dashboard</span>
+<span class="font-['Space_Grotesk'] tracking-tighter text-[10px] uppercase">Dash</span>
+</button>
+<button class="flex flex-col items-center py-3 rounded-lg text-[#e5e1e4]/50 hover:text-[#00FF66] hover:bg-[#353437]/20 transition-all duration-300">
+<span class="material-symbols-outlined mb-1" data-icon="sports_esports">sports_esports</span>
+<span class="font-['Space_Grotesk'] tracking-tighter text-[10px] uppercase">Gaming</span>
+</button>
+<button class="flex flex-col items-center py-3 rounded-lg text-[#e5e1e4]/50 hover:text-[#00FF66] hover:bg-[#353437]/20 transition-all duration-300">
+<span class="material-symbols-outlined mb-1" data-icon="memory">memory</span>
+<span class="font-['Space_Grotesk'] tracking-tighter text-[10px] uppercase">AI</span>
+</button>
+<button class="flex flex-col items-center py-3 rounded-lg text-[#00FF66] border-l-2 border-[#00FF66] bg-gradient-to-r from-[#00FF66]/10 to-transparent">
+<span class="material-symbols-outlined mb-1" data-icon="analytics">analytics</span>
+<span class="font-['Space_Grotesk'] tracking-tighter text-[10px] uppercase">Analytics</span>
+</button>
+<button class="flex flex-col items-center py-3 rounded-lg text-[#e5e1e4]/50 hover:text-[#00FF66] hover:bg-[#353437]/20 transition-all duration-300">
+<span class="material-symbols-outlined mb-1" data-icon="settings">settings</span>
+<span class="font-['Space_Grotesk'] tracking-tighter text-[10px] uppercase">Settings</span>
+</button>
+</div>
+<div class="mt-auto flex flex-col items-center gap-4">
+<div class="w-10 h-10 rounded-full border border-primary-container/20 p-0.5 overflow-hidden">
+<img class="w-full h-full object-cover rounded-full" data-alt="Cyberpunk style portrait of a male user with neon lighting highlights on skin and tech apparel" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDFAhWCOtlcOLnpG2s3wNSObwYyoqNdFHjnx1-uY2rVK-oq5v3dV3L9znjG72AiORCn9ow4IaJUYgDLVyVCzT8n_1sK8EjWv8cj8CY43ZcU9DGln3fnaYwOKTj2te4T2HSZ-NVrspu4DV80oBKqA-Jw8FehdA7vAHy2RIuERJC_WSkqXGadQ5vu9Fi2WeMdrBvkoyHL7mYT96_e0_3arSCsouwEsKpA9sQ_JU-ARRjV_VmOkJjz6beFOWZ_aU3_0rIoR5F3x4TSvGg"/>
+</div>
+</div>
+</div>
+</nav>
+<!-- Top Navigation (TopNavBar) -->
+<header class="fixed top-0 right-0 left-20 z-40 flex items-center justify-between px-8 w-full h-16 bg-[#141519]/80 backdrop-blur-xl shadow-[0_20px_40px_rgba(0,255,102,0.05)]">
+<div class="flex items-center gap-4">
+<span class="text-lg font-black tracking-tighter text-[#e5e1e4] font-headline">NVIDIA KINETIC</span>
+<div class="h-4 w-[1px] bg-outline-variant/30"></div>
+<span class="font-['Space_Grotesk'] text-xs font-medium tracking-widest text-[#00FF66]">SYSTEM_OPTIMIZED</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative flex items-center bg-surface-container-lowest border border-outline-variant/10 rounded-full px-4 py-1.5 w-64">
+<span class="material-symbols-outlined text-on-surface-variant text-sm mr-2" data-icon="search">search</span>
+<input class="bg-transparent border-none text-xs focus:ring-0 w-full font-body placeholder:text-on-surface-variant/40" placeholder="Search sessions..." type="text"/>
+</div>
+<div class="flex items-center gap-3">
+<button class="text-[#e5e1e4]/70 hover:text-[#00FF66] hover:scale-105 transition-transform">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="text-[#e5e1e4]/70 hover:text-[#00FF66] hover:scale-105 transition-transform">
+<span class="material-symbols-outlined" data-icon="bolt">bolt</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="pl-20 pt-16 pr-80 min-h-screen">
+<div class="p-8 max-w-[1400px] mx-auto">
+<!-- Page Header -->
+<div class="flex items-end justify-between mb-10">
+<div>
+<h1 class="font-headline text-4xl font-medium tracking-tight mb-2">Hardware <span class="text-primary-container">Analytics</span></h1>
+<p class="text-on-surface-variant max-w-lg">Live system telemetry mapped against historical ghost sessions for precise performance drift detection.</p>
+</div>
+<div class="flex gap-4">
+<div class="flex flex-col items-end">
+<span class="font-headline text-xs uppercase tracking-widest text-on-surface-variant">Active Bench</span>
+<span class="font-headline text-xl text-primary-container">RTX 4090 STABLE_V2</span>
+</div>
+<div class="w-[2px] bg-primary-container/20 h-10"></div>
+<div class="flex flex-col items-end">
+<span class="font-headline text-xs uppercase tracking-widest text-on-surface-variant/50">Ghost Reference</span>
+<span class="font-headline text-xl text-on-surface-variant/70">Overclock Bench 1</span>
+</div>
+</div>
+</div>
+<!-- Bento Grid Metrics -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+<!-- GPU Temp -->
+<div class="bg-surface-container-high rounded-xl p-6 border border-outline-variant/10 relative overflow-hidden group">
+<div class="flex justify-between items-start mb-4">
+<span class="font-headline text-xs uppercase tracking-widest text-on-surface-variant">Core Temperature</span>
+<span class="material-symbols-outlined text-primary-container" data-icon="thermostat">thermostat</span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="font-headline text-5xl font-medium tracking-tighter">64°</span>
+<span class="font-headline text-lg text-on-surface-variant">C</span>
+<div class="ml-auto text-right">
+<div class="text-[10px] font-headline text-primary-container/60 uppercase">Ghost Delta</div>
+<div class="text-sm font-headline text-error">-2.4°C</div>
+</div>
+</div>
+<div class="mt-4 h-1 w-full bg-surface-container-lowest rounded-full overflow-hidden">
+<div class="h-full bg-primary-container w-[64%] shadow-[0_0_8px_rgba(0,255,102,0.6)]"></div>
+</div>
+</div>
+<!-- Clock Speed -->
+<div class="bg-surface-container-high rounded-xl p-6 border border-outline-variant/10 relative overflow-hidden group">
+<div class="flex justify-between items-start mb-4">
+<span class="font-headline text-xs uppercase tracking-widest text-on-surface-variant">Boost Clock</span>
+<span class="material-symbols-outlined text-primary-container" data-icon="speed">speed</span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="font-headline text-5xl font-medium tracking-tighter">2.82</span>
+<span class="font-headline text-lg text-on-surface-variant">GHz</span>
+<div class="ml-auto text-right">
+<div class="text-[10px] font-headline text-primary-container/60 uppercase">Ghost Delta</div>
+<div class="text-sm font-headline text-primary-container">+42 MHz</div>
+</div>
+</div>
+<div class="mt-4 h-1 w-full bg-surface-container-lowest rounded-full overflow-hidden">
+<div class="h-full bg-primary-container w-[88%] shadow-[0_0_8px_rgba(0,255,102,0.6)]"></div>
+</div>
+</div>
+<!-- Fan Duty -->
+<div class="bg-surface-container-high rounded-xl p-6 border border-outline-variant/10 relative overflow-hidden group">
+<div class="flex justify-between items-start mb-4">
+<span class="font-headline text-xs uppercase tracking-widest text-on-surface-variant">Fan Velocity</span>
+<span class="material-symbols-outlined text-primary-container" data-icon="air">air</span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="font-headline text-5xl font-medium tracking-tighter">1,240</span>
+<span class="font-headline text-lg text-on-surface-variant">RPM</span>
+<div class="ml-auto text-right">
+<div class="text-[10px] font-headline text-primary-container/60 uppercase">Ghost Delta</div>
+<div class="text-sm font-headline text-on-surface-variant/40">MATCHED</div>
+</div>
+</div>
+<div class="mt-4 h-1 w-full bg-surface-container-lowest rounded-full overflow-hidden">
+<div class="h-full bg-primary-container w-[45%] shadow-[0_0_8px_rgba(0,255,102,0.6)]"></div>
+</div>
+</div>
+</div>
+<!-- Main Timeline Chart Section -->
+<div class="bg-surface rounded-xl p-8 border border-outline-variant/10 relative">
+<div class="flex items-center justify-between mb-8">
+<div class="flex gap-8">
+<button class="flex items-center gap-2 text-primary-container border-b-2 border-primary-container pb-2">
+<span class="font-headline text-sm font-bold">TEMPS</span>
+</button>
+<button class="flex items-center gap-2 text-on-surface-variant/50 hover:text-on-surface pb-2">
+<span class="font-headline text-sm font-bold">CLOCKS</span>
+</button>
+<button class="flex items-center gap-2 text-on-surface-variant/50 hover:text-on-surface pb-2">
+<span class="font-headline text-sm font-bold">FANS</span>
+</button>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2">
+<div class="w-3 h-0.5 bg-primary-container"></div>
+<span class="text-[10px] font-headline uppercase tracking-widest text-on-surface-variant">Live Session</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-3 h-0.5 bg-on-surface-variant/30 border-t border-dashed border-on-surface-variant"></div>
+<span class="text-[10px] font-headline uppercase tracking-widest text-on-surface-variant/50">Ghost (Overclock Bench 1)</span>
+</div>
+</div>
+</div>
+<!-- SVG Chart Visualization -->
+<div class="relative h-80 w-full">
+<svg class="w-full h-full overflow-visible" viewbox="0 0 1000 300">
+<!-- Grid Lines -->
+<line stroke="#353437" stroke-width="0.5" x1="0" x2="1000" y1="50" y2="50"></line>
+<line stroke="#353437" stroke-width="0.5" x1="0" x2="1000" y1="150" y2="150"></line>
+<line stroke="#353437" stroke-width="0.5" x1="0" x2="1000" y1="250" y2="250"></line>
+<!-- Ghost Line (Historical) -->
+<path class="ghost-line" d="M0 220 Q 150 200, 250 120 T 500 150 T 750 80 T 1000 110" fill="none" stroke="#e5e1e4" stroke-width="2"></path>
+<!-- Live Line (Active) -->
+<path class="drop-shadow-[0_0_8px_rgba(0,255,102,0.4)]" d="M0 240 Q 150 210, 250 140 T 500 180 T 750 100 T 1000 130" fill="none" stroke="#00FF66" stroke-linecap="round" stroke-width="3"></path>
+<!-- Interaction Point -->
+<g transform="translate(680, 115)">
+<circle class="neon-glow" fill="#00FF66" r="4"></circle>
+<line stroke="#00FF66" stroke-dasharray="2 2" stroke-width="1" y1="-115" y2="185"></line>
+</g>
+</svg>
+<!-- Tooltip Overlay -->
+<div class="absolute top-10 left-[690px] glass-panel p-3 rounded-lg border border-primary-container/30 shadow-2xl z-10 w-48">
+<div class="font-headline text-[10px] text-primary-container mb-2 uppercase">Analysis Marker 08:42</div>
+<div class="space-y-1">
+<div class="flex justify-between text-xs">
+<span class="text-on-surface-variant">Live Temp:</span>
+<span class="text-primary-container font-bold">68.2°C</span>
+</div>
+<div class="flex justify-between text-xs">
+<span class="text-on-surface-variant/60">Ghost Temp:</span>
+<span class="text-on-surface-variant font-medium">70.4°C</span>
+</div>
+<div class="h-[1px] bg-outline-variant/20 my-2"></div>
+<div class="text-[9px] text-on-surface-variant italic">Cooling efficiency increased 3.1%</div>
+</div>
+</div>
+</div>
+<div class="mt-6 flex justify-between text-[10px] font-headline text-on-surface-variant/40 tracking-widest uppercase">
+<span>0:00 START</span>
+<span>5:00 MARK</span>
+<span>10:00 MARK</span>
+<span>15:00 ELAPSED</span>
+</div>
+</div>
+</div>
+</main>
+<!-- Recent Sessions Sidebar (Drawer Style) -->
+<aside class="fixed right-0 top-0 h-full w-80 bg-[#141519] border-l border-[#353437]/20 z-50 flex flex-col p-6 shadow-[-10px_0_30px_rgba(0,0,0,0.5)]">
+<div class="mb-8">
+<h2 class="font-headline text-lg font-bold text-[#00FF66] mb-1 uppercase tracking-tight">RECENT SESSIONS</h2>
+<p class="text-xs text-[#e5e1e4]/60">Comparative Benchmarking Pool</p>
+</div>
+<div class="space-y-4 flex-grow overflow-y-auto pr-2 custom-scrollbar">
+<!-- Ghost Reference Session (Pinned) -->
+<div class="p-4 bg-[#00FF66]/10 border border-[#00FF66]/30 rounded-xl relative group cursor-pointer">
+<div class="flex justify-between items-start mb-3">
+<span class="material-symbols-outlined text-[#00FF66] text-lg" data-icon="push_pin" style="font-variation-settings: 'FILL' 1;">push_pin</span>
+<span class="text-[10px] font-headline text-[#00FF66] bg-[#00FF66]/20 px-2 py-0.5 rounded uppercase">Reference</span>
+</div>
+<div class="font-headline text-sm font-bold text-[#00FF66] mb-1">Overclock Bench 1</div>
+<div class="flex justify-between text-[10px] font-headline text-[#e5e1e4]/60">
+<span>Oct 24, 2023</span>
+<span>T-AVG: 71.2°C</span>
+</div>
+</div>
+<!-- Inactive Session -->
+<div class="p-4 bg-[#353437]/10 border border-transparent hover:bg-[#353437]/30 hover:border-[#00FF66]/30 transition-all rounded-xl relative group cursor-pointer">
+<div class="flex justify-between items-start mb-3">
+<span class="material-symbols-outlined text-[#e5e1e4]/30 text-lg group-hover:text-[#e5e1e4]/60" data-icon="push_pin">push_pin</span>
+</div>
+<div class="font-headline text-sm font-bold text-[#e5e1e4] mb-1">Last Stable Driver</div>
+<div class="flex justify-between text-[10px] font-headline text-[#e5e1e4]/60">
+<span>Oct 22, 2023</span>
+<span>T-AVG: 68.4°C</span>
+</div>
+</div>
+<!-- Inactive Session -->
+<div class="p-4 bg-[#353437]/10 border border-transparent hover:bg-[#353437]/30 hover:border-[#00FF66]/30 transition-all rounded-xl relative group cursor-pointer">
+<div class="flex justify-between items-start mb-3">
+<span class="material-symbols-outlined text-[#e5e1e4]/30 text-lg group-hover:text-[#e5e1e4]/60" data-icon="push_pin">push_pin</span>
+</div>
+<div class="font-headline text-sm font-bold text-[#e5e1e4] mb-1">Stock Thermal Test</div>
+<div class="flex justify-between text-[10px] font-headline text-[#e5e1e4]/60">
+<span>Oct 21, 2023</span>
+<span>T-AVG: 74.8°C</span>
+</div>
+</div>
+<!-- Inactive Session -->
+<div class="p-4 bg-[#353437]/10 border border-transparent hover:bg-[#353437]/30 hover:border-[#00FF66]/30 transition-all rounded-xl relative group cursor-pointer">
+<div class="flex justify-between items-start mb-3">
+<span class="material-symbols-outlined text-[#e5e1e4]/30 text-lg group-hover:text-[#e5e1e4]/60" data-icon="push_pin">push_pin</span>
+</div>
+<div class="font-headline text-sm font-bold text-[#e5e1e4] mb-1">Cyberpunk 4K Ultra</div>
+<div class="flex justify-between text-[10px] font-headline text-[#e5e1e4]/60">
+<span>Oct 19, 2023</span>
+<span>T-AVG: 79.1°C</span>
+</div>
+</div>
+</div>
+<div class="mt-8 pt-6 border-t border-[#353437]/20">
+<button class="w-full bg-[#00FF66] text-[#003911] font-headline font-bold py-4 rounded-lg flex items-center justify-center gap-2 hover:shadow-[0_0_20px_rgba(0,255,102,0.4)] transition-all uppercase tracking-tighter text-sm">
+                Apply Tuning
+                <span class="material-symbols-outlined" data-icon="tune">tune</span>
+</button>
+<p class="text-center text-[10px] text-on-surface-variant/40 mt-4 font-headline tracking-widest">QUICK-TUNE SYSTEM OVERRIDE ACTIVE</p>
+</div>
+</aside>
+<!-- Float System Actions -->
+<div class="fixed bottom-10 left-[calc(50%+40px)] transform -translate-x-1/2 flex items-center gap-4 glass-panel px-6 py-4 rounded-full border border-primary-container/20 shadow-2xl z-30">
+<button class="flex items-center gap-2 text-on-surface-variant hover:text-primary-container transition-colors group">
+<span class="material-symbols-outlined text-lg" data-icon="play_arrow" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+<span class="font-headline text-xs font-bold tracking-widest uppercase">Start Live Session</span>
+</button>
+<div class="w-[1px] h-4 bg-outline-variant/30"></div>
+<button class="flex items-center gap-2 text-on-surface-variant hover:text-error transition-colors group">
+<span class="material-symbols-outlined text-lg" data-icon="stop">stop</span>
+<span class="font-headline text-xs font-bold tracking-widest uppercase">Reset Analytics</span>
+</button>
+<div class="w-[1px] h-4 bg-outline-variant/30"></div>
+<button class="flex items-center gap-2 text-on-surface-variant hover:text-primary-container transition-colors group">
+<span class="material-symbols-outlined text-lg" data-icon="ios_share">ios_share</span>
+<span class="font-headline text-xs font-bold tracking-widest uppercase">Export Logs</span>
+</button>
+</div>
+</body></html>

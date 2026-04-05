@@ -1,0 +1,81 @@
+use serde::{Deserialize, Serialize};
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct GpuSnapshot {
+    pub poll_generation: u64,
+    pub timestamp_ms: u64,
+    pub gpu_utilization: u8,
+    pub memory_utilization: u8,
+    pub vram_total_mb: u32,
+    pub vram_used_mb: u32,
+    pub vram_free_mb: u32,
+    pub temperature_c: u32,
+    pub temperature_hotspot_c: Option<u32>,
+    pub fan_speed_pct: Option<u32>,
+    pub fan_speed_rpm: Option<u32>,
+    pub power_draw_w: f32,
+    pub power_limit_w: f32,
+    pub clock_graphics_mhz: u32,
+    pub clock_memory_mhz: u32,
+    pub pcie_link_gen: Option<u8>,
+    pub pcie_link_width: Option<u8>,
+    pub processes: Vec<ProcessInfo>,
+    pub errors: Vec<String>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct ProcessInfo {
+    pub pid: u32,
+    pub name: String,
+    pub vram_mb: u32,
+    pub category: ProcessCategory,
+    pub command_line: Option<String>,
+    pub exe_path: Option<String>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "lowercase")]
+pub enum ProcessCategory {
+    Game,
+    Ai,
+    System,
+    Unknown,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct DeviceInfo {
+    pub name: String,
+    pub driver_version: String,
+    pub vram_total_mb: u32,
+    pub pcie_link_speed: Option<String>,
+    pub pcie_link_width: Option<u8>,
+    pub cuda_cores: Option<u32>,
+    pub power_limit_w: f32,
+    pub vbios_version: Option<String>,
+}
+
+impl Default for GpuSnapshot {
+    fn default() -> Self {
+        Self {
+            poll_generation: 0,
+            timestamp_ms: 0,
+            gpu_utilization: 0,
+            memory_utilization: 0,
+            vram_total_mb: 0,
+            vram_used_mb: 0,
+            vram_free_mb: 0,
+            temperature_c: 0,
+            temperature_hotspot_c: None,
+            fan_speed_pct: None,
+            fan_speed_rpm: None,
+            power_draw_w: 0.0,
+            power_limit_w: 0.0,
+            clock_graphics_mhz: 0,
+            clock_memory_mhz: 0,
+            pcie_link_gen: None,
+            pcie_link_width: None,
+            processes: Vec::new(),
+            errors: Vec::new(),
+        }
+    }
+}

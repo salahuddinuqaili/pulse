@@ -1,0 +1,216 @@
+# Neon Studio Hybrid
+
+## Product Overview
+
+**The Pitch:** A high-performance desktop monitor built for modern NVIDIA-powered rigs that dual-task. Effortlessly track, tune, and transition hardware profiles between AAA gaming and intense AI/local LLM workloads.
+
+**For:** Power users, streamers, and developers who demand peak GPU performance for both frame rates and tensor operations.
+
+**Device:** desktop
+
+**Design Direction:** "Neon Studio Hybrid" - Professional, dark-mode minimalism meets cyberpunk energy. Deep charcoal surfaces, generous border radii, clean typography, punctuated by aggressive neon green accents and subtle data-driven glows.
+
+**Inspired by:** NZXT CAM, NVIDIA App, Vercel Dashboard
+
+---
+
+## Screens
+
+- **Dashboard:** Unified telemetry overview (CPU, GPU, VRAM, Temps, Wattage)
+- **Gaming Profile:** FPS targets, fan curves, core clock tuning
+- **AI Workload Profile:** Tensor core utilization, VRAM allocation, sustained thermal tracking
+- **Hardware Analytics:** Deep-dive graphs, historical data, driver management
+- **Settings:** App preferences, overlay toggles, profile automation
+
+---
+
+## Key Flows
+
+**Switching Workload Profiles:** Optimize hardware instantly for the current task.
+1. User is on Dashboard -> sees active 'Gaming' profile pill in top header
+2. User clicks 'Gaming' pill -> dropdown reveals 'AI Workload'
+3. System applies undervolt/VRAM-priority preset, UI accent glows shift to steady pulse, telemetry priorities update
+
+**Tuning Fan Curve:** Adjusting cooling for sustained AI loads.
+1. User is on AI Workload Profile -> sees interactive fan curve graph
+2. User drags points on the spline -> real-time RPM estimate updates above cursor
+3. Clicks 'Apply' -> subtle neon flash confirms hardware write
+
+---
+
+<details>
+<summary>Design System</summary>
+
+## Color Palette
+
+- **Primary:** `#00FF66` - Active states, buttons, peak performance metrics
+- **Background:** `#0A0A0C` - App window background
+- **Surface:** `#141519` - Cards, sidebars, graph backgrounds
+- **Surface Elevate:** `#1D1E24` - Hover states, dropdowns
+- **Text:** `#F3F4F6` - Primary readings, headings
+- **Muted:** `#8B909A` - Axis labels, secondary text, inactive icons
+- **Accent/Warning:** `#FF3366` - Thermal throttling, errors
+
+## Typography
+
+- **Headings/Metrics:** `Space Grotesk`, 700, 24-48px
+- **Body:** `Manrope`, 500, 14px
+- **Small text:** `Manrope`, 600, 12px, uppercase tracking
+- **Buttons:** `Space Grotesk`, 600, 14px
+
+**Style notes:** 16px border radii on major surfaces, 8px on buttons. 1px `#ffffff10` borders on cards to define edges. Primary neon elements use a subtle outer glow: `box-shadow: 0 0 16px rgba(0, 255, 102, 0.15)`. 
+
+## Design Tokens
+
+```css
+:root {
+  --color-primary: #00FF66;
+  --color-background: #0A0A0C;
+  --color-surface: #141519;
+  --color-surface-elevate: #1D1E24;
+  --color-text: #F3F4F6;
+  --color-muted: #8B909A;
+  --color-warning: #FF3366;
+  
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-body: 'Manrope', sans-serif;
+  
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  
+  --shadow-neon: 0 0 16px rgba(0, 255, 102, 0.15);
+  --shadow-surface: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+```
+
+</details>
+
+---
+
+<details>
+<summary>Screen Specifications</summary>
+
+### Dashboard
+
+**Purpose:** Quick glance at system health and active profiles.
+
+**Layout:** 240px left sidebar. Main area: Top header (Profile toggles), 2x2 grid of metric cards (CPU, GPU, RAM, Network).
+
+**Key Elements:**
+- **Sidebar Menu:** Vertically stacked icons + text. Active state gets a 4px left border (`#00FF66`) and neon text.
+- **Hero GPU Card:** Spans 2 columns. Massive `Space Grotesk` VRAM and Temp numbers. Circular progress ring with neon gradient.
+- **Quick Action Bar:** 48px height bottom bar. One-click toggles for 'Silent Mode', 'Max Fans', 'Clear VRAM'.
+
+**States:**
+- **Loading:** Skeleton pulses in `#1D1E24`.
+- **Warning:** If temp > 85°C, text and ring turn `#FF3366` with a hard strobe animation.
+
+**Components:**
+- **Metric Ring:** 120x120px, `#0A0A0C` center, `#00FF66` stroke (stroke-width: 8px).
+- **Profile Pill:** 120x36px, `#141519` bg, 1px `#ffffff10` border, centers text.
+
+**Interactions:**
+- **Hover Card:** Shifts up 2px, applies `--shadow-neon`.
+- **Click Profile Pill:** Expands 200px dropdown with ease-out-expo.
+
+**Responsive:**
+- **Desktop:** Full layout, 1200x800px minimum.
+- **Tablet/Mobile:** N/A (Desktop-only app).
+
+### Gaming Profile
+
+**Purpose:** Fine-tune clock speeds and track frame data.
+
+**Layout:** Three columns. Left: Core/Memory dials. Center: Fan curve spline. Right: Real-time FPS graph.
+
+**Key Elements:**
+- **Overclock Dials:** Drag-to-spin rotary knobs for Core and Memory offsets.
+- **FPS Graph:** Smooth area chart, `#00FF66` fill with 10% opacity, sharp top line.
+- **Overlay Toggle:** Chunky iOS-style switch, but square with 4px radius.
+
+**States:**
+- **Empty:** Graph shows baseline "Awaiting Game Launch" watermark.
+
+**Components:**
+- **Rotary Dial:** 160px diameter, segmented tick marks, centered value text.
+- **Save Button:** 100% width on right column, 48px height, solid `#00FF66`, black text.
+
+**Interactions:**
+- **Drag Dial:** Value increments by 15MHz. Tick marks glow as the indicator passes them.
+
+### AI Workload Profile
+
+**Purpose:** Monitor VRAM bottlenecks and Tensor core activity during local model runs.
+
+**Layout:** Split 50/50 horizontal. Top: VRAM allocation blocks. Bottom: Tensor Core sustained load timeline.
+
+**Key Elements:**
+- **VRAM Block Map:** Visual representation of 24GB (or device max). Green blocks = free, Grey = System, White = Active AI model.
+- **Process List:** Table of python/cuda processes. Kill buttons on hover.
+- **Power Draw Meter:** Linear bar gauge tracking wattage against max TDP.
+
+**States:**
+- **Loading:** Model loading phase shows a scanning laser effect across the VRAM blocks.
+
+**Components:**
+- **Process Row:** 40px height, flex-between, `Manrope` 14px text.
+- **Kill Button:** 24x24px, `#FF3366` hover state.
+
+**Interactions:**
+- **Hover Process:** Highlights row in `#1D1E24`, reveals "Kill" action.
+
+### Hardware Analytics
+
+**Purpose:** Historical charting and system specs.
+
+**Layout:** Top tabs (1D, 1W, 1M). Massive central chart. Bottom 3-column specs list.
+
+**Key Elements:**
+- **Timeline Chart:** Multi-line graph (Temps, Clocks, Fans). Custom tooltip on hover.
+- **Specs Accordion:** Expandable rows for Motherboard, BIOS version, NVIDIA Driver.
+- **Update Button:** Checks driver version. Pulses if out of date.
+
+**States:**
+- **Empty:** Flatline graph with "Insufficient Data" text.
+
+**Components:**
+- **Chart Tooltip:** `#141519` box, 8px radius, lists exact values at cursor X-axis.
+
+**Interactions:**
+- **Scrub Chart:** Vertical crosshair follows cursor, updates tooltip values instantly.
+
+### Settings
+
+**Purpose:** App behavior and integrations.
+
+**Layout:** Centered single column, max-width 600px. Grouped sections.
+
+**Key Elements:**
+- **Theme Toggle:** System/Dark/Neon-Max.
+- **Boot Behavior:** Checkboxes for "Launch on startup", "Start minimized".
+- **API Keys:** Masked input fields for external integrations (e.g., streaming decks).
+
+**Components:**
+- **Input Field:** 44px height, `#0A0A0C` background, 1px `#8B909A` border. Focus state turns border `#00FF66`.
+
+**Interactions:**
+- **Focus Input:** Border transition 0.2s ease.
+
+</details>
+
+---
+
+<details>
+<summary>Build Guide</summary>
+
+**Stack:** HTML + Tailwind CSS v3 (or Electron/Tauri with React/Tailwind)
+
+**Build Order:**
+1. **Dashboard** - Establishes the dark background, glassmorphic cards, typography, and neon primary colors.
+2. **AI Workload Profile** - Proves out the complex data visualization (VRAM blocks, process lists).
+3. **Gaming Profile** - Implements interactive inputs (rotary dials, splines).
+4. **Hardware Analytics** - Focuses on historical graphing libraries.
+5. **Settings** - Standard form controls and layout refinement.
+
+</details>

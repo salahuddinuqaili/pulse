@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Neon Studio Hybrid - Settings</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800;900&amp;family=Manrope:wght@200;300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-surface": "#e5e1e4",
+                        "inverse-primary": "#006e27",
+                        "inverse-on-surface": "#313032",
+                        "primary-fixed": "#6bff83",
+                        "surface-bright": "#39393b",
+                        "on-primary-container": "#007128",
+                        "on-tertiary": "#412d00",
+                        "on-primary-fixed-variant": "#00531b",
+                        "on-secondary-container": "#ffe6e8",
+                        "secondary-fixed-dim": "#ffb2ba",
+                        "surface-container-high": "#2a2a2c",
+                        "error": "#ffb4ab",
+                        "secondary-fixed": "#ffd9dc",
+                        "error-container": "#93000a",
+                        "surface-variant": "#353437",
+                        "on-surface": "#e5e1e4",
+                        "primary-container": "#00ff66",
+                        "secondary": "#ffb2ba",
+                        "on-error": "#690005",
+                        "on-primary": "#003911",
+                        "primary": "#edffe8",
+                        "secondary-container": "#d4004b",
+                        "outline-variant": "#3b4b3a",
+                        "on-error-container": "#ffdad6",
+                        "surface-container": "#201f21",
+                        "outline": "#849581",
+                        "surface-tint": "#00e55b",
+                        "on-tertiary-fixed-variant": "#5c4209",
+                        "surface-container-lowest": "#0e0e10",
+                        "surface-dim": "#131315",
+                        "primary-fixed-dim": "#00e55b",
+                        "on-background": "#e5e1e4",
+                        "on-tertiary-container": "#795d23",
+                        "on-surface-variant": "#b9ccb5",
+                        "tertiary": "#fff9f4",
+                        "tertiary-fixed-dim": "#e7c17d",
+                        "on-primary-fixed": "#002107",
+                        "tertiary-container": "#ffd892",
+                        "surface": "#131315",
+                        "tertiary-fixed": "#ffdea5",
+                        "background": "#131315",
+                        "on-secondary": "#670020",
+                        "on-secondary-fixed-variant": "#910030",
+                        "surface-container-low": "#1c1b1d",
+                        "on-secondary-fixed": "#400011"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Manrope"],
+                        "label": ["Space Grotesk"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Manrope', sans-serif; background-color: #0A0A0C; color: #e5e1e4; }
+        .font-headline { font-family: 'Space Grotesk', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .glow-sm { box-shadow: 0 0 15px rgba(0, 255, 102, 0.4); }
+    </style>
+</head>
+<body class="bg-[#0A0A0C] overflow-hidden">
+<!-- TopNavBar -->
+<nav class="bg-[#0A0A0C]/80 backdrop-blur-xl flex justify-between items-center w-full px-6 h-16 fixed top-0 z-50 border-b border-[#353437]/10">
+<div class="flex items-center gap-4">
+<span class="text-xl font-bold tracking-tighter text-[#e5e1e4] font-headline">Neon Studio Hybrid</span>
+</div>
+<div class="flex items-center gap-8">
+<div class="hidden md:flex gap-6">
+<a class="text-[#e5e1e4]/60 font-headline tracking-tighter uppercase text-sm hover:text-[#00FF66] transition-colors" href="#">Compact Mode</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-[#e5e1e4]/60 hover:text-[#00FF66] transition-colors scale-95 duration-200">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="h-8 w-8 rounded-full bg-surface-container-high border border-outline-variant/20 flex items-center justify-center overflow-hidden">
+<img alt="User Profile Pill" class="w-full h-full object-cover" data-alt="professional headshot of a developer in a dark studio setting with subtle green rim lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCn_t8UQg9v4nshmiO5onRQrVHS7uoD8bPqm_lYkR_uRmr0ZMuFzwSoCUqYDHdHKJhMIsRTU4vyE_IOkquS26bHUDLE4WgJkt6Jl5DFxLM3TX31IiVgIU_lq49w2hUt-EvytUhiiv4qUFG5_bQSFIlI0gKoPhhq2drRdxQv2YgRL9_LZVbVbp6JbQda-g_j2P8Qh538bNc2J3mPEGCqsnIlkd_k1UpAJ2X1OVH1FMzs6TfKJuUbxmWtafcKnKNazIrDj-ln_-t5aEY"/>
+</div>
+</div>
+</div>
+</nav>
+<!-- SideNavBar (Left - Primary) -->
+<aside class="fixed left-0 top-0 h-full w-64 bg-[#141519] flex flex-col pt-20 border-r border-[#353437]/10 z-40">
+<div class="px-6 mb-8">
+<div class="text-lg font-black text-[#00FF66] font-headline uppercase tracking-tighter">Neon Studio</div>
+<div class="text-[10px] text-[#e5e1e4]/40 font-headline uppercase tracking-widest">V.2.0.4</div>
+</div>
+<nav class="flex flex-col flex-1">
+<a class="flex items-center gap-4 px-6 py-4 text-[#e5e1e4]/40 font-headline text-sm font-medium hover:bg-[#353437]/20 hover:text-[#00FF66] transition-all duration-300" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-4 px-6 py-4 text-[#e5e1e4]/40 font-headline text-sm font-medium hover:bg-[#353437]/20 hover:text-[#00FF66] transition-all duration-300" href="#">
+<span class="material-symbols-outlined">sports_esports</span>
+<span>Gaming Profile</span>
+</a>
+<a class="flex items-center gap-4 px-6 py-4 text-[#e5e1e4]/40 font-headline text-sm font-medium hover:bg-[#353437]/20 hover:text-[#00FF66] transition-all duration-300" href="#">
+<span class="material-symbols-outlined">memory</span>
+<span>AI Workload</span>
+</a>
+<a class="flex items-center gap-4 px-6 py-4 text-[#e5e1e4]/40 font-headline text-sm font-medium hover:bg-[#353437]/20 hover:text-[#00FF66] transition-all duration-300" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span>Analytics</span>
+</a>
+<a class="flex items-center gap-4 px-6 py-4 text-[#00FF66] border-l-2 border-[#00FF66] bg-gradient-to-r from-[#00FF66]/10 to-transparent font-headline text-sm font-medium transition-all duration-300" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">settings</span>
+<span>Settings</span>
+</a>
+</nav>
+</aside>
+<!-- SideNavBar (Right - Quick Tune) -->
+<aside class="fixed right-0 top-0 h-full w-[240px] bg-[#0F0F12] flex flex-col pt-20 z-40 shadow-[-20px_0_40px_rgba(0,255,102,0.05)] border-l border-white/5">
+<div class="px-6 mb-6">
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-[#FF3366] text-sm">bolt</span>
+<span class="text-sm font-bold text-[#FF3366] font-headline uppercase tracking-widest">Quick-Tune</span>
+</div>
+<div class="text-[10px] text-[#e5e1e4]/30 font-headline uppercase tracking-widest">System Stats</div>
+</div>
+<div class="flex flex-col gap-1 px-2">
+<button class="flex items-center gap-3 px-4 py-3 text-[#e5e1e4]/30 font-headline text-xs uppercase tracking-widest hover:border-l-2 hover:border-[#00FF66] hover:bg-[#00FF66]/5 transition-all">
+<span class="material-symbols-outlined text-sm">shutter_speed</span>
+<span>Silent Mode</span>
+</button>
+<button class="flex items-center gap-3 px-4 py-3 text-[#00FF66] glow-sm font-headline text-xs uppercase tracking-widest ring-1 ring-[#00FF66]/40 bg-[#00FF66]/5 transition-all">
+<span class="material-symbols-outlined text-sm">cyclone</span>
+<span>Max Fans</span>
+</button>
+<button class="flex items-center gap-3 px-4 py-3 text-[#e5e1e4]/30 font-headline text-xs uppercase tracking-widest hover:border-l-2 hover:border-[#00FF66] hover:bg-[#00FF66]/5 transition-all">
+<span class="material-symbols-outlined text-sm">cleaning_services</span>
+<span>Clear VRAM</span>
+</button>
+<button class="flex items-center gap-3 px-4 py-3 text-[#e5e1e4]/30 font-headline text-xs uppercase tracking-widest hover:border-l-2 hover:border-[#00FF66] hover:bg-[#00FF66]/5 transition-all">
+<span class="material-symbols-outlined text-sm">account_circle</span>
+<span>Profile Switcher</span>
+</button>
+</div>
+<div class="mt-auto p-6">
+<button class="w-full py-3 text-[10px] font-headline font-bold text-[#00FF66] uppercase tracking-[0.2em] border border-[#00FF66]/20 hover:bg-[#00FF66]/10 transition-colors">
+                Expand Panel
+            </button>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="ml-64 mr-[240px] pt-16 h-screen overflow-y-auto bg-[#0A0A0C]">
+<div class="max-w-2xl mx-auto py-12 px-8">
+<header class="mb-12">
+<h1 class="text-4xl font-black font-headline tracking-tighter text-[#e5e1e4] mb-2 uppercase">Settings</h1>
+<p class="text-on-surface-variant font-body text-sm max-w-md">Configure your studio environment, hardware integrations, and intelligent model protocols.</p>
+</header>
+<div class="space-y-16">
+<!-- Theme Selection Section -->
+<section>
+<h2 class="text-xs font-bold font-headline uppercase tracking-[0.2em] text-[#00FF66] mb-6">Theme Selection</h2>
+<div class="grid grid-cols-3 gap-4">
+<button class="flex flex-col items-center justify-center p-6 rounded-xl bg-surface-container-low border border-outline-variant/10 hover:border-[#00FF66]/40 transition-all group">
+<span class="material-symbols-outlined text-[#e5e1e4]/40 group-hover:text-[#e5e1e4] mb-3">desktop_windows</span>
+<span class="text-[10px] font-headline uppercase tracking-widest text-[#e5e1e4]/60 group-hover:text-[#e5e1e4]">System</span>
+</button>
+<button class="flex flex-col items-center justify-center p-6 rounded-xl bg-[#141519] border-2 border-[#00FF66] glow-sm transition-all group">
+<span class="material-symbols-outlined text-[#00FF66] mb-3">dark_mode</span>
+<span class="text-[10px] font-headline uppercase tracking-widest text-[#00FF66]">Dark</span>
+</button>
+<button class="flex flex-col items-center justify-center p-6 rounded-xl bg-gradient-to-br from-[#00FF66]/20 to-transparent border border-[#00FF66]/30 hover:border-[#00FF66] transition-all group">
+<span class="material-symbols-outlined text-[#00FF66] mb-3">bolt</span>
+<span class="text-[10px] font-headline uppercase tracking-widest text-[#e5e1e4]/60 group-hover:text-[#e5e1e4]">Neon-Max</span>
+</button>
+</div>
+</section>
+<!-- External Integrations Section -->
+<section>
+<h2 class="text-xs font-bold font-headline uppercase tracking-[0.2em] text-[#00FF66] mb-6">External Integrations</h2>
+<div class="bg-surface-container-low rounded-xl p-8 space-y-6">
+<div class="space-y-2">
+<label class="text-[10px] font-headline uppercase tracking-widest text-[#e5e1e4]/40">Stream Deck Key</label>
+<div class="relative">
+<input class="w-full bg-surface-container-highest border-none rounded-lg px-4 py-3 text-sm font-headline tracking-widest focus:ring-1 focus:ring-[#00FF66] transition-all text-[#e5e1e4]" type="password" value="••••••••••••••••"/>
+<button class="absolute right-3 top-1/2 -translate-y-1/2 text-[#e5e1e4]/30 hover:text-[#00FF66]">
+<span class="material-symbols-outlined text-sm">visibility</span>
+</button>
+</div>
+</div>
+<div class="space-y-2">
+<label class="text-[10px] font-headline uppercase tracking-widest text-[#e5e1e4]/40">OBS Password</label>
+<div class="relative">
+<input class="w-full bg-surface-container-highest border-none rounded-lg px-4 py-3 text-sm font-headline tracking-widest focus:ring-1 focus:ring-[#00FF66] transition-all text-[#e5e1e4]" type="password" value="••••••••"/>
+<button class="absolute right-3 top-1/2 -translate-y-1/2 text-[#e5e1e4]/30 hover:text-[#00FF66]">
+<span class="material-symbols-outlined text-sm">visibility</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- MCP Connection Section -->
+<section>
+<div class="flex items-center justify-between mb-6">
+<h2 class="text-xs font-bold font-headline uppercase tracking-[0.2em] text-[#00FF66]">MCP (Model Context Protocol) Connection</h2>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-[#e5e1e4]/20 after:border-[#e5e1e4]/10 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#00FF66] peer-checked:after:bg-[#003911]"></div>
+</label>
+</div>
+<div class="bg-surface-container-low rounded-xl p-8 border border-[#00FF66]/5">
+<p class="text-sm font-body text-on-surface-variant mb-8 leading-relaxed italic">
+                            'Allow local AI models to securely query real-time hardware context for intelligent model optimization.'
+                        </p>
+<div class="space-y-2">
+<label class="text-[10px] font-headline uppercase tracking-widest text-[#e5e1e4]/40">Input field for MCP Endpoint URL</label>
+<div class="flex gap-2">
+<input class="flex-1 bg-surface-container-highest border-none rounded-lg px-4 py-3 text-sm font-headline focus:ring-1 focus:ring-[#00FF66] transition-all text-[#e5e1e4]" placeholder="https://mcp.local:8080/v1/context" type="text"/>
+<button class="bg-[#00FF66] text-[#003911] px-6 rounded-lg font-headline font-bold text-xs uppercase tracking-widest hover:brightness-110 transition-all">
+                                    Connect
+                                </button>
+</div>
+</div>
+<div class="mt-8 flex items-start gap-4 p-4 bg-[#00FF66]/5 rounded-lg border border-[#00FF66]/10">
+<span class="material-symbols-outlined text-[#00FF66] text-lg mt-0.5">info</span>
+<div class="text-[11px] font-body text-[#00FF66]/80 leading-relaxed uppercase tracking-wider">
+                                Secure tunneling is active. All local context queries are encrypted via hardware-level primitives.
+                            </div>
+</div>
+</div>
+</section>
+<!-- Footer Actions -->
+<div class="pt-8 border-t border-[#353437]/20 flex justify-between items-center">
+<button class="text-xs font-headline font-bold text-secondary uppercase tracking-[0.2em] hover:text-[#FF3366] transition-colors">
+                        Factory Reset System
+                    </button>
+<div class="flex gap-4">
+<button class="px-8 py-3 rounded-lg text-xs font-headline font-bold text-[#e5e1e4]/60 uppercase tracking-[0.2em] hover:text-[#e5e1e4] transition-colors">
+                            Cancel
+                        </button>
+<button class="px-8 py-3 rounded-lg bg-[#00FF66] text-[#003911] text-xs font-headline font-bold uppercase tracking-[0.2em] glow-sm hover:scale-[1.02] transition-all">
+                            Save Changes
+                        </button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Glass Overlay Decorative Element -->
+<div class="fixed bottom-8 left-8 p-6 rounded-xl bg-surface-variant/60 backdrop-blur-2xl border border-[#00FF66]/20 z-50 max-w-[240px]">
+<div class="flex items-center gap-3 mb-2">
+<div class="h-2 w-2 rounded-full bg-[#00FF66] animate-pulse"></div>
+<span class="text-[10px] font-headline font-bold uppercase tracking-widest text-[#00FF66]">Studio Health</span>
+</div>
+<p class="text-[11px] font-body text-[#e5e1e4]/60 leading-tight">
+            All systems nominal. Model latency: 12ms. Context window optimized.
+        </p>
+</div>
+</body></html>
