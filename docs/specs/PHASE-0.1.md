@@ -19,8 +19,9 @@ Ship a working Tauri 2 desktop app that polls NVML in real time, classifies GPU 
 - [x] Rust backend module structure (nvml, poller, classify, process, state, commands, types)
 - [x] Frontend shell (three-column layout, routing, stores, hooks)
 - [x] Tailwind v4 with design system tokens
-- [ ] Rust toolchain installed (`rustup`)
-- [ ] NVML available (NVIDIA GPU + drivers 470+)
+- [x] Rust toolchain installed (`rustup` + VS Build Tools MSVC)
+- [x] Backend compiles (`cargo check` clean, `cargo test` 6/6 pass)
+- [ ] NVML available (NVIDIA GPU + drivers 470+) — verify with `cargo tauri dev`
 
 ---
 
