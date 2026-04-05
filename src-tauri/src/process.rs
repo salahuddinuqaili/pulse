@@ -41,10 +41,11 @@ pub fn get_gpu_processes() -> Result<Vec<ProcessInfo>, String> {
         let (name, exe_path, command_line) = if let Some(process) = sys.process(sys_pid) {
             let name = process.name().to_string_lossy().to_string();
             let exe = process.exe().map(|p| p.to_string_lossy().to_string());
-            let cmd = if process.cmd().is_empty() {
+            let cmd_parts: Vec<String> = process.cmd().iter().map(|s| s.to_string_lossy().to_string()).collect();
+            let cmd = if cmd_parts.is_empty() {
                 None
             } else {
-                Some(process.cmd().join(" "))
+                Some(cmd_parts.join(" "))
             };
             (name, exe, cmd)
         } else {

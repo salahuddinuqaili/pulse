@@ -22,9 +22,9 @@ impl AppState {
     }
 
     pub fn next_generation(&self) -> u64 {
-        let mut gen = self.poll_generation.lock().unwrap();
-        *gen += 1;
-        *gen
+        let mut generation = self.poll_generation.lock().unwrap();
+        *generation += 1;
+        *generation
     }
 
     pub fn update_snapshot(&self, snapshot: GpuSnapshot) {

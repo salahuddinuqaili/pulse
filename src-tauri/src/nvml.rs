@@ -90,9 +90,9 @@ pub fn get_pcie_info() -> (Option<u8>, Option<u8>) {
         Ok(d) => d,
         Err(_) => return (None, None),
     };
-    let gen = device.current_pcie_link_gen().ok().map(|v| v as u8);
+    let pcie_gen = device.current_pcie_link_gen().ok().map(|v| v as u8);
     let width = device.current_pcie_link_width().ok().map(|v| v as u8);
-    (gen, width)
+    (pcie_gen, width)
 }
 
 /// Query NVML for process info: returns Vec<(pid, vram_bytes)>.
@@ -103,7 +103,13 @@ pub fn get_running_graphics_processes() -> Result<Vec<(u32, u64)>, String> {
         .map_err(|e| format!("Process query failed: {e}"))?;
     Ok(procs
         .into_iter()
-        .map(|p| (p.pid, p.used_gpu_memory.unwrap_or(0)))
+        .map(|p| {
+            let vram = match p.used_gpu_memory {
+                nvml_wrapper::enums::device::UsedGpuMemory::Used(bytes) => bytes,
+                nvml_wrapper::enums::device::UsedGpuMemory::Unavailable => 0,
+            };
+            (p.pid, vram)
+        })
         .collect())
 }
 
@@ -115,7 +121,13 @@ pub fn get_running_compute_processes() -> Result<Vec<(u32, u64)>, String> {
         .map_err(|e| format!("Compute process query failed: {e}"))?;
     Ok(procs
         .into_iter()
-        .map(|p| (p.pid, p.used_gpu_memory.unwrap_or(0)))
+        .map(|p| {
+            let vram = match p.used_gpu_memory {
+                nvml_wrapper::enums::device::UsedGpuMemory::Used(bytes) => bytes,
+                nvml_wrapper::enums::device::UsedGpuMemory::Unavailable => 0,
+            };
+            (p.pid, vram)
+        })
         .collect())
 }
 
