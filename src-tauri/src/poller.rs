@@ -78,8 +78,8 @@ pub fn start_polling(app_handle: AppHandle, state: Arc<AppState>) {
             // === Slow tier (every 5th tick): fan, PCIe ===
             if tick_count % 5 == 0 {
                 cached_fan_speed = nvml::get_fan_speed();
-                let (gen, width) = nvml::get_pcie_info();
-                cached_pcie_gen = gen;
+                let (pcie_gen, width) = nvml::get_pcie_info();
+                cached_pcie_gen = pcie_gen;
                 cached_pcie_width = width;
             }
 
