@@ -2,7 +2,6 @@ use std::sync::Arc;
 use std::time::{Duration, SystemTime, UNIX_EPOCH};
 
 use tauri::{AppHandle, Emitter};
-use tokio::time::interval;
 use tracing::{error, info, warn};
 
 use crate::nvml;
@@ -15,10 +14,10 @@ use crate::types::GpuSnapshot;
 /// - Medium (every 2nd tick): per-process VRAM
 /// - Slow (every 5th tick): fan speed, PCIe info
 pub fn start_polling(app_handle: AppHandle, state: Arc<AppState>) {
-    tokio::spawn(async move {
+    tauri::async_runtime::spawn(async move {
         info!("Starting GPU polling loop");
         let mut tick_count: u64 = 0;
-        let mut poll_interval = interval(Duration::from_millis(state.get_polling_interval()));
+        let mut poll_interval = tokio::time::interval(Duration::from_millis(state.get_polling_interval()));
 
         // Cache slow-changing data
         let mut cached_fan_speed: Option<u32> = None;
@@ -65,7 +64,7 @@ pub fn start_polling(app_handle: AppHandle, state: Arc<AppState>) {
             };
 
             // === Medium tier (every 2nd tick): process info ===
-            if tick_count % 2 == 0 {
+            if tick_count.is_multiple_of(2) {
                 match process::get_gpu_processes() {
                     Ok(procs) => cached_processes = procs,
                     Err(e) => {
@@ -76,7 +75,7 @@ pub fn start_polling(app_handle: AppHandle, state: Arc<AppState>) {
             }
 
             // === Slow tier (every 5th tick): fan, PCIe ===
-            if tick_count % 5 == 0 {
+            if tick_count.is_multiple_of(5) {
                 cached_fan_speed = nvml::get_fan_speed();
                 let (pcie_gen, width) = nvml::get_pcie_info();
                 cached_pcie_gen = pcie_gen;
@@ -115,7 +114,7 @@ pub fn start_polling(app_handle: AppHandle, state: Arc<AppState>) {
             let current_interval = state.get_polling_interval();
             let period = poll_interval.period();
             if period.as_millis() as u64 != current_interval {
-                poll_interval = interval(Duration::from_millis(current_interval));
+                poll_interval = tokio::time::interval(Duration::from_millis(current_interval));
                 info!("Polling interval changed to {current_interval}ms");
             }
         }

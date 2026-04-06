@@ -4,7 +4,7 @@ use tracing::warn;
 
 use crate::classify::classify_process;
 use crate::nvml;
-use crate::types::{ProcessCategory, ProcessInfo};
+use crate::types::ProcessInfo;
 
 /// Enrich NVML process data with system info (name, path, command line)
 /// and classify each process using the priority chain.
@@ -74,9 +74,4 @@ pub fn get_gpu_processes() -> Result<Vec<ProcessInfo>, String> {
     // Sort by VRAM descending so the biggest consumers appear first
     result.sort_by(|a, b| b.vram_mb.cmp(&a.vram_mb));
     Ok(result)
-}
-
-/// Classify a single process by name — used by the frontend for display-only classification.
-pub fn classify_by_name(name: &str) -> ProcessCategory {
-    classify_process(name, None, None, 0, None)
 }

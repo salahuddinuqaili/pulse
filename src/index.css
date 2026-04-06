@@ -1,7 +1,6 @@
-@import "tailwindcss";
-
 /* Google Fonts — Space Grotesk (metrics/display) + Manrope (body) */
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
 
 /* ── Design System: "The Kinetic Darkroom" ── */
 @theme {
