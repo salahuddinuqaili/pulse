@@ -23,8 +23,14 @@ export function HeadroomIndicator() {
     ? ` after ${aiProcs.map((p) => p.name).join(", ")}`
     : "";
 
+  const isCritical = level === "critical" || level === "tight";
+
   return (
-    <div className="bg-surface-elevate rounded-xl p-4">
+    <div
+      className={`bg-surface-elevate rounded-xl p-4 transition-shadow ${
+        isCritical ? "shadow-[0_0_20px_rgba(255,51,102,0.3)]" : ""
+      }`}
+    >
       <div className="flex items-center gap-3">
         <span
           className={`font-display text-2xl ${level === "critical" ? "animate-pulse" : ""}`}

@@ -43,6 +43,15 @@ export function GpuHeroCard() {
         <div className="flex flex-col items-center shrink-0">
           <div className="relative" style={{ width: 120, height: 120 }}>
             <svg viewBox="0 0 120 120" className="w-full h-full -rotate-90">
+              <defs>
+                <filter id="glow">
+                  <feGaussianBlur stdDeviation="3" result="blur" />
+                  <feMerge>
+                    <feMergeNode in="blur" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
+              </defs>
               <circle
                 cx="60" cy="60" r="52"
                 fill="none" stroke="#1D1E24" strokeWidth="8"
@@ -53,6 +62,7 @@ export function GpuHeroCard() {
                 strokeDasharray={`${(vramPct / 100) * circumference} ${circumference}`}
                 strokeLinecap="round"
                 className="transition-all duration-500"
+                filter="url(#glow)"
               />
             </svg>
             <div className="absolute inset-0 flex flex-col items-center justify-center">
