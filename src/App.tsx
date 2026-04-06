@@ -8,6 +8,7 @@ import { Dashboard } from "./routes/dashboard";
 import { AiWorkload } from "./routes/ai-workload";
 import { GamingProfile } from "./routes/gaming-profile";
 import { Settings } from "./routes/settings";
+import { SessionReplay } from "./routes/session-replay";
 import { CompactOverlay } from "./components/compact-overlay";
 
 export default function App() {
@@ -39,6 +40,7 @@ export default function App() {
               <Route path="/" element={<Dashboard />} />
               <Route path="/ai-workload" element={<AiWorkload />} />
               <Route path="/gaming" element={<GamingProfile />} />
+              <Route path="/replay/:sessionId" element={<SessionReplay />} />
               <Route path="/settings" element={<Settings />} />
             </Routes>
           </main>
