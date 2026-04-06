@@ -46,7 +46,7 @@ export function VramStackedBar() {
         />
       </div>
 
-      <div className="flex gap-4 mt-2">
+      <div className="flex flex-wrap gap-4 mt-2">
         {grouped.map(({ category, totalMb }) => (
           <div key={category} className="flex items-center gap-1.5 text-xs">
             <span
@@ -57,6 +57,14 @@ export function VramStackedBar() {
             <span className="font-display text-on-surface">{totalMb} MB</span>
           </div>
         ))}
+        <div className="flex items-center gap-1.5 text-xs">
+          <span
+            className="w-2 h-2 rounded-full border border-surface-highest"
+            style={{ backgroundColor: CATEGORY_COLORS.free }}
+          />
+          <span className="font-display text-muted">Free</span>
+          <span className="font-display text-on-surface">{freeMb} MB</span>
+        </div>
       </div>
     </div>
   );

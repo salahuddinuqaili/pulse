@@ -16,88 +16,93 @@ export function GpuHeroCard() {
   const vramUsedGb = (vramUsed / 1024).toFixed(1);
   const vramTotalGb = (vramTotal / 1024).toFixed(1);
   const vramPct = vramTotal > 0 ? (vramUsed / vramTotal) * 100 : 0;
+  const circumference = 2 * Math.PI * 52;
 
   return (
     <div className="bg-surface-elevate rounded-xl p-6">
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="font-display text-lg text-on-surface tracking-tight">
-          {deviceInfo?.name ?? "Detecting GPU..."}
-        </h2>
-        {deviceInfo?.driver_version && (
+      <div className="flex items-center justify-between mb-5">
+        <div>
+          <h2 className="font-display text-lg text-on-surface tracking-tight">
+            {deviceInfo?.name ?? "Detecting GPU..."}
+          </h2>
+          {deviceInfo?.driver_version && (
+            <span className="text-xs text-muted font-display">
+              Driver {deviceInfo.driver_version}
+            </span>
+          )}
+        </div>
+        {deviceInfo?.cuda_cores && (
           <span className="text-xs text-muted font-display">
-            Driver {deviceInfo.driver_version}
+            {deviceInfo.cuda_cores.toLocaleString()} CUDA Cores
           </span>
         )}
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-        {/* VRAM Ring */}
-        <div className="flex flex-col items-center">
-          <div className="relative w-24 h-24">
-            <svg viewBox="0 0 100 100" className="w-full h-full -rotate-90">
+      <div className="flex items-center gap-8">
+        {/* VRAM Ring — 120x120 per spec */}
+        <div className="flex flex-col items-center shrink-0">
+          <div className="relative" style={{ width: 120, height: 120 }}>
+            <svg viewBox="0 0 120 120" className="w-full h-full -rotate-90">
               <circle
-                cx="50" cy="50" r="42"
+                cx="60" cy="60" r="52"
                 fill="none" stroke="#1D1E24" strokeWidth="8"
               />
               <circle
-                cx="50" cy="50" r="42"
+                cx="60" cy="60" r="52"
                 fill="none" stroke="#00FF66" strokeWidth="8"
-                strokeDasharray={`${vramPct * 2.64} ${264 - vramPct * 2.64}`}
+                strokeDasharray={`${(vramPct / 100) * circumference} ${circumference}`}
                 strokeLinecap="round"
+                className="transition-all duration-500"
               />
             </svg>
             <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <span className="font-display text-lg text-on-surface">{vramUsedGb}</span>
+              <span className="font-display text-2xl text-on-surface">{vramUsedGb}</span>
               <span className="font-display text-xs text-muted">/ {vramTotalGb} GB</span>
             </div>
           </div>
-          <span className="text-xs text-muted font-display mt-2">VRAM</span>
+          <span className="text-xs text-muted font-display mt-2 uppercase tracking-wider">VRAM Usage</span>
         </div>
 
-        {/* Temperature */}
-        <MetricCard
-          label="Temperature"
-          value={`${tempC}`}
-          unit="°C"
-          color={getTemperatureColor(tempC)}
-        />
-
-        {/* GPU Utilization */}
-        <MetricCard label="GPU Load" value={`${gpuUtil}`} unit="%" color="#00FF66" />
-
-        {/* Clock Speed */}
-        <MetricCard label="Core Clock" value={`${clockGraphics}`} unit="MHz" color="#00FF66" />
+        {/* Metrics grid */}
+        <div className="grid grid-cols-2 gap-x-8 gap-y-4 flex-1">
+          <HeroMetric
+            label="Temperature"
+            value={`${tempC}`}
+            unit="°C"
+            color={getTemperatureColor(tempC)}
+          />
+          <HeroMetric label="GPU Load" value={`${gpuUtil}`} unit="%" color="#00FF66" />
+          <HeroMetric label="Core Clock" value={`${clockGraphics}`} unit="MHz" color="#00FF66" />
+          <HeroMetric
+            label="Fan Speed"
+            value={fanSpeed != null ? `${fanSpeed}` : "N/A"}
+            unit={fanSpeed != null ? "%" : ""}
+            color="#e5e1e4"
+          />
+        </div>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-4 pt-4 border-t border-surface-highest/20">
-        {/* Power */}
-        <div className="flex flex-col gap-1">
-          <span className="text-xs text-muted font-display">Power Draw</span>
+      {/* Power bar */}
+      <div className="mt-5 pt-4 border-t border-surface-highest/20">
+        <div className="flex items-center justify-between mb-1.5">
+          <span className="text-xs text-muted font-display uppercase tracking-wider">Power Draw</span>
           <div className="flex items-baseline gap-1">
             <span className="font-display text-on-surface">{powerDraw.toFixed(0)}</span>
             <span className="text-xs text-muted font-display">/ {powerLimit.toFixed(0)} W</span>
           </div>
-          <div className="w-full h-1.5 bg-surface rounded-full mt-1">
-            <div
-              className="h-full bg-primary rounded-full transition-all"
-              style={{ width: `${powerLimit > 0 ? (powerDraw / powerLimit) * 100 : 0}%` }}
-            />
-          </div>
         </div>
-
-        {/* Fan Speed */}
-        <div className="flex flex-col gap-1">
-          <span className="text-xs text-muted font-display">Fan Speed</span>
-          <span className="font-display text-on-surface">
-            {fanSpeed != null ? `${fanSpeed}%` : "N/A"}
-          </span>
+        <div className="w-full h-2 bg-surface rounded-full">
+          <div
+            className="h-full bg-primary rounded-full transition-all duration-300"
+            style={{ width: `${powerLimit > 0 ? Math.min((powerDraw / powerLimit) * 100, 100) : 0}%` }}
+          />
         </div>
       </div>
     </div>
   );
 }
 
-function MetricCard({
+function HeroMetric({
   label,
   value,
   unit,
@@ -109,12 +114,12 @@ function MetricCard({
   color: string;
 }) {
   return (
-    <div className="flex flex-col items-center">
-      <span className="font-display text-3xl" style={{ color }}>
-        {value}
-      </span>
-      <span className="text-xs text-muted font-display">{unit}</span>
-      <span className="text-xs text-muted font-display mt-1">{label}</span>
+    <div className="flex flex-col">
+      <span className="text-xs text-muted font-display uppercase tracking-wider">{label}</span>
+      <div className="flex items-baseline gap-1 mt-0.5">
+        <span className="font-display text-2xl" style={{ color }}>{value}</span>
+        <span className="text-sm text-muted font-display">{unit}</span>
+      </div>
     </div>
   );
 }
