@@ -171,30 +171,6 @@ Handle `AccessDenied` gracefully — never crash on inaccessible process info.
 - `cargo tauri build` — production build (.msi + .exe installer)
 - Output: `src-tauri/target/release/bundle/`
 
-# Decision Log (append-only)
+# Decision Log
 
-[2026-04-05] Tauri 2 over Electron — ~30MB idle RAM, ~10MB installer, no WebSocket layer, NVML in Rust backend directly. Portfolio shows framework range (Electron on Neon Protocol, Tauri on Pulse).
-
-[2026-04-05] Tiered polling (1s/2s/5s) — process enumeration via sysinfo is expensive (~5-10ms). Tiered approach reduces CPU overhead by ~40%.
-
-[2026-04-05] Ring buffer (300 entries) — avoids array growth, splice, GC pressure. Fixed memory footprint.
-
-[2026-04-05] Canvas for VRAM block map — 96 blocks with hover/tooltips. Single canvas > 96 React components.
-
-[2026-04-05] Radix UI for accessible primitives — unstyled, pairs with Tailwind. Avoids building a11y from scratch.
-
-[2026-04-05] sysinfo crate for process enrichment — NVML returns PIDs + VRAM but not names/paths. Cache with 2s TTL.
-
-[2026-04-05] Option<> wrappers on hardware-variable fields — not all GPUs report hotspot temp, fan RPM, PCIe. Prevents panics on unsupported hardware.
-
-[2026-04-06] PresentMon CLI subprocess over SDK FFI — bundle CLI exe (~5MB, MIT), spawn with --output_stdout, parse CSV. Zero user setup, graceful fallback if missing. SDK FFI rejected (complex C bindings, requires service install). Raw ETW noted as long-term goal (v1.0+).
-
-[2026-04-06] uPlot over Chart.js/Recharts — 14KB vs 73KB bundle, 4x less CPU for streaming time-series. Canvas rendering matches dark theme. Native ghost overlay (dash prop). Imperative API fine since AI generates code.
-
-[2026-04-06] Hybrid session storage (JSONL + SQLite) — .pulse files (gzipped JSONL) are source of truth for recordings. SQLite sessions.db is a derived cache for metadata/aggregates (instant analytics, session list). If SQLite corrupts, auto-rebuild from .pulse headers. Rejected: SQLite-only (4x larger files, no portable sharing), JSONL-only (slow analytics at 1M scale).
-
-[2026-04-06] axum HTTP + SSE for MCP server — custom MCP protocol implementation on localhost (127.0.0.1 only). Rust MCP SDK crate rejected (immature ecosystem, unstable API). axum + tokio already in dep tree via Tauri. JSON-RPC 2.0 messages over POST /message + GET /sse.
-
-[2026-04-06] tauri-plugin-notification for alerts — official Tauri plugin for Windows toast notifications. Threshold-based alerts with configurable cooldown. Custom Win32 toast code rejected (reinvents the wheel).
-
-[2026-04-06] TypeScript model database over YAML — VRAM planner is a pure frontend calculator. Static MODEL_DATABASE constant in src/lib/model-database.ts. serde_yaml Rust crate rejected (unnecessary backend dependency for frontend-only feature).
+All architecture decisions are tracked in `DECISIONS.md` at the project root.
