@@ -1,6 +1,6 @@
 # Phase 0.1 — "See Everything" (MVP)
 
-**Status:** Complete (D1–D6 delivered, D7 deferred)
+**Status:** Complete (D1–D7 delivered)
 **Branch pattern:** `feat/phase-0.1-*`
 **PRD scope:** FR-1 through FR-5
 **Screens:** Dashboard, AI Workload, Settings + Compact Overlay
@@ -112,12 +112,12 @@ Ship a working Tauri 2 desktop app that polls NVML in real time, classifies GPU 
 
 ### D7: Build + Release Pipeline
 
-**Files:** `.github/workflows/build.yml`, `src-tauri/tauri.conf.json`
+**Files:** `.github/workflows/release.yml`, `src-tauri/tauri.conf.json`
 
-- [ ] GitHub Actions workflow: `windows-latest`, Rust toolchain, Node 20, `cargo tauri build`
-- [ ] Produces `.msi` and `.exe` installer
-- [ ] Auto-release on tag push via `softprops/action-gh-release`
-- [ ] Installer size < 15MB
+- [x] GitHub Actions workflow: `windows-latest`, Rust toolchain, Node 20, `cargo tauri build`
+- [x] Produces `.msi` and `.exe` installer
+- [x] Auto-release on tag push via `softprops/action-gh-release`
+- [x] Installer size < 15MB
 
 **Acceptance:** Push a tag → GitHub Actions produces downloadable installers.
 
