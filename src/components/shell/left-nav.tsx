@@ -5,8 +5,8 @@ const NAV_ITEMS = [
   { label: "Dashboard", path: "/", icon: "dashboard", enabled: true },
   { label: "AI Workload", path: "/ai-workload", icon: "ai", enabled: true },
   { label: "Settings", path: "/settings", icon: "settings", enabled: true },
-  { label: "Gaming Profile", path: "/gaming", icon: "gamepad", enabled: false, badge: "v0.2" },
-  { label: "Analytics", path: "/analytics", icon: "chart", enabled: false, badge: "v0.2" },
+  { label: "Gaming Profile", path: "/gaming", icon: "gamepad", enabled: true },
+  { label: "Analytics", path: "/analytics", icon: "chart", enabled: true },
 ];
 
 export function LeftNav() {
@@ -52,17 +52,12 @@ export function LeftNav() {
                 {item.label}
               </span>
             )}
-            {expanded && item.badge && (
-              <span className="ml-auto text-xs bg-surface-highest px-1.5 py-0.5 rounded font-display text-muted">
-                {item.badge}
-              </span>
-            )}
           </NavLink>
         ))}
       </div>
 
       <div className="p-4 text-xs text-muted font-display">
-        {expanded ? "v0.1.0" : "0.1"}
+        {expanded ? "v0.2.0" : "0.2"}
       </div>
     </nav>
   );
