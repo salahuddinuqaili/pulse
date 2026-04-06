@@ -48,4 +48,31 @@ export interface DeviceInfo {
   cuda_version: string | null;
 }
 
+export interface SessionMetadata {
+  id: string;
+  start_ms: number;
+  end_ms: number | null;
+  interval_ms: number;
+  gpu_name: string;
+  game_detected: string | null;
+  snapshot_count: number;
+  file_name: string;
+  aggregates: SessionAggregates | null;
+}
+
+export interface SessionAggregates {
+  avg_temp: number;
+  max_temp: number;
+  avg_gpu_util: number;
+  max_gpu_util: number;
+  avg_vram_used_mb: number;
+  max_vram_used_mb: number;
+  avg_power_w: number;
+  max_power_w: number;
+  avg_fps: number | null;
+  max_fps: number | null;
+  avg_clock_graphics_mhz: number;
+  max_clock_graphics_mhz: number;
+}
+
 export type MonitoringProfile = "gaming" | "ai";

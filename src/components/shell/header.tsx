@@ -1,5 +1,6 @@
 import { invoke } from "@tauri-apps/api/core";
 import { useProfileStore } from "../../stores/profile-store";
+import { SessionControls } from "../shared/session-controls";
 
 export function Header() {
   const profile = useProfileStore((s) => s.activeProfile);
@@ -25,6 +26,8 @@ export function Header() {
           </span>
         </span>
       </div>
+      <div className="flex items-center gap-3">
+        <SessionControls />
       <button
         onClick={toggleOverlay}
         className="flex items-center gap-2 text-xs text-muted font-display hover:text-primary transition-colors px-3 py-1.5 rounded-lg hover:bg-surface-elevate"
@@ -35,6 +38,7 @@ export function Header() {
         </svg>
         Compact Mode
       </button>
+      </div>
     </header>
   );
 }

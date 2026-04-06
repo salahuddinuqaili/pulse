@@ -7,6 +7,7 @@ use tracing::{error, info, warn};
 use crate::nvml;
 use crate::presentmon::PresentMonManager;
 use crate::process;
+use crate::session::SessionRecorder;
 use crate::state::AppState;
 use crate::tray;
 use crate::types::{GpuSnapshot, ProcessCategory};
@@ -15,7 +16,12 @@ use crate::types::{GpuSnapshot, ProcessCategory};
 /// - Fast loop (1s): utilization, VRAM, temp, power, clocks
 /// - Medium (every 2nd tick): per-process VRAM
 /// - Slow (every 5th tick): fan speed, PCIe info
-pub fn start_polling(app_handle: AppHandle, state: Arc<AppState>, presentmon: Arc<PresentMonManager>) {
+pub fn start_polling(
+    app_handle: AppHandle,
+    state: Arc<AppState>,
+    presentmon: Arc<PresentMonManager>,
+    session_recorder: Arc<SessionRecorder>,
+) {
     tauri::async_runtime::spawn(async move {
         info!("Starting GPU polling loop");
         let mut tick_count: u64 = 0;
@@ -136,6 +142,21 @@ pub fn start_polling(app_handle: AppHandle, state: Arc<AppState>, presentmon: Ar
 
             if let Err(e) = app_handle.emit("gpu-snapshot", &snapshot) {
                 error!("Failed to emit gpu-snapshot: {e}");
+            }
+
+            // Write to active recording session if recording
+            if session_recorder.is_recording() {
+                match session_recorder.write_snapshot(&snapshot) {
+                    Ok(true) => {
+                        // Auto-stop: max duration reached
+                        info!("Auto-stopping recording (max duration reached)");
+                        if let Err(e) = session_recorder.stop() {
+                            error!("Failed to auto-stop recording: {e}");
+                        }
+                    }
+                    Ok(false) => {} // Normal write
+                    Err(e) => error!("Failed to write snapshot to recording: {e}"),
+                }
             }
 
             // Update tray tooltip every 5th tick to avoid excessive IPC

@@ -60,6 +60,35 @@ pub struct DeviceInfo {
     pub cuda_version: Option<String>,
 }
 
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct SessionMetadata {
+    pub id: String,
+    pub start_ms: u64,
+    pub end_ms: Option<u64>,
+    pub interval_ms: u64,
+    pub gpu_name: String,
+    pub game_detected: Option<String>,
+    pub snapshot_count: u32,
+    pub file_name: String,
+    pub aggregates: Option<SessionAggregates>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct SessionAggregates {
+    pub avg_temp: f32,
+    pub max_temp: f32,
+    pub avg_gpu_util: f32,
+    pub max_gpu_util: f32,
+    pub avg_vram_used_mb: f32,
+    pub max_vram_used_mb: u32,
+    pub avg_power_w: f32,
+    pub max_power_w: f32,
+    pub avg_fps: Option<f32>,
+    pub max_fps: Option<f32>,
+    pub avg_clock_graphics_mhz: f32,
+    pub max_clock_graphics_mhz: u32,
+}
+
 impl Default for GpuSnapshot {
     fn default() -> Self {
         Self {
