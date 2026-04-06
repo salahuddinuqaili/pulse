@@ -50,3 +50,28 @@ pub fn save_settings(
 
     settings_mgr.update(settings)
 }
+
+/// Toggle the compact overlay window.
+#[tauri::command]
+pub fn toggle_compact_overlay(app: tauri::AppHandle) -> Result<(), String> {
+    use tauri::Manager;
+
+    if let Some(overlay) = app.get_webview_window("overlay") {
+        // Overlay exists — close it
+        overlay.close().map_err(|e| format!("Failed to close overlay: {e}"))?;
+    } else {
+        // Create the overlay window
+        let url = tauri::WebviewUrl::App("/overlay".into());
+        tauri::WebviewWindowBuilder::new(&app, "overlay", url)
+            .title("Pulse Compact")
+            .inner_size(320.0, 480.0)
+            .resizable(false)
+            .always_on_top(true)
+            .decorations(false)
+            .transparent(true)
+            .skip_taskbar(true)
+            .build()
+            .map_err(|e| format!("Failed to create overlay: {e}"))?;
+    }
+    Ok(())
+}
