@@ -153,6 +153,13 @@ pub fn get_device_info() -> Result<crate::types::DeviceInfo, String> {
 
     let cuda_cores = lookup_cuda_cores(&name);
 
+    // CUDA driver version: encoded as major * 1000 + minor * 10
+    let cuda_version = nvml.sys_cuda_driver_version().ok().map(|v| {
+        let major = v / 1000;
+        let minor = (v % 1000) / 10;
+        format!("{major}.{minor}")
+    });
+
     Ok(crate::types::DeviceInfo {
         name,
         driver_version,
@@ -162,6 +169,7 @@ pub fn get_device_info() -> Result<crate::types::DeviceInfo, String> {
         cuda_cores,
         power_limit_w,
         vbios_version,
+        cuda_version,
     })
 }
 

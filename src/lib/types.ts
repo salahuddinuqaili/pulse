@@ -40,6 +40,7 @@ export interface DeviceInfo {
   cuda_cores: number | null;
   power_limit_w: number;
   vbios_version: string | null;
+  cuda_version: string | null;
 }
 
 export type MonitoringProfile = "gaming" | "ai";
