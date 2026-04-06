@@ -52,6 +52,7 @@ pub struct DeviceInfo {
     pub cuda_cores: Option<u32>,
     pub power_limit_w: f32,
     pub vbios_version: Option<String>,
+    pub cuda_version: Option<String>,
 }
 
 impl Default for GpuSnapshot {
