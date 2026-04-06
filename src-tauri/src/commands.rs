@@ -2,9 +2,10 @@ use std::sync::Arc;
 
 use tauri::State;
 
+use crate::session::{SessionIndex, SessionRecorder};
 use crate::settings::{Settings, SettingsManager};
 use crate::state::AppState;
-use crate::types::{DeviceInfo, GpuSnapshot};
+use crate::types::{DeviceInfo, GpuSnapshot, SessionMetadata};
 
 /// Get static device information (called once on frontend mount).
 #[tauri::command]
@@ -49,6 +50,62 @@ pub fn save_settings(
     app_state.set_polling_interval(interval);
 
     settings_mgr.update(settings)
+}
+
+/// Start a recording session.
+#[tauri::command]
+pub fn start_recording(
+    recorder: State<Arc<SessionRecorder>>,
+    interval_ms: u64,
+    gpu_name: String,
+    game_detected: Option<String>,
+) -> Result<String, String> {
+    recorder.start(interval_ms, gpu_name, game_detected)
+}
+
+/// Stop the active recording session.
+#[tauri::command]
+pub fn stop_recording(
+    recorder: State<Arc<SessionRecorder>>,
+    index: State<Arc<SessionIndex>>,
+) -> Result<SessionMetadata, String> {
+    let meta = recorder.stop()?;
+    index.insert_session(&meta)?;
+    Ok(meta)
+}
+
+/// List all recorded sessions.
+#[tauri::command]
+pub fn list_sessions(index: State<Arc<SessionIndex>>) -> Result<Vec<SessionMetadata>, String> {
+    index.list_sessions()
+}
+
+/// Load full snapshot data from a recorded session.
+#[tauri::command]
+pub fn load_session(
+    index: State<Arc<SessionIndex>>,
+    session_id: String,
+) -> Result<Vec<GpuSnapshot>, String> {
+    index.load_session(&session_id)
+}
+
+/// Delete a recorded session (file + index entry).
+#[tauri::command]
+pub fn delete_session(
+    index: State<Arc<SessionIndex>>,
+    session_id: String,
+) -> Result<(), String> {
+    index.delete_session(&session_id)
+}
+
+/// List sessions within a time range.
+#[tauri::command]
+pub fn list_sessions_in_range(
+    index: State<Arc<SessionIndex>>,
+    start_ms: u64,
+    end_ms: u64,
+) -> Result<Vec<SessionMetadata>, String> {
+    index.list_sessions_in_range(start_ms, end_ms)
 }
 
 /// Toggle the compact overlay window.
