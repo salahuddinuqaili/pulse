@@ -7,6 +7,7 @@ use tracing::{error, info, warn};
 use crate::nvml;
 use crate::process;
 use crate::state::AppState;
+use crate::tray;
 use crate::types::GpuSnapshot;
 
 /// Start the tiered polling loops.
@@ -108,6 +109,11 @@ pub fn start_polling(app_handle: AppHandle, state: Arc<AppState>) {
 
             if let Err(e) = app_handle.emit("gpu-snapshot", &snapshot) {
                 error!("Failed to emit gpu-snapshot: {e}");
+            }
+
+            // Update tray tooltip every 5th tick to avoid excessive IPC
+            if tick_count.is_multiple_of(5) {
+                tray::update_tray_tooltip(&app_handle, &state);
             }
 
             // Dynamically adjust interval if user changed it

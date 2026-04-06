@@ -7,9 +7,22 @@ import { QuickTune } from "./components/shell/quick-tune";
 import { Dashboard } from "./routes/dashboard";
 import { AiWorkload } from "./routes/ai-workload";
 import { Settings } from "./routes/settings";
+import { CompactOverlay } from "./components/compact-overlay";
 
 export default function App() {
   useGpuListener();
+
+  // Compact overlay window renders without shell chrome
+  const isOverlay = window.location.pathname === "/overlay";
+  if (isOverlay) {
+    return (
+      <BrowserRouter>
+        <Routes>
+          <Route path="/overlay" element={<CompactOverlay />} />
+        </Routes>
+      </BrowserRouter>
+    );
+  }
 
   return (
     <BrowserRouter>

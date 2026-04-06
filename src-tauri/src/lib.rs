@@ -5,6 +5,7 @@ mod poller;
 mod process;
 mod settings;
 mod state;
+mod tray;
 mod types;
 
 use std::sync::Arc;
@@ -43,6 +44,11 @@ pub fn run() {
 
             app.manage(settings_mgr);
 
+            // Set up system tray
+            if let Err(e) = tray::setup_tray(app) {
+                warn!("System tray setup failed: {e}");
+            }
+
             if nvml_available {
                 let handle = app.handle().clone();
                 poller::start_polling(handle, poller_state);
@@ -55,6 +61,7 @@ pub fn run() {
             commands::set_polling_interval,
             commands::get_settings,
             commands::save_settings,
+            commands::toggle_compact_overlay,
         ])
         .run(tauri::generate_context!())
         .expect("Failed to run Pulse");
