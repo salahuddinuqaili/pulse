@@ -75,4 +75,3 @@ pub fn get_gpu_processes() -> Result<Vec<ProcessInfo>, String> {
     result.sort_by(|a, b| b.vram_mb.cmp(&a.vram_mb));
     Ok(result)
 }
-

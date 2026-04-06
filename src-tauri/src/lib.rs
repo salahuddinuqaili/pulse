@@ -22,15 +22,17 @@ pub fn run() {
         }
     };
 
+    // Single shared state — poller and commands both use the same Arc<AppState>
     let app_state = Arc::new(state::AppState::new(nvml_available));
+    let poller_state = app_state.clone();
 
     tauri::Builder::default()
         .plugin(tauri_plugin_shell::init())
-        .manage(state::AppState::new(nvml_available))
+        .manage(app_state)
         .setup(move |app| {
             if nvml_available {
                 let handle = app.handle().clone();
-                poller::start_polling(handle, app_state.clone());
+                poller::start_polling(handle, poller_state);
             }
             Ok(())
         })
