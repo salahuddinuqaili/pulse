@@ -11,7 +11,8 @@ Thanks for your interest in contributing to Pulse. This document covers how to g
    - [Node.js 20+](https://nodejs.org/)
    - NVIDIA GPU with driver 470+ (for testing)
 4. Install dependencies: `npm install`
-5. Run in dev mode: `npm run dev`
+5. Download PresentMon Console Application (x64) from [GameTechDev/PresentMon releases](https://github.com/GameTechDev/PresentMon/releases) and place the exe in `src-tauri/resources/` (e.g. `PresentMon-2.4.1-x64.exe`). This binary is gitignored and required for FPS metrics — the app runs without it but FPS fields will be unavailable.
+6. Run in dev mode: `npm run dev`
 
 ## Development Workflow
 

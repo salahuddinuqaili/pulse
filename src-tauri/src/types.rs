@@ -19,6 +19,11 @@ pub struct GpuSnapshot {
     pub clock_memory_mhz: u32,
     pub pcie_link_gen: Option<u8>,
     pub pcie_link_width: Option<u8>,
+    pub fps_current: Option<f32>,
+    pub fps_avg: Option<f32>,
+    pub frame_time_ms: Option<f32>,
+    pub fps_1pct_low: Option<f32>,
+    pub fps_01pct_low: Option<f32>,
     pub processes: Vec<ProcessInfo>,
     pub errors: Vec<String>,
 }
@@ -75,6 +80,11 @@ impl Default for GpuSnapshot {
             clock_memory_mhz: 0,
             pcie_link_gen: None,
             pcie_link_width: None,
+            fps_current: None,
+            fps_avg: None,
+            frame_time_ms: None,
+            fps_1pct_low: None,
+            fps_01pct_low: None,
             processes: Vec::new(),
             errors: Vec::new(),
         }

@@ -18,6 +18,11 @@ export interface GpuSnapshot {
   clock_memory_mhz: number;
   pcie_link_gen: number | null;
   pcie_link_width: number | null;
+  fps_current: number | null;
+  fps_avg: number | null;
+  frame_time_ms: number | null;
+  fps_1pct_low: number | null;
+  fps_01pct_low: number | null;
   processes: ProcessInfo[];
   errors: string[];
 }

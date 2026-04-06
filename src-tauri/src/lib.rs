@@ -2,6 +2,7 @@ mod classify;
 mod commands;
 mod nvml;
 mod poller;
+mod presentmon;
 mod process;
 mod settings;
 mod state;
@@ -51,7 +52,11 @@ pub fn run() {
 
             if nvml_available {
                 let handle = app.handle().clone();
-                poller::start_polling(handle, poller_state);
+                let resource_dir = app.path().resource_dir().ok();
+                let presentmon_mgr = std::sync::Arc::new(
+                    presentmon::PresentMonManager::new(resource_dir),
+                );
+                poller::start_polling(handle, poller_state, presentmon_mgr);
             }
             Ok(())
         })
