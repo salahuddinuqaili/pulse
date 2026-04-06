@@ -26,12 +26,11 @@
     "@radix-ui/react-tooltip": "^1.2.8",
     "@tauri-apps/api": "^2.10.1",
     "@tauri-apps/plugin-shell": "^2.3.5",
-    "chart.js": "^4.5.1",
     "immer": "^11.1.4",
     "react": "^19.2.4",
-    "react-chartjs-2": "^5.3.1",
     "react-dom": "^19.2.4",
     "react-router-dom": "^7.14.0",
+    "uplot": "^1.6.32",
     "zustand": "^5.0.12"
   }
 }

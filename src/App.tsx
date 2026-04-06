@@ -6,6 +6,7 @@ import { Header } from "./components/shell/header";
 import { QuickTune } from "./components/shell/quick-tune";
 import { Dashboard } from "./routes/dashboard";
 import { AiWorkload } from "./routes/ai-workload";
+import { GamingProfile } from "./routes/gaming-profile";
 import { Settings } from "./routes/settings";
 import { CompactOverlay } from "./components/compact-overlay";
 
@@ -37,6 +38,7 @@ export default function App() {
             <Routes>
               <Route path="/" element={<Dashboard />} />
               <Route path="/ai-workload" element={<AiWorkload />} />
+              <Route path="/gaming" element={<GamingProfile />} />
               <Route path="/settings" element={<Settings />} />
             </Routes>
           </main>
