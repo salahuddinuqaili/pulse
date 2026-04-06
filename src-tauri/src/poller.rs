@@ -5,16 +5,17 @@ use tauri::{AppHandle, Emitter};
 use tracing::{error, info, warn};
 
 use crate::nvml;
+use crate::presentmon::PresentMonManager;
 use crate::process;
 use crate::state::AppState;
 use crate::tray;
-use crate::types::GpuSnapshot;
+use crate::types::{GpuSnapshot, ProcessCategory};
 
 /// Start the tiered polling loops.
 /// - Fast loop (1s): utilization, VRAM, temp, power, clocks
 /// - Medium (every 2nd tick): per-process VRAM
 /// - Slow (every 5th tick): fan speed, PCIe info
-pub fn start_polling(app_handle: AppHandle, state: Arc<AppState>) {
+pub fn start_polling(app_handle: AppHandle, state: Arc<AppState>, presentmon: Arc<PresentMonManager>) {
     tauri::async_runtime::spawn(async move {
         info!("Starting GPU polling loop");
         let mut tick_count: u64 = 0;
@@ -75,6 +76,24 @@ pub fn start_polling(app_handle: AppHandle, state: Arc<AppState>) {
                 }
             }
 
+            // === Game detection: start/stop PresentMon based on process list ===
+            if tick_count.is_multiple_of(2) {
+                let game_process = cached_processes.iter().find(|p| {
+                    matches!(p.category, ProcessCategory::Game)
+                });
+
+                match game_process {
+                    Some(proc) => {
+                        presentmon.start(&proc.name);
+                    }
+                    None => {
+                        if presentmon.is_active() {
+                            presentmon.stop();
+                        }
+                    }
+                }
+            }
+
             // === Slow tier (every 5th tick): fan, PCIe ===
             if tick_count.is_multiple_of(5) {
                 cached_fan_speed = nvml::get_fan_speed();
@@ -82,6 +101,9 @@ pub fn start_polling(app_handle: AppHandle, state: Arc<AppState>) {
                 cached_pcie_gen = pcie_gen;
                 cached_pcie_width = width;
             }
+
+            // === Read FPS metrics from PresentMon ===
+            let frame_metrics = presentmon.get_metrics();
 
             let snapshot = GpuSnapshot {
                 poll_generation: generation,
@@ -101,6 +123,11 @@ pub fn start_polling(app_handle: AppHandle, state: Arc<AppState>) {
                 clock_memory_mhz: clock_memory,
                 pcie_link_gen: cached_pcie_gen,
                 pcie_link_width: cached_pcie_width,
+                fps_current: frame_metrics.as_ref().map(|m| m.fps_current),
+                fps_avg: frame_metrics.as_ref().map(|m| m.fps_avg),
+                frame_time_ms: frame_metrics.as_ref().map(|m| m.frame_time_ms),
+                fps_1pct_low: frame_metrics.as_ref().map(|m| m.fps_1pct_low),
+                fps_01pct_low: frame_metrics.as_ref().map(|m| m.fps_01pct_low),
                 processes: cached_processes.clone(),
                 errors: errors.clone(),
             };

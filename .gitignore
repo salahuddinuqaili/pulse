@@ -22,3 +22,6 @@ Thumbs.db
 # Tauri
 src-tauri/WixTools/
 src-tauri/gen/
+
+# Bundled binaries (downloaded at build time)
+src-tauri/resources/*.exe
