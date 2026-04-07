@@ -10,6 +10,7 @@ import { GamingProfile } from "./routes/gaming-profile";
 import { Settings } from "./routes/settings";
 import { SessionReplay } from "./routes/session-replay";
 import { Analytics } from "./routes/analytics";
+import { VramPlanner } from "./routes/vram-planner";
 import { CompactOverlay } from "./components/compact-overlay";
 
 export default function App() {
@@ -43,6 +44,7 @@ export default function App() {
               <Route path="/gaming" element={<GamingProfile />} />
               <Route path="/replay/:sessionId" element={<SessionReplay />} />
               <Route path="/analytics" element={<Analytics />} />
+              <Route path="/vram-planner" element={<VramPlanner />} />
               <Route path="/settings" element={<Settings />} />
             </Routes>
           </main>
