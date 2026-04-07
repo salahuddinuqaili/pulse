@@ -3,6 +3,7 @@ use std::sync::Arc;
 use tauri::State;
 
 use crate::mcp::{McpServer, McpStatus};
+use crate::presentmon_download::{PresentMonDownloadManager, PresentMonStatus};
 use crate::recommendations::{self, ProfileMode, Recommendation};
 use crate::session::{SessionIndex, SessionRecorder};
 use crate::settings::{Settings, SettingsManager};
@@ -153,6 +154,35 @@ pub fn set_mcp_port(
     let mut current = settings_mgr.get();
     current.mcp_port = port;
     settings_mgr.update(current)
+}
+
+/// Get the current PresentMon install status (NotInstalled / Downloading /
+/// Installed / Failed). Used by Settings → FPS Tracking.
+#[tauri::command]
+pub fn get_presentmon_status(
+    mgr: State<Arc<PresentMonDownloadManager>>,
+) -> PresentMonStatus {
+    mgr.status()
+}
+
+/// Trigger a PresentMon download. Verifies SHA-256 against the pinned
+/// constant before installing. Returns the post-download status (Installed
+/// on success, Failed with error string on failure).
+#[tauri::command]
+pub async fn download_presentmon(
+    mgr: State<'_, Arc<PresentMonDownloadManager>>,
+) -> Result<PresentMonStatus, String> {
+    let mgr = mgr.inner().clone();
+    mgr.download().await?;
+    Ok(mgr.status())
+}
+
+/// Delete the installed PresentMon binary. Used by Settings → "Remove" button.
+#[tauri::command]
+pub fn delete_presentmon(
+    mgr: State<Arc<PresentMonDownloadManager>>,
+) -> Result<(), String> {
+    mgr.delete()
 }
 
 /// Get smart workload recommendations based on the current GPU snapshot.

@@ -6,6 +6,8 @@ use tokio::io::{AsyncBufReadExt, BufReader};
 use tokio::process::Command as TokioCommand;
 use tracing::{debug, error, info, warn};
 
+use crate::presentmon_download::PresentMonDownloadManager;
+
 /// Rolling window size for percentile calculations (~5 min at ~60fps would be huge,
 /// but PresentMon outputs one line per present, so 300 samples ≈ 5 seconds at 60fps).
 const FRAME_TIME_BUFFER_SIZE: usize = 300;
@@ -23,42 +25,43 @@ pub struct FrameMetrics {
 }
 
 /// Manages the PresentMon subprocess lifecycle: spawn, parse, stop.
+///
+/// The binary itself is owned by `PresentMonDownloadManager` (in
+/// `presentmon_download.rs`). This manager queries the download manager
+/// at `start()` time, so a user opting in via Settings → FPS Tracking
+/// after Pulse boots will see FPS as soon as a game is detected — no
+/// restart required.
 pub struct PresentMonManager {
     metrics: Arc<Mutex<Option<FrameMetrics>>>,
     /// Handle to request cancellation of the active subprocess task.
     cancel_tx: Mutex<Option<tokio::sync::oneshot::Sender<()>>>,
     /// The process name currently being tracked.
     active_game: Mutex<Option<String>>,
-    /// Path to the PresentMon binary (resolved at construction).
-    binary_path: Option<PathBuf>,
+    /// Source of truth for the PresentMon binary path and install state.
+    download_manager: Arc<PresentMonDownloadManager>,
 }
 
 impl PresentMonManager {
-    /// Create a new manager. Resolves the PresentMon binary from Tauri's resource directory.
-    /// If the binary is not found, all FPS fields will remain None.
-    pub fn new(resource_dir: Option<PathBuf>) -> Self {
-        let binary_path = resource_dir.and_then(|dir| {
-            // Look for any PresentMon exe in the resources directory
-            let pattern = dir.join("PresentMon-*-x64.exe");
-            let pattern_str = pattern.to_string_lossy().to_string();
-            glob_first_match(&pattern_str).or_else(|| {
-                // Fallback: check exact known name
-                let exact = dir.join("PresentMon-2.4.1-x64.exe");
-                if exact.exists() { Some(exact) } else { None }
-            })
-        });
-
-        if let Some(ref path) = binary_path {
-            info!("PresentMon binary found at {}", path.display());
+    /// Create a new manager wired to the given download manager. The binary
+    /// path is resolved lazily on each `start()` call so that a download
+    /// completing during the Pulse session is picked up immediately.
+    pub fn new(download_manager: Arc<PresentMonDownloadManager>) -> Self {
+        if download_manager.is_installed() {
+            info!(
+                "PresentMon binary found at {}",
+                download_manager.binary_path().display()
+            );
         } else {
-            warn!("PresentMon binary not found — FPS metrics will be unavailable");
+            info!(
+                "PresentMon not installed \u{2014} FPS tracking disabled until user opts in via Settings"
+            );
         }
 
         Self {
             metrics: Arc::new(Mutex::new(None)),
             cancel_tx: Mutex::new(None),
             active_game: Mutex::new(None),
-            binary_path,
+            download_manager,
         }
     }
 
@@ -73,13 +76,13 @@ impl PresentMonManager {
     }
 
     /// Start tracking a game process. No-op if already tracking the same process
-    /// or if the binary is not available.
+    /// or if the user has not yet downloaded PresentMon.
     pub fn start(&self, process_name: &str) {
-        // No binary → no-op
-        let binary = match &self.binary_path {
-            Some(p) => p.clone(),
-            None => return,
-        };
+        // No binary → no-op (user has not opted in to FPS tracking yet)
+        if !self.download_manager.is_installed() {
+            return;
+        }
+        let binary = self.download_manager.binary_path();
 
         // Already tracking the same game → no-op
         {
@@ -332,27 +335,6 @@ fn percentile_fps(times: &VecDeque<f32>, percentile: f64) -> f32 {
     }
 }
 
-/// Simple glob-like matching: find the first file matching a pattern with a wildcard.
-fn glob_first_match(pattern: &str) -> Option<PathBuf> {
-    // Split pattern into directory and file pattern
-    let path = PathBuf::from(pattern);
-    let parent = path.parent()?;
-    let file_pattern = path.file_name()?.to_string_lossy();
-
-    // Extract prefix before the wildcard
-    let prefix = file_pattern.split('*').next().unwrap_or("");
-    let suffix = file_pattern.split('*').next_back().unwrap_or("");
-
-    let entries = std::fs::read_dir(parent).ok()?;
-    for entry in entries.flatten() {
-        let name = entry.file_name();
-        let name_str = name.to_string_lossy();
-        if name_str.starts_with(prefix) && name_str.ends_with(suffix) {
-            return Some(entry.path());
-        }
-    }
-    None
-}
 
 #[cfg(test)]
 mod tests {

@@ -6,6 +6,7 @@ mod notifications;
 mod nvml;
 mod poller;
 mod presentmon;
+mod presentmon_download;
 mod process;
 mod recommendations;
 mod session;
@@ -86,11 +87,22 @@ pub fn run() {
                 warn!("System tray setup failed: {e}");
             }
 
+            // PresentMon download manager — owns the binary at %APPDATA%/Pulse/bin/.
+            // The binary is NOT bundled in the installer; users opt in via Settings,
+            // which triggers a SHA-256-verified download from Intel's GitHub releases.
+            // See SECURITY.md F-14 and presentmon_download.rs for the rationale.
+            let presentmon_download_mgr = Arc::new(
+                presentmon_download::PresentMonDownloadManager::new(
+                    app.path().app_data_dir()
+                        .expect("Failed to resolve app data directory"),
+                ),
+            );
+            app.manage(presentmon_download_mgr.clone());
+
             if nvml_available {
                 let handle = app.handle().clone();
-                let resource_dir = app.path().resource_dir().ok();
                 let presentmon_mgr = std::sync::Arc::new(
-                    presentmon::PresentMonManager::new(resource_dir),
+                    presentmon::PresentMonManager::new(presentmon_download_mgr.clone()),
                 );
                 poller::start_polling(
                     handle,
@@ -120,6 +132,9 @@ pub fn run() {
             commands::toggle_mcp,
             commands::get_mcp_status,
             commands::set_mcp_port,
+            commands::get_presentmon_status,
+            commands::download_presentmon,
+            commands::delete_presentmon,
         ])
         .run(tauri::generate_context!())
         .expect("Failed to run Pulse");
