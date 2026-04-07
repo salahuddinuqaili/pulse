@@ -71,6 +71,12 @@ _None yet — Pulse is at v0.3._
 | F-05 | Tauri capabilities grant `core:event:allow-listen` and `core:event:allow-emit` globally. The frontend can spoof any backend event. With Phase 1.0 hardware writes, this becomes "frontend can spoof a hardware-write request". | Medium | Phase 0.4 D3 |
 | F-06 | The Phase 1.0 auto-revert mechanism will persist "previous safe state" to `%APPDATA%/Pulse/restore.json`. If anything corrupts that file (bug, malware, manual edit), Pulse will write garbage values to NVML on next launch under the guise of "reverting". | Medium | Phase 0.4 D5 |
 
+### Planned (next PR)
+
+| ID | Finding | Severity | Status |
+|---|---|---|---|
+| F-14 | PresentMon (Intel/GameTechDev binary used for FPS tracking) was bundled in the installer with no integrity verification. A repo compromise or supply-chain attack on the Pulse repository could replace it with a malicious binary that runs every time a game is detected, with full user privileges. | High | Implementation prepared on `feat/phase-0.4-d0-presentmon-download` branch. Needs end-to-end manual verification on hardware before merge. Approach: Pulse downloads pinned v2.4.1 from Intel's GitHub releases on user opt-in via Settings, verifies SHA-256 against a constant baked into the source, refuses to install any binary whose hash doesn't match. PresentMon is no longer bundled in the installer. |
+
 ### Lower priority (tracked, not yet scheduled)
 
 | ID | Finding | Why deprioritized |
