@@ -4,13 +4,15 @@ use std::time::{Duration, SystemTime, UNIX_EPOCH};
 use tauri::{AppHandle, Emitter};
 use tracing::{error, info, warn};
 
+use crate::notifications::NotificationManager;
 use crate::nvml;
 use crate::presentmon::PresentMonManager;
 use crate::process;
 use crate::session::SessionRecorder;
+use crate::settings::SettingsManager;
 use crate::state::AppState;
 use crate::tray;
-use crate::types::{GpuSnapshot, ProcessCategory};
+use crate::types::{GpuSnapshot, ProcessCategory, ProcessInfo};
 
 /// Start the tiered polling loops.
 /// - Fast loop (1s): utilization, VRAM, temp, power, clocks
@@ -21,6 +23,8 @@ pub fn start_polling(
     state: Arc<AppState>,
     presentmon: Arc<PresentMonManager>,
     session_recorder: Arc<SessionRecorder>,
+    notification_mgr: Arc<NotificationManager>,
+    settings_mgr: Arc<SettingsManager>,
 ) {
     tauri::async_runtime::spawn(async move {
         info!("Starting GPU polling loop");
@@ -31,7 +35,9 @@ pub fn start_polling(
         let mut cached_fan_speed: Option<u32> = None;
         let mut cached_pcie_gen: Option<u8> = None;
         let mut cached_pcie_width: Option<u8> = None;
-        let mut cached_processes: Vec<crate::types::ProcessInfo> = Vec::new();
+        let mut cached_processes: Vec<ProcessInfo> = Vec::new();
+        // Previous tick's process list — used by notifications to detect AI start/stop
+        let mut prev_processes: Vec<ProcessInfo> = Vec::new();
 
         loop {
             poll_interval.tick().await;
@@ -143,6 +149,18 @@ pub fn start_polling(
             if let Err(e) = app_handle.emit("gpu-snapshot", &snapshot) {
                 error!("Failed to emit gpu-snapshot: {e}");
             }
+
+            // Threshold checks → native notifications (cooldown handled internally)
+            let current_settings = settings_mgr.get();
+            notification_mgr.check_and_notify(
+                &app_handle,
+                &snapshot,
+                &prev_processes,
+                &current_settings.notifications,
+                current_settings.temp_warning_c,
+                current_settings.temp_critical_c,
+            );
+            prev_processes = snapshot.processes.clone();
 
             // Write to active recording session if recording
             if session_recorder.is_recording() {
