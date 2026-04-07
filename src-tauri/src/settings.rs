@@ -23,6 +23,12 @@ pub struct Settings {
     pub mcp_enabled: bool,
     #[serde(default = "default_mcp_port")]
     pub mcp_port: u16,
+    #[serde(default)]
+    pub stream_deck_api_key: Option<String>,
+    #[serde(default)]
+    pub obs_ws_password: Option<String>,
+    #[serde(default = "default_obs_port")]
+    pub obs_ws_port: u16,
 }
 
 fn default_mcp_enabled() -> bool {
@@ -31,6 +37,10 @@ fn default_mcp_enabled() -> bool {
 
 fn default_mcp_port() -> u16 {
     9426
+}
+
+fn default_obs_port() -> u16 {
+    4455
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -76,6 +86,9 @@ impl Default for Settings {
             notifications: NotificationSettings::default(),
             mcp_enabled: default_mcp_enabled(),
             mcp_port: default_mcp_port(),
+            stream_deck_api_key: None,
+            obs_ws_password: None,
+            obs_ws_port: default_obs_port(),
         }
     }
 }

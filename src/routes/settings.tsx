@@ -25,6 +25,17 @@ interface Settings {
   custom_ai_processes: string[];
   custom_game_processes: string[];
   notifications: NotificationSettings;
+  mcp_enabled: boolean;
+  mcp_port: number;
+  stream_deck_api_key: string | null;
+  obs_ws_password: string | null;
+  obs_ws_port: number;
+}
+
+interface McpStatus {
+  running: boolean;
+  endpoint_url: string;
+  port: number;
 }
 
 const DEFAULT_NOTIFICATIONS: NotificationSettings = {
@@ -50,12 +61,20 @@ const DEFAULT_SETTINGS: Settings = {
   custom_ai_processes: [],
   custom_game_processes: [],
   notifications: DEFAULT_NOTIFICATIONS,
+  mcp_enabled: false,
+  mcp_port: 9426,
+  stream_deck_api_key: null,
+  obs_ws_password: null,
+  obs_ws_port: 4455,
 };
 
 export function Settings() {
   const [settings, setSettings] = useState<Settings>(DEFAULT_SETTINGS);
   const [loaded, setLoaded] = useState(false);
   const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved">("idle");
+  const [mcpStatus, setMcpStatus] = useState<McpStatus | null>(null);
+  const [mcpError, setMcpError] = useState<string | null>(null);
+  const [endpointCopied, setEndpointCopied] = useState(false);
 
   useEffect(() => {
     invoke<Settings>("get_settings")
@@ -64,6 +83,9 @@ export function Settings() {
         setLoaded(true);
       })
       .catch(() => setLoaded(true));
+    invoke<McpStatus>("get_mcp_status")
+      .then(setMcpStatus)
+      .catch((e) => console.error("Failed to fetch MCP status:", e));
   }, []);
 
   const save = useCallback(async (updated: Settings) => {
@@ -97,6 +119,46 @@ export function Settings() {
     },
     [settings, save],
   );
+
+  const toggleMcp = useCallback(
+    async (enabled: boolean) => {
+      setMcpError(null);
+      try {
+        const status = await invoke<McpStatus>("toggle_mcp", { enabled });
+        setMcpStatus(status);
+        setSettings((prev) => ({ ...prev, mcp_enabled: enabled }));
+      } catch (e) {
+        setMcpError(String(e));
+      }
+    },
+    [],
+  );
+
+  const updateMcpPort = useCallback(
+    async (port: number) => {
+      setMcpError(null);
+      try {
+        await invoke("set_mcp_port", { port });
+        setSettings((prev) => ({ ...prev, mcp_port: port }));
+        const status = await invoke<McpStatus>("get_mcp_status");
+        setMcpStatus(status);
+      } catch (e) {
+        setMcpError(String(e));
+      }
+    },
+    [],
+  );
+
+  const copyEndpoint = useCallback(async () => {
+    if (!mcpStatus) return;
+    try {
+      await navigator.clipboard.writeText(mcpStatus.endpoint_url);
+      setEndpointCopied(true);
+      setTimeout(() => setEndpointCopied(false), 1500);
+    } catch (e) {
+      console.error("Failed to copy endpoint:", e);
+    }
+  }, [mcpStatus]);
 
   if (!loaded) {
     return (
@@ -386,14 +448,141 @@ export function Settings() {
         </div>
       </section>
 
-      {/* External Integrations placeholder */}
-      <section className="opacity-50">
+      {/* External Integrations */}
+      <section>
         <h2 className="text-xs font-display text-muted uppercase tracking-wider mb-3">
           External Integrations
-          <span className="ml-2 text-xs bg-surface-highest px-1.5 py-0.5 rounded">Coming Soon</span>
         </h2>
-        <div className="bg-surface-elevate rounded-xl p-4 text-sm text-muted font-body">
-          MCP Connection, Stream Deck, OBS — available in v0.3
+
+        {/* MCP Connection */}
+        <div className="bg-surface-elevate rounded-xl p-5 flex flex-col gap-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <span className="text-sm font-display text-on-surface">MCP Connection</span>
+              <div className="flex items-center gap-1.5">
+                <span
+                  className={`w-2 h-2 rounded-full ${
+                    mcpStatus?.running ? "bg-primary" : "bg-muted/60"
+                  }`}
+                />
+                <span className="text-xs font-display text-muted">
+                  {mcpStatus?.running ? "Connected" : "Disconnected"}
+                </span>
+              </div>
+            </div>
+            <button
+              onClick={() => toggleMcp(!settings.mcp_enabled)}
+              className={`w-10 h-5 rounded-full transition-colors relative ${
+                settings.mcp_enabled ? "bg-primary" : "bg-surface-highest"
+              }`}
+            >
+              <div
+                className={`w-4 h-4 rounded-full bg-on-surface absolute top-0.5 transition-transform ${
+                  settings.mcp_enabled ? "translate-x-5" : "translate-x-0.5"
+                }`}
+              />
+            </button>
+          </div>
+
+          {mcpError && (
+            <div className="text-xs text-warning font-body">{mcpError}</div>
+          )}
+
+          <div className="flex items-center gap-2">
+            <code className="flex-1 bg-surface text-on-surface text-xs font-display rounded-lg px-3 py-2 truncate">
+              {mcpStatus?.endpoint_url ?? `http://127.0.0.1:${settings.mcp_port}`}
+            </code>
+            <button
+              onClick={copyEndpoint}
+              disabled={!mcpStatus}
+              className="px-3 py-2 bg-surface text-primary font-display text-xs rounded-lg hover:bg-surface-highest/30 disabled:opacity-40 transition-colors"
+            >
+              {endpointCopied ? "Copied" : "Copy"}
+            </button>
+          </div>
+
+          <div className="flex items-center justify-between">
+            <span className="text-sm font-body text-on-surface">Port</span>
+            <input
+              type="number"
+              min={1024}
+              max={65535}
+              value={settings.mcp_port}
+              disabled={settings.mcp_enabled}
+              onChange={(e) => {
+                const port = Number(e.target.value);
+                if (Number.isFinite(port) && port >= 1024 && port <= 65535) {
+                  updateMcpPort(port);
+                }
+              }}
+              className="w-24 bg-surface text-on-surface font-display text-sm rounded-lg px-3 py-1.5 border-none outline-none disabled:opacity-40 disabled:cursor-not-allowed"
+            />
+          </div>
+          {settings.mcp_enabled && (
+            <p className="text-xs text-muted font-body">
+              Disable MCP to change the port.
+            </p>
+          )}
+        </div>
+
+        {/* Stream Deck (placeholder) */}
+        <div className="bg-surface-elevate rounded-xl p-5 mt-3 flex flex-col gap-3">
+          <div className="flex items-center justify-between">
+            <span className="text-sm font-display text-on-surface">Stream Deck API Key</span>
+            <span className="text-xs font-display text-muted bg-surface px-2 py-0.5 rounded">
+              v1.0
+            </span>
+          </div>
+          <input
+            type="password"
+            value={settings.stream_deck_api_key ?? ""}
+            placeholder="Paste API key"
+            onChange={(e) =>
+              update({ stream_deck_api_key: e.target.value || null })
+            }
+            className="w-full bg-surface text-on-surface font-body text-sm rounded-lg px-3 py-2 placeholder:text-muted/50 outline-none focus:ring-1 focus:ring-primary/30"
+          />
+          <p className="text-xs text-muted font-body">
+            Integration available in v1.0. The key is stored locally for now.
+          </p>
+        </div>
+
+        {/* OBS WebSocket (placeholder) */}
+        <div className="bg-surface-elevate rounded-xl p-5 mt-3 flex flex-col gap-3">
+          <div className="flex items-center justify-between">
+            <span className="text-sm font-display text-on-surface">OBS WebSocket</span>
+            <span className="text-xs font-display text-muted bg-surface px-2 py-0.5 rounded">
+              v1.0
+            </span>
+          </div>
+          <input
+            type="password"
+            value={settings.obs_ws_password ?? ""}
+            placeholder="WebSocket password"
+            onChange={(e) =>
+              update({ obs_ws_password: e.target.value || null })
+            }
+            className="w-full bg-surface text-on-surface font-body text-sm rounded-lg px-3 py-2 placeholder:text-muted/50 outline-none focus:ring-1 focus:ring-primary/30"
+          />
+          <div className="flex items-center justify-between">
+            <span className="text-sm font-body text-on-surface">Port</span>
+            <input
+              type="number"
+              min={1024}
+              max={65535}
+              value={settings.obs_ws_port}
+              onChange={(e) => {
+                const port = Number(e.target.value);
+                if (Number.isFinite(port) && port >= 1024 && port <= 65535) {
+                  update({ obs_ws_port: port });
+                }
+              }}
+              className="w-24 bg-surface text-on-surface font-display text-sm rounded-lg px-3 py-1.5 border-none outline-none"
+            />
+          </div>
+          <p className="text-xs text-muted font-body">
+            Integration available in v1.0. Settings are stored locally for now.
+          </p>
         </div>
       </section>
     </div>
