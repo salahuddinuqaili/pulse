@@ -38,6 +38,15 @@ interface McpStatus {
   port: number;
 }
 
+type PresentMonStatus =
+  | { status: "not_installed" }
+  | { status: "downloading"; bytes_downloaded: number; bytes_total: number }
+  | { status: "installed"; version: string }
+  | { status: "failed"; error: string };
+
+const PRESENTMON_SOURCE_URL =
+  "https://github.com/GameTechDev/PresentMon/releases/tag/v2.4.1";
+
 const DEFAULT_NOTIFICATIONS: NotificationSettings = {
   enabled: true,
   vram_threshold_pct: 90,
@@ -75,6 +84,10 @@ export function Settings() {
   const [mcpStatus, setMcpStatus] = useState<McpStatus | null>(null);
   const [mcpError, setMcpError] = useState<string | null>(null);
   const [endpointCopied, setEndpointCopied] = useState(false);
+  const [presentMonStatus, setPresentMonStatus] = useState<PresentMonStatus>({
+    status: "not_installed",
+  });
+  const [presentMonBusy, setPresentMonBusy] = useState(false);
 
   useEffect(() => {
     invoke<Settings>("get_settings")
@@ -86,6 +99,33 @@ export function Settings() {
     invoke<McpStatus>("get_mcp_status")
       .then(setMcpStatus)
       .catch((e) => console.error("Failed to fetch MCP status:", e));
+    invoke<PresentMonStatus>("get_presentmon_status")
+      .then(setPresentMonStatus)
+      .catch((e) => console.error("Failed to fetch PresentMon status:", e));
+  }, []);
+
+  const downloadPresentMon = useCallback(async () => {
+    setPresentMonBusy(true);
+    try {
+      const status = await invoke<PresentMonStatus>("download_presentmon");
+      setPresentMonStatus(status);
+    } catch (e) {
+      setPresentMonStatus({ status: "failed", error: String(e) });
+    } finally {
+      setPresentMonBusy(false);
+    }
+  }, []);
+
+  const removePresentMon = useCallback(async () => {
+    setPresentMonBusy(true);
+    try {
+      await invoke("delete_presentmon");
+      setPresentMonStatus({ status: "not_installed" });
+    } catch (e) {
+      console.error("Failed to remove PresentMon:", e);
+    } finally {
+      setPresentMonBusy(false);
+    }
   }, []);
 
   const save = useCallback(async (updated: Settings) => {
@@ -426,6 +466,77 @@ export function Settings() {
         </div>
       </section>
 
+      {/* FPS Tracking (PresentMon download manager) */}
+      <section>
+        <h2 className="text-xs font-display text-muted uppercase tracking-wider mb-3">
+          FPS Tracking
+        </h2>
+        <div className="bg-surface-elevate rounded-xl p-5 flex flex-col gap-4">
+          <div className="flex items-start justify-between gap-4">
+            <div className="flex flex-col gap-1 min-w-0">
+              <span className="text-sm font-display text-on-surface">PresentMon</span>
+              <span className="text-xs font-body text-muted leading-relaxed">
+                In-game FPS, frame time, and 1%/0.1% lows are powered by Intel's
+                PresentMon. Pulse downloads it on demand from the official Intel
+                GitHub release, verifies the SHA-256, and stores it under
+                <code className="mx-1 px-1 py-0.5 bg-surface rounded text-[10px]">
+                  %APPDATA%/Pulse/bin/
+                </code>
+                . MIT-licensed, ~1 MB.
+              </span>
+            </div>
+            <PresentMonStatusPill status={presentMonStatus} />
+          </div>
+
+          {presentMonStatus.status === "failed" && (
+            <div className="text-xs text-warning font-body bg-warning/10 rounded-lg p-3">
+              {presentMonStatus.error}
+            </div>
+          )}
+
+          <div className="flex flex-wrap items-center gap-3">
+            {presentMonStatus.status === "not_installed" && (
+              <button
+                onClick={downloadPresentMon}
+                disabled={presentMonBusy}
+                className="px-4 py-2 bg-primary/15 text-primary font-display text-sm rounded-lg hover:bg-primary/25 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+              >
+                {presentMonBusy ? "Downloading..." : "Download PresentMon"}
+              </button>
+            )}
+            {presentMonStatus.status === "downloading" && (
+              <span className="text-xs font-display text-muted">Downloading...</span>
+            )}
+            {presentMonStatus.status === "installed" && (
+              <button
+                onClick={removePresentMon}
+                disabled={presentMonBusy}
+                className="px-3 py-1.5 bg-surface text-muted hover:text-warning font-display text-xs rounded-lg transition-colors"
+              >
+                Remove
+              </button>
+            )}
+            {presentMonStatus.status === "failed" && (
+              <button
+                onClick={downloadPresentMon}
+                disabled={presentMonBusy}
+                className="px-4 py-2 bg-primary/15 text-primary font-display text-sm rounded-lg hover:bg-primary/25 disabled:opacity-40 transition-colors"
+              >
+                Retry download
+              </button>
+            )}
+            <a
+              href={PRESENTMON_SOURCE_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs font-display text-muted hover:text-on-surface transition-colors"
+            >
+              View source release →
+            </a>
+          </div>
+        </div>
+      </section>
+
       {/* Custom Process Classification */}
       <section>
         <h2 className="text-xs font-display text-muted uppercase tracking-wider mb-3">
@@ -587,6 +698,40 @@ export function Settings() {
       </section>
     </div>
   );
+}
+
+function PresentMonStatusPill({ status }: { status: PresentMonStatus }) {
+  switch (status.status) {
+    case "installed":
+      return (
+        <span className="flex items-center gap-1.5 text-xs font-display text-primary whitespace-nowrap">
+          <span className="w-2 h-2 rounded-full bg-primary" />
+          Installed v{status.version}
+        </span>
+      );
+    case "downloading":
+      return (
+        <span className="flex items-center gap-1.5 text-xs font-display text-on-surface whitespace-nowrap">
+          <span className="w-2 h-2 rounded-full bg-on-surface animate-pulse" />
+          Downloading
+        </span>
+      );
+    case "failed":
+      return (
+        <span className="flex items-center gap-1.5 text-xs font-display text-warning whitespace-nowrap">
+          <span className="w-2 h-2 rounded-full bg-warning" />
+          Failed
+        </span>
+      );
+    case "not_installed":
+    default:
+      return (
+        <span className="flex items-center gap-1.5 text-xs font-display text-muted whitespace-nowrap">
+          <span className="w-2 h-2 rounded-full bg-muted/60" />
+          Not installed
+        </span>
+      );
+  }
 }
 
 function ToggleRow({
