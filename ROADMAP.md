@@ -51,9 +51,26 @@
 
 ---
 
+## v0.4 — "Harden Everything"
+
+**Target:** 2–3 weeks after v0.3
+**Spec:** `docs/specs/PHASE-0.4-SPEC.md`
+**Threat model:** `SECURITY.md`
+
+Security hardening pass after a review found 6 high/medium findings in v0.3. Fixes the foundation before v1.0 adds hardware writes on top.
+
+**Core deliverables:**
+- Strip command-line collection (default OFF) — closes credential leak via MCP and session recordings
+- Move Stream Deck/OBS secrets from plaintext `settings.json` into Windows Credential Manager
+- DNS rebinding protection on the MCP server (Host header allowlist) + Tauri capability scoping
+- Hardware-write privilege model: detect non-admin, "Restart as administrator" UX (privilege-separated helper process committed for v1.1)
+- `IntegrityFile<T>` HMAC-SHA256 primitive (used by v1.0's `restore.json`), `cargo-audit` and `npm audit` gates in CI
+
+---
+
 ## v1.0 — "Control Everything"
 
-**Target:** 3–4 months after v0.3
+**Target:** 3–4 months after v0.4
 
 **Core deliverables:**
 - Hardware tuning (fan curves, clock offsets, power limits) — first version with GPU write operations
