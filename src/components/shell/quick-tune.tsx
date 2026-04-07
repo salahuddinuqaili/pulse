@@ -1,6 +1,7 @@
 import { useProfileStore } from "../../stores/profile-store";
 import { useUiStore } from "../../stores/ui-store";
 import { useGpuStore } from "../../stores/gpu-store";
+import { Recommendations } from "./recommendations";
 
 export function QuickTune() {
   const expanded = useUiStore((s) => s.rightSidebarExpanded);
@@ -59,14 +60,11 @@ export function QuickTune() {
             </div>
           </div>
 
-          {/* v0.2+ controls placeholder */}
-          <div className="mt-auto pb-4">
-            <h3 className="text-xs font-display text-muted uppercase tracking-wider mb-2">
-              Quick Actions
+          <div>
+            <h3 className="text-xs font-display text-muted uppercase tracking-wider mb-3">
+              Recommendations
             </h3>
-            <div className="text-xs text-muted font-body opacity-50">
-              Silent Mode, Max Fans, Clear VRAM — coming in v0.2
-            </div>
+            <Recommendations />
           </div>
         </div>
       )}
