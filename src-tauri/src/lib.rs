@@ -1,5 +1,7 @@
 mod classify;
 mod commands;
+mod mcp;
+mod mcp_handler;
 mod notifications;
 mod nvml;
 mod poller;
@@ -32,6 +34,7 @@ pub fn run() {
     // Single shared state — poller and commands both use the same Arc<AppState>
     let app_state = Arc::new(state::AppState::new(nvml_available));
     let poller_state = app_state.clone();
+    let mcp_app_state = app_state.clone();
 
     tauri::Builder::default()
         .plugin(tauri_plugin_shell::init())
@@ -52,6 +55,19 @@ pub fn run() {
             // Notification manager — shared with poller for threshold alerts
             let notification_mgr = Arc::new(notifications::NotificationManager::new());
             app.manage(notification_mgr.clone());
+
+            // MCP server — opt-in via settings.mcp_enabled
+            let mcp_server = Arc::new(mcp::McpServer::new(saved.mcp_port));
+            app.manage(mcp_server.clone());
+            if saved.mcp_enabled {
+                let mcp_clone = mcp_server.clone();
+                let mcp_state = mcp_app_state.clone();
+                tauri::async_runtime::spawn(async move {
+                    if let Err(e) = mcp_clone.start(mcp_state).await {
+                        warn!("Failed to start MCP server at boot: {e}");
+                    }
+                });
+            }
 
             // Initialise session recording
             let sessions_dir = app.path().app_data_dir()
@@ -101,6 +117,9 @@ pub fn run() {
             commands::delete_session,
             commands::list_sessions_in_range,
             commands::get_recommendations,
+            commands::toggle_mcp,
+            commands::get_mcp_status,
+            commands::set_mcp_port,
         ])
         .run(tauri::generate_context!())
         .expect("Failed to run Pulse");

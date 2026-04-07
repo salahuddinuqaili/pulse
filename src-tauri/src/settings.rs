@@ -19,6 +19,18 @@ pub struct Settings {
     pub custom_game_processes: Vec<String>,
     #[serde(default)]
     pub notifications: NotificationSettings,
+    #[serde(default = "default_mcp_enabled")]
+    pub mcp_enabled: bool,
+    #[serde(default = "default_mcp_port")]
+    pub mcp_port: u16,
+}
+
+fn default_mcp_enabled() -> bool {
+    false
+}
+
+fn default_mcp_port() -> u16 {
+    9426
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -62,6 +74,8 @@ impl Default for Settings {
             custom_ai_processes: Vec::new(),
             custom_game_processes: Vec::new(),
             notifications: NotificationSettings::default(),
+            mcp_enabled: default_mcp_enabled(),
+            mcp_port: default_mcp_port(),
         }
     }
 }
