@@ -2,6 +2,7 @@ use std::sync::Arc;
 
 use tauri::State;
 
+use crate::mcp::{McpServer, McpStatus};
 use crate::recommendations::{self, ProfileMode, Recommendation};
 use crate::session::{SessionIndex, SessionRecorder};
 use crate::settings::{Settings, SettingsManager};
@@ -107,6 +108,51 @@ pub fn list_sessions_in_range(
     end_ms: u64,
 ) -> Result<Vec<SessionMetadata>, String> {
     index.list_sessions_in_range(start_ms, end_ms)
+}
+
+/// Toggle the MCP server on/off. Persists the new state to settings.
+#[tauri::command]
+pub async fn toggle_mcp(
+    mcp: State<'_, Arc<McpServer>>,
+    state: State<'_, Arc<AppState>>,
+    settings_mgr: State<'_, Arc<SettingsManager>>,
+    enabled: bool,
+) -> Result<McpStatus, String> {
+    let mcp = mcp.inner().clone();
+    let state = state.inner().clone();
+
+    if enabled {
+        mcp.start(state).await?;
+    } else {
+        mcp.stop();
+    }
+
+    // Persist new state to settings
+    let mut current = settings_mgr.get();
+    current.mcp_enabled = enabled;
+    settings_mgr.update(current)?;
+
+    Ok(mcp.status())
+}
+
+/// Get current MCP server status (running, endpoint URL, port).
+#[tauri::command]
+pub fn get_mcp_status(mcp: State<Arc<McpServer>>) -> McpStatus {
+    mcp.status()
+}
+
+/// Set the MCP server port. Only allowed while the server is stopped.
+/// Persists to settings.json so the new port is honoured on next start.
+#[tauri::command]
+pub fn set_mcp_port(
+    mcp: State<Arc<McpServer>>,
+    settings_mgr: State<Arc<SettingsManager>>,
+    port: u16,
+) -> Result<(), String> {
+    mcp.set_port(port)?;
+    let mut current = settings_mgr.get();
+    current.mcp_port = port;
+    settings_mgr.update(current)
 }
 
 /// Get smart workload recommendations based on the current GPU snapshot.
