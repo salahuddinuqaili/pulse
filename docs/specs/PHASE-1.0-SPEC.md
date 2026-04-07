@@ -1,11 +1,14 @@
 # PHASE-1.0 Implementation Spec — "Control Everything"
 
-**Status:** Ready for implementation
-**Prerequisite:** Phase 0.3 shipped, **CI green** (see Prerequisites section)
+**Status:** Ready for implementation **after Phase 0.4 ships**
+**Prerequisite:** Phase 0.4 shipped (security hardening + privilege model), **CI green** (see Prerequisites section)
 **Branch pattern:** `feat/phase-1.0-*` (one branch per deliverable, PR to main)
 **Decisions logged in:** `DECISIONS.md`
+**Threat model:** `SECURITY.md`
 
 This phase introduces Pulse's first hardware-write operations. The architecture is built around a **single safety primitive** (the `HardwareWriteGuard`) that every write goes through. Multi-GPU support lands first so that every later deliverable is multi-GPU-aware from day one.
+
+**Critical dependency on Phase 0.4:** The privilege model (`is_elevated()` detection + restart-as-admin), the `IntegrityFile<T>` primitive (used by `restore.json`), and the MCP/secret hardening all land in Phase 0.4. Phase 1.0 builds on top of those primitives — it does not redefine them. If you're reading this spec without having read PHASE-0.4-SPEC.md, stop and read that first.
 
 ---
 
@@ -26,9 +29,10 @@ This phase introduces Pulse's first hardware-write operations. The architecture 
 
 Before D1 work begins:
 
-1. **CI must be green on `main`.** Currently red since Phase 0.2 because `tauri.conf.json` declares `resources/PresentMon-*-x64.exe` as a bundled resource and the binary isn't in the repo. Multi-GPU is a high-blast-radius refactor — you need CI as a tripwire. **Fix shipped separately as `fix/ci-presentmon-resource`** before D1 starts.
-2. **Phase 0.3 manually verified on hardware.** Notifications fire, MCP server responds to `curl`, recommendations match the running profile.
-3. **GitHub Release `v0.3.0` cut.** Gives users a stable "before-1.0" baseline they can roll back to if a Phase 1.0 deliverable destabilises something.
+1. **Phase 0.4 shipped and merged to main.** This is non-negotiable. Phase 1.0 depends on `is_elevated()` detection (0.4 D4), the `IntegrityFile<T>` primitive (0.4 D5), command-line stripping (0.4 D1), and the hardened MCP server (0.4 D3). Implementing Phase 1.0 against an un-hardened 0.3 would re-introduce the very findings 0.4 closes.
+2. **CI must be green on `main`.** Currently red since Phase 0.2 because `tauri.conf.json` declares `resources/PresentMon-*-x64.exe` as a bundled resource and the binary isn't in the repo. Multi-GPU is a high-blast-radius refactor — you need CI as a tripwire. **Fix shipped separately as `fix/ci-presentmon-resource`** before Phase 0.4 starts.
+3. **Phase 0.3 manually verified on hardware.** Notifications fire, MCP server responds to `curl`, recommendations match the running profile.
+4. **GitHub Release `v0.4.0` cut.** Gives users a stable "before-1.0" baseline they can roll back to if a Phase 1.0 deliverable destabilises something. v0.4.0 is also the first release with credential leak fixes — releasing before v1.0 hardware writes means users get the privacy improvements regardless of whether they care about hardware tuning.
 
 ---
 
@@ -129,20 +133,31 @@ impl DeviceManager {
 
 This deliverable does double duty: it builds the **safety primitive** that D3 (clocks) and D4 (power) will reuse, and it ships the first user-visible hardware write — fan curve control.
 
-The safety primitive is a `HardwareWriteGuard` struct that wraps every NVML write. Before any change, it persists the current state to `%APPDATA%/Pulse/restore.json`. On clean exit, the file is deleted. On startup, if the file exists, Pulse offers to revert to the saved state (interpreted as "previous run crashed mid-write").
+The safety primitive is a `HardwareWriteGuard` struct that wraps every NVML write. Before any change, it captures the current state and persists it via the `IntegrityFile<T>` primitive (introduced in **Phase 0.4 D5**) to `%APPDATA%/Pulse/restore.json`. On clean exit, the file is deleted. On startup, if the file exists, Pulse offers to revert to the saved state (interpreted as "previous run crashed mid-write"). Because `restore.json` is HMAC-protected by 0.4's `IntegrityFile`, a corrupted or tampered file is rejected before any NVML writes happen — closing the foot-gun where auto-revert could write garbage values.
+
+**Privilege gate:** Every hardware-write entry point checks `state.is_elevated` (cached at startup by **Phase 0.4 D4**) and refuses to call NVML if false. The frontend never sees a Tuning route at all when not elevated — the elevation-required card from 0.4 D4 takes its place. This means the safety primitive only ever runs in an elevated process, and the unelevated path has no hardware-write code to audit.
+
+**Migration commitment to Option 2:** The `is_elevated()` check is the *only* coupling between Phase 1.0 hardware writes and the privilege model. When v1.1 introduces the privilege-separated helper process (Option 2 — see `DECISIONS.md` 2026-04-08), that single check is replaced by "send the write request to the helper", and the `HardwareWriteGuard` logic moves into the helper binary unchanged. No other Phase 1.0 code needs to know about the migration.
 
 ### New dependencies
 
-None. NVML write APIs are already available via `nvml-wrapper` v0.11.
+None. NVML write APIs are already available via `nvml-wrapper` v0.11. The `IntegrityFile<T>` primitive comes from Phase 0.4.
 
 ### New files
 
 **`src-tauri/src/tuning.rs`** — Hardware write primitives shared across D2/D3/D4
 
 ```rust
+use crate::integrity::IntegrityFile;  // From Phase 0.4 D5
+
 pub struct HardwareWriteGuard {
-    restore_file: PathBuf,
-    pending_writes: Mutex<Vec<PendingWrite>>,
+    restore_file: IntegrityFile<RestoreState>,
+    state: Mutex<RestoreState>,
+}
+
+#[derive(Serialize, Deserialize, Default)]
+pub struct RestoreState {
+    pub pending_writes: Vec<PendingWrite>,
 }
 
 pub enum PendingWrite {
@@ -152,8 +167,12 @@ pub enum PendingWrite {
 }
 
 impl HardwareWriteGuard {
-    pub fn new(app_data_dir: PathBuf) -> Self;
+    /// Construct from an app data dir. Initialises the IntegrityFile but
+    /// does NOT auto-revert; that requires user confirmation via
+    /// check_for_orphaned_writes + revert_orphaned.
+    pub fn new(app_data_dir: PathBuf, integrity_key: [u8; 32]) -> Self;
 
+    /// REQUIRES: caller already verified state.is_elevated == true.
     /// Capture current state and write it to restore.json BEFORE the change happens.
     /// Returns an error if the restore file can't be persisted — caller must abort.
     pub fn record(&self, write: PendingWrite) -> Result<(), String>;
@@ -161,10 +180,13 @@ impl HardwareWriteGuard {
     /// Called on clean app exit — clears the restore file.
     pub fn clear(&self);
 
-    /// Called on startup — returns Some(state) if a previous crash left state to revert.
-    pub fn check_for_orphaned_writes(&self) -> Option<Vec<PendingWrite>>;
+    /// Called on startup. Returns Some(state) if a previous crash left state to revert.
+    /// Returns Err if the restore file exists but failed HMAC validation
+    /// (caller should warn the user and refuse to auto-revert garbage).
+    pub fn check_for_orphaned_writes(&self) -> Result<Option<RestoreState>, String>;
 
     /// Apply all pending writes from a previous crash. Called after user confirmation.
+    /// REQUIRES: caller already verified state.is_elevated == true.
     pub fn revert_orphaned(&self, state: Arc<DeviceManager>) -> Result<(), String>;
 }
 ```
