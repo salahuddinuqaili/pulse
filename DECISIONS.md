@@ -7,6 +7,8 @@ Format: `YYYY-MM-DD | Decision | Why | What was rejected`
 
 <!-- Newest entries at the top -->
 
+2026-04-08 | PresentMon download-on-demand instead of installer bundling | Pulse no longer ships PresentMon in the installer. User opts in via Settings → FPS Tracking, Pulse downloads pinned v2.4.1 from Intel/GameTechDev releases, verifies SHA-256 against `d74183e7ae630f72cd3690be0373ecbfdc6cbb86578148aab8fa2a7166068f34`, and only installs the binary if the hash matches. Closes SECURITY F-14. Smaller installer, no third-party binary in git, explicit user consent. | A: Commit binary to repo (no integrity verification, supply-chain risk if repo compromised, +927KB git history); B: Download in CI workflow (still ships unverified binary in installer); auto-update model (out of scope for v0.4)
+
 2026-04-08 | Phase 0.4 inserted between 0.3 and 1.0 | Security review found 6 high/medium findings (credential leak via cmd lines, plaintext API keys, MCP DNS rebinding, undecided privilege model, capability over-grant, restore.json tamper risk). Fix the foundation before adding hardware writes on top. | Folding fixes into 1.0 (less coherent release narrative, hardware writes blocked until security work done anyway)
 
 2026-04-08 | Hardware-write privilege model: Option 1 in 0.4, commit to Option 2 in v1.1 | Detect non-admin and offer "Restart as administrator" UX. Single binary, no code signing required, ships in days not weeks. Migration to privilege-separated helper process (Option 2) is committed for v1.1 once Authenticode signing infrastructure is in place. | Option 2 in 0.4 (no signing yet, 1-2 weeks extra effort), Option 3 always-admin (terrible UX, elevates entire app including MCP server)

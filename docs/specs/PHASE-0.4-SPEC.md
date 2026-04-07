@@ -29,11 +29,84 @@ Each deliverable in this spec maps directly to one or more findings in `SECURITY
 
 | # | Deliverable | Branch | Risk | Findings addressed |
 |---|---|---|---|---|
+| **D0** | **PresentMon download manager (already implemented in spec PR)** | `docs/phase-1.0-spec` | Low (already shipped) | **F-14** |
 | D1 | Strip command-line collection | `feat/phase-0.4-strip-cmdlines` | Low | F-01 |
 | D2 | OS keyring for secret storage | `feat/phase-0.4-keyring` | Medium (new dep, migration) | F-02 |
 | D3 | MCP Host validation + capability scoping | `feat/phase-0.4-mcp-hardening` | Low | F-03, F-05 |
 | D4 | Hardware-write privilege detection | `feat/phase-0.4-privilege-model` | Medium (Windows-specific) | F-04 |
 | D5 | Integrity primitive + audit gates | `feat/phase-0.4-integrity-audit` | Low | F-06, F-09, F-10 |
+
+**Note on D0:** The PresentMon download manager was originally going to be part of Phase 0.4 D5 (or a future v0.5), but it was implemented as part of the spec PR itself because it doubles as the CI fix (the failing PresentMon resource glob). It's listed as D0 here so the deliverable is documented, but no separate branch or PR exists — it's already merged via the spec PR alongside SECURITY.md and the Phase 0.4 spec.
+
+---
+
+## D0: PresentMon Download Manager (already implemented)
+
+### Status
+
+Implemented in the spec PR (`docs/phase-1.0-spec`). Listed here as D0 so it's documented as part of Phase 0.4's security work, but no separate branch exists — it shipped alongside this spec to also serve as the CI fix.
+
+### Approach
+
+PresentMon is no longer bundled in the Pulse installer. Instead:
+
+1. The user opts in via Settings → FPS Tracking → "Download PresentMon"
+2. Pulse downloads the pinned v2.4.1 binary from `https://github.com/GameTechDev/PresentMon/releases/download/v2.4.1/PresentMon-2.4.1-x64.exe`
+3. The download is held entirely in memory until SHA-256 verification
+4. Verified bytes are written to `<APPDATA>/Pulse/bin/PresentMon-2.4.1-x64.exe.partial`, then atomically renamed
+5. `presentmon.rs` resolves the binary path lazily on each `start()` call so a download completing mid-session is picked up without restart
+
+### Why download instead of bundle
+
+- **Smaller installer** — saves ~1 MB per release; matters for the 15 MB cap in `release.yml`
+- **No third-party binary in git** — Pulse repo stays text-only
+- **Cryptographic verification** — every install is checked against `PRESENTMON_SHA256` constant
+- **Explicit user consent** — users see what they're downloading and from where
+- **Closes a real attack surface** — if the Pulse repo were compromised, an attacker could replace a bundled PresentMon with a malicious binary that runs every time a game is detected
+
+### Files (already shipped)
+
+- **New:** `src-tauri/src/presentmon_download.rs` — `PresentMonDownloadManager` with `download` / `delete` / `status` methods. Constants for version, URL, SHA-256, expected size. 6 unit tests.
+- **Modified:** `src-tauri/src/presentmon.rs` — takes `Arc<PresentMonDownloadManager>` instead of `resource_dir`, resolves binary path lazily on each `start()`
+- **Modified:** `src-tauri/src/lib.rs` — instantiates `PresentMonDownloadManager` at boot, manages as Tauri state, registers download commands
+- **Modified:** `src-tauri/src/commands.rs` — `get_presentmon_status`, `download_presentmon`, `delete_presentmon` Tauri commands
+- **Modified:** `src-tauri/Cargo.toml` — explicit `reqwest` (rustls-tls) and `sha2` deps
+- **Modified:** `src-tauri/tauri.conf.json` — removed `resources/PresentMon-*-x64.exe` from the bundle resources glob (the CI fix)
+- **Modified:** `src/routes/settings.tsx` — new "FPS Tracking" section with status pill, download/remove buttons, source URL link
+- **Modified:** `src/components/gaming/fps-counter.tsx` — Gaming Profile screen shows a hint pointing to Settings when FPS is null and PresentMon isn't installed
+
+### Bumping the pinned version
+
+To update to a future PresentMon release:
+
+1. Get the new asset URL from `https://github.com/GameTechDev/PresentMon/releases`
+2. Download it locally and compute `sha256sum PresentMon-X.Y.Z-x64.exe`
+3. Update the four constants in `presentmon_download.rs`: `PRESENTMON_VERSION`, `PRESENTMON_FILENAME`, `PRESENTMON_URL`, `PRESENTMON_SHA256`
+4. Update `PRESENTMON_EXPECTED_SIZE` to the new byte count
+5. Document the bump in `DECISIONS.md`
+6. PR + CI run
+
+### Security rationale
+
+Closes **F-14** (bundled binary supply-chain risk). Establishes the pattern Pulse will use for any future bundled-binary needs (downloads from a pinned URL, hash verified, fail closed on mismatch).
+
+### Test plan
+
+- [x] Unit: `manager_initial_status_is_not_installed_when_dir_empty`
+- [x] Unit: `manager_detects_pre_existing_install`
+- [x] Unit: `delete_removes_binary_and_resets_status`
+- [x] Unit: `delete_is_idempotent_when_no_binary`
+- [x] Unit: `pinned_constants_are_consistent` (filename + URL agree, hash is valid hex)
+- [x] Unit: `hex_encode_matches_known_value` (sanity check on the hex encoder)
+- [x] `cargo clippy -- -D warnings` clean
+- [x] `cargo test` passes (44 tests, 6 new)
+- [x] `npm run build` succeeds
+- [ ] Manual: fresh install → Settings shows "Not installed" → click Download → status pill goes Downloading → Installed
+- [ ] Manual: Gaming Profile shows the opt-in hint when FPS is null and PresentMon not installed
+- [ ] Manual: hint disappears once PresentMon is installed
+- [ ] Manual: Remove button clears the binary and resets status
+- [ ] Manual: simulate a network failure (disconnect wifi) → download fails cleanly with error displayed in Settings
+- [ ] Manual: tamper test (manually corrupt the partial download mid-flight) — would require a test fixture with a deliberately bad hash; deferred to a future testing pass
 
 ---
 
