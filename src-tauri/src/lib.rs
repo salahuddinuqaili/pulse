@@ -1,5 +1,6 @@
 mod classify;
 mod commands;
+mod notifications;
 mod nvml;
 mod poller;
 mod presentmon;
@@ -33,6 +34,7 @@ pub fn run() {
 
     tauri::Builder::default()
         .plugin(tauri_plugin_shell::init())
+        .plugin(tauri_plugin_notification::init())
         .manage(app_state)
         .setup(move |app| {
             // Initialise settings from %APPDATA%/Pulse/settings.json
@@ -44,7 +46,11 @@ pub fn run() {
             let saved = settings_mgr.get();
             poller_state.set_polling_interval(saved.polling_interval_ms.clamp(100, 5000));
 
-            app.manage(settings_mgr);
+            app.manage(settings_mgr.clone());
+
+            // Notification manager — shared with poller for threshold alerts
+            let notification_mgr = Arc::new(notifications::NotificationManager::new());
+            app.manage(notification_mgr.clone());
 
             // Initialise session recording
             let sessions_dir = app.path().app_data_dir()
@@ -69,7 +75,14 @@ pub fn run() {
                 let presentmon_mgr = std::sync::Arc::new(
                     presentmon::PresentMonManager::new(resource_dir),
                 );
-                poller::start_polling(handle, poller_state, presentmon_mgr, session_recorder);
+                poller::start_polling(
+                    handle,
+                    poller_state,
+                    presentmon_mgr,
+                    session_recorder,
+                    notification_mgr,
+                    settings_mgr,
+                );
             }
             Ok(())
         })

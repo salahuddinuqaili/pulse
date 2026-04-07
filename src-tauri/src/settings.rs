@@ -17,6 +17,35 @@ pub struct Settings {
     pub compact_overlay_on_minimize: bool,
     pub custom_ai_processes: Vec<String>,
     pub custom_game_processes: Vec<String>,
+    #[serde(default)]
+    pub notifications: NotificationSettings,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct NotificationSettings {
+    pub enabled: bool,
+    pub vram_threshold_pct: u8,
+    pub vram_alert: bool,
+    pub temp_warning_alert: bool,
+    pub temp_critical_alert: bool,
+    pub thermal_throttle: bool,
+    pub ai_process_events: bool,
+    pub cooldown_secs: u64,
+}
+
+impl Default for NotificationSettings {
+    fn default() -> Self {
+        Self {
+            enabled: true,
+            vram_threshold_pct: 90,
+            vram_alert: true,
+            temp_warning_alert: true,
+            temp_critical_alert: true,
+            thermal_throttle: true,
+            ai_process_events: true,
+            cooldown_secs: 60,
+        }
+    }
 }
 
 impl Default for Settings {
@@ -32,6 +61,7 @@ impl Default for Settings {
             compact_overlay_on_minimize: true,
             custom_ai_processes: Vec::new(),
             custom_game_processes: Vec::new(),
+            notifications: NotificationSettings::default(),
         }
     }
 }

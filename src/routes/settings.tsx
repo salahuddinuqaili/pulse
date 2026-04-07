@@ -2,6 +2,17 @@ import { useEffect, useState, useCallback } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import * as Slider from "@radix-ui/react-slider";
 
+interface NotificationSettings {
+  enabled: boolean;
+  vram_threshold_pct: number;
+  vram_alert: boolean;
+  temp_warning_alert: boolean;
+  temp_critical_alert: boolean;
+  thermal_throttle: boolean;
+  ai_process_events: boolean;
+  cooldown_secs: number;
+}
+
 interface Settings {
   theme: string;
   polling_interval_ms: number;
@@ -13,7 +24,19 @@ interface Settings {
   compact_overlay_on_minimize: boolean;
   custom_ai_processes: string[];
   custom_game_processes: string[];
+  notifications: NotificationSettings;
 }
+
+const DEFAULT_NOTIFICATIONS: NotificationSettings = {
+  enabled: true,
+  vram_threshold_pct: 90,
+  vram_alert: true,
+  temp_warning_alert: true,
+  temp_critical_alert: true,
+  thermal_throttle: true,
+  ai_process_events: true,
+  cooldown_secs: 60,
+};
 
 const DEFAULT_SETTINGS: Settings = {
   theme: "Dark",
@@ -26,6 +49,7 @@ const DEFAULT_SETTINGS: Settings = {
   compact_overlay_on_minimize: true,
   custom_ai_processes: [],
   custom_game_processes: [],
+  notifications: DEFAULT_NOTIFICATIONS,
 };
 
 export function Settings() {
@@ -58,6 +82,17 @@ export function Settings() {
   const update = useCallback(
     (patch: Partial<Settings>) => {
       const updated = { ...settings, ...patch };
+      save(updated);
+    },
+    [settings, save],
+  );
+
+  const updateNotifications = useCallback(
+    (patch: Partial<NotificationSettings>) => {
+      const updated = {
+        ...settings,
+        notifications: { ...settings.notifications, ...patch },
+      };
       save(updated);
     },
     [settings, save],
@@ -221,6 +256,111 @@ export function Settings() {
             enabled={settings.compact_overlay_on_minimize}
             onToggle={(v) => update({ compact_overlay_on_minimize: v })}
           />
+        </div>
+      </section>
+
+      {/* Notifications */}
+      <section>
+        <h2 className="text-xs font-display text-muted uppercase tracking-wider mb-3">
+          Notifications
+        </h2>
+        <div className="bg-surface-elevate rounded-xl p-5 flex flex-col gap-5">
+          <ToggleRow
+            label="Enable notifications"
+            enabled={settings.notifications.enabled}
+            onToggle={(v) => updateNotifications({ enabled: v })}
+          />
+
+          <div
+            className={`flex flex-col gap-5 ${
+              settings.notifications.enabled ? "" : "opacity-40 pointer-events-none"
+            }`}
+          >
+            <div className="border-t border-surface-highest/20" />
+
+            <ToggleRow
+              label="VRAM pressure"
+              enabled={settings.notifications.vram_alert}
+              onToggle={(v) => updateNotifications({ vram_alert: v })}
+            />
+
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm font-body text-on-surface">VRAM threshold</span>
+                <span className="font-display text-sm text-primary">
+                  {settings.notifications.vram_threshold_pct}%
+                </span>
+              </div>
+              <Slider.Root
+                className="relative flex items-center select-none touch-none w-full h-5"
+                value={[settings.notifications.vram_threshold_pct]}
+                min={50}
+                max={99}
+                step={1}
+                onValueChange={([v]) => updateNotifications({ vram_threshold_pct: v })}
+              >
+                <Slider.Track className="bg-surface relative grow rounded-full h-1.5">
+                  <Slider.Range className="absolute bg-primary rounded-full h-full" />
+                </Slider.Track>
+                <Slider.Thumb className="block w-4 h-4 bg-primary rounded-full shadow-[0_0_8px_rgba(0,255,102,0.4)] hover:bg-primary/90 focus:outline-none cursor-pointer" />
+              </Slider.Root>
+              <div className="flex justify-between text-xs text-muted font-display mt-1">
+                <span>50%</span>
+                <span>99%</span>
+              </div>
+            </div>
+
+            <div className="border-t border-surface-highest/20" />
+
+            <ToggleRow
+              label="Temperature warning"
+              enabled={settings.notifications.temp_warning_alert}
+              onToggle={(v) => updateNotifications({ temp_warning_alert: v })}
+            />
+            <ToggleRow
+              label="Temperature critical"
+              enabled={settings.notifications.temp_critical_alert}
+              onToggle={(v) => updateNotifications({ temp_critical_alert: v })}
+            />
+            <ToggleRow
+              label="Thermal throttling detected"
+              enabled={settings.notifications.thermal_throttle}
+              onToggle={(v) => updateNotifications({ thermal_throttle: v })}
+            />
+            <ToggleRow
+              label="AI process started / stopped"
+              enabled={settings.notifications.ai_process_events}
+              onToggle={(v) => updateNotifications({ ai_process_events: v })}
+            />
+
+            <div className="border-t border-surface-highest/20" />
+
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm font-body text-on-surface">Cooldown</span>
+                <span className="font-display text-sm text-on-surface">
+                  {settings.notifications.cooldown_secs}s
+                </span>
+              </div>
+              <Slider.Root
+                className="relative flex items-center select-none touch-none w-full h-5"
+                value={[settings.notifications.cooldown_secs]}
+                min={10}
+                max={300}
+                step={5}
+                onValueChange={([v]) => updateNotifications({ cooldown_secs: v })}
+              >
+                <Slider.Track className="bg-surface relative grow rounded-full h-1.5">
+                  <Slider.Range className="absolute bg-primary rounded-full h-full" />
+                </Slider.Track>
+                <Slider.Thumb className="block w-4 h-4 bg-primary rounded-full shadow-[0_0_8px_rgba(0,255,102,0.4)] hover:bg-primary/90 focus:outline-none cursor-pointer" />
+              </Slider.Root>
+              <div className="flex justify-between text-xs text-muted font-display mt-1">
+                <span>10s</span>
+                <span>300s</span>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
