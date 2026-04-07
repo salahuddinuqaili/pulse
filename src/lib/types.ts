@@ -76,3 +76,18 @@ export interface SessionAggregates {
 }
 
 export type MonitoringProfile = "gaming" | "ai";
+
+export type ProfileMode = "gaming" | "ai" | "gaming+ai" | "idle";
+
+export type RecommendationCategory =
+  | "model_fit"
+  | "texture_budget"
+  | "warning"
+  | "optimization";
+
+export interface Recommendation {
+  category: RecommendationCategory;
+  title: string;
+  description: string;
+  confidence: number;
+}

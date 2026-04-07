@@ -5,6 +5,7 @@ mod nvml;
 mod poller;
 mod presentmon;
 mod process;
+mod recommendations;
 mod session;
 mod settings;
 mod state;
@@ -99,6 +100,7 @@ pub fn run() {
             commands::load_session,
             commands::delete_session,
             commands::list_sessions_in_range,
+            commands::get_recommendations,
         ])
         .run(tauri::generate_context!())
         .expect("Failed to run Pulse");

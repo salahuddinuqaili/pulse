@@ -2,6 +2,7 @@ use std::sync::Arc;
 
 use tauri::State;
 
+use crate::recommendations::{self, ProfileMode, Recommendation};
 use crate::session::{SessionIndex, SessionRecorder};
 use crate::settings::{Settings, SettingsManager};
 use crate::state::AppState;
@@ -106,6 +107,19 @@ pub fn list_sessions_in_range(
     end_ms: u64,
 ) -> Result<Vec<SessionMetadata>, String> {
     index.list_sessions_in_range(start_ms, end_ms)
+}
+
+/// Get smart workload recommendations based on the current GPU snapshot.
+/// The profile mode is auto-detected from the running processes.
+#[tauri::command]
+pub fn get_recommendations(state: State<Arc<AppState>>) -> Vec<Recommendation> {
+    let snapshot = state.get_snapshot();
+    let mode = ProfileMode::detect(&snapshot.processes);
+    recommendations::generate_recommendations(
+        snapshot.vram_free_mb,
+        snapshot.vram_total_mb,
+        mode,
+    )
 }
 
 /// Toggle the compact overlay window.
