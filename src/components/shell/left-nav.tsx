@@ -4,9 +4,10 @@ import { useUiStore } from "../../stores/ui-store";
 const NAV_ITEMS = [
   { label: "Dashboard", path: "/", icon: "dashboard", enabled: true },
   { label: "AI Workload", path: "/ai-workload", icon: "ai", enabled: true },
-  { label: "Settings", path: "/settings", icon: "settings", enabled: true },
+  { label: "VRAM Planner", path: "/vram-planner", icon: "calculator", enabled: true },
   { label: "Gaming Profile", path: "/gaming", icon: "gamepad", enabled: true },
   { label: "Analytics", path: "/analytics", icon: "chart", enabled: true },
+  { label: "Settings", path: "/settings", icon: "settings", enabled: true },
 ];
 
 export function LeftNav() {
@@ -94,6 +95,14 @@ function NavIcon({ name }: { name: string }) {
     chart: (
       <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
         <line x1="18" y1="20" x2="18" y2="10" /><line x1="12" y1="20" x2="12" y2="4" /><line x1="6" y1="20" x2="6" y2="14" />
+      </svg>
+    ),
+    calculator: (
+      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+        <rect x="4" y="3" width="16" height="18" rx="2" />
+        <line x1="8" y1="7" x2="16" y2="7" />
+        <line x1="8" y1="12" x2="9" y2="12" /><line x1="12" y1="12" x2="13" y2="12" /><line x1="16" y1="12" x2="16" y2="12" />
+        <line x1="8" y1="16" x2="9" y2="16" /><line x1="12" y1="16" x2="13" y2="16" /><line x1="16" y1="16" x2="16" y2="16" />
       </svg>
     ),
   };
