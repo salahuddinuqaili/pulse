@@ -67,14 +67,14 @@ export function ReplayControls({
           onClick={onClearGhost}
           className="text-xs font-display text-muted hover:text-warning transition-colors px-2 py-1 rounded hover:bg-surface-elevate"
         >
-          Clear Ghost
+          Clear Baseline
         </button>
       ) : (
         <button
           onClick={onSelectGhost}
           className="text-xs font-display text-muted hover:text-primary transition-colors px-2 py-1 rounded hover:bg-surface-elevate"
         >
-          Select Ghost
+          Compare Baseline
         </button>
       )}
 
