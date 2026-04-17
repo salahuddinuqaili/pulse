@@ -185,7 +185,6 @@ pub fn toggle_compact_overlay(app: tauri::AppHandle) -> Result<(), String> {
             .resizable(false)
             .always_on_top(true)
             .decorations(false)
-            .transparent(true)
             .skip_taskbar(true)
             .build()
             .map_err(|e| format!("Failed to create overlay: {e}"))?;
