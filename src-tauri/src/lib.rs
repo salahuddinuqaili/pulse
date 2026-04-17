@@ -86,6 +86,13 @@ pub fn run() {
                 warn!("System tray setup failed: {e}");
             }
 
+            // Hide main window if "start minimized to tray" is enabled
+            if saved.start_minimized {
+                if let Some(window) = app.get_webview_window("main") {
+                    let _ = window.hide();
+                }
+            }
+
             if nvml_available {
                 let handle = app.handle().clone();
                 let resource_dir = app.path().resource_dir().ok();
