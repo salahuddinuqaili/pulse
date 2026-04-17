@@ -26,6 +26,7 @@ pub fn setup_tray(app: &tauri::App) -> Result<(), Box<dyn std::error::Error>> {
         .icon(icon)
         .tooltip("Pulse — GPU Monitor")
         .menu(&menu)
+        .show_menu_on_left_click(false)
         .on_menu_event(|app, event| {
             match event.id().as_ref() {
                 "show" => restore_main_window(app),
