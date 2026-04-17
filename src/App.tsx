@@ -1,6 +1,9 @@
+import { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import { useGpuListener } from "./hooks/use-gpu-listener";
+import { useTheme } from "./hooks/use-theme";
+import { useProfileStore } from "./stores/profile-store";
 import { LeftNav } from "./components/shell/left-nav";
 import { Header } from "./components/shell/header";
 import { QuickTune } from "./components/shell/quick-tune";
@@ -15,6 +18,10 @@ import { CompactOverlay } from "./components/compact-overlay";
 
 export default function App() {
   useGpuListener();
+  useTheme();
+
+  const loadProfile = useProfileStore((s) => s.loadProfile);
+  useEffect(() => { loadProfile(); }, [loadProfile]);
 
   // Compact overlay window renders without shell chrome
   const isOverlay = window.location.pathname === "/overlay";

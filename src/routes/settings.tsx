@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import * as Slider from "@radix-ui/react-slider";
+import { applyTheme } from "../hooks/use-theme";
 
 interface NotificationSettings {
   enabled: boolean;
@@ -30,6 +31,7 @@ interface Settings {
   stream_deck_api_key: string | null;
   obs_ws_password: string | null;
   obs_ws_port: number;
+  active_profile: string;
 }
 
 interface McpStatus {
@@ -66,6 +68,7 @@ const DEFAULT_SETTINGS: Settings = {
   stream_deck_api_key: null,
   obs_ws_password: null,
   obs_ws_port: 4455,
+  active_profile: "gaming",
 };
 
 export function Settings() {
@@ -90,6 +93,7 @@ export function Settings() {
 
   const save = useCallback(async (updated: Settings) => {
     setSettings(updated);
+    applyTheme(updated.theme);
     setSaveStatus("saving");
     try {
       await invoke("save_settings", { settings: updated });

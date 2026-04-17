@@ -1,15 +1,35 @@
 import { create } from "zustand";
+import { invoke } from "@tauri-apps/api/core";
 
 import type { MonitoringProfile, ProcessInfo, ProfileMode } from "../lib/types";
 
 interface ProfileState {
   activeProfile: MonitoringProfile;
   setProfile: (profile: MonitoringProfile) => void;
+  loadProfile: () => Promise<void>;
 }
 
 export const useProfileStore = create<ProfileState>()((set) => ({
   activeProfile: "gaming",
-  setProfile: (profile) => set({ activeProfile: profile }),
+  setProfile: (profile) => {
+    set({ activeProfile: profile });
+    // Persist to settings
+    invoke("get_settings")
+      .then((s: unknown) =>
+        invoke("save_settings", { settings: { ...(s as Record<string, unknown>), active_profile: profile } })
+      )
+      .catch((e) => console.error("Failed to persist profile:", e));
+  },
+  loadProfile: async () => {
+    try {
+      const s = await invoke<{ active_profile?: string }>("get_settings");
+      if (s.active_profile === "gaming" || s.active_profile === "ai") {
+        set({ activeProfile: s.active_profile });
+      }
+    } catch {
+      // keep default
+    }
+  },
 }));
 
 /**
