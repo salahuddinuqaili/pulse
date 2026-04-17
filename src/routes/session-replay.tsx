@@ -14,6 +14,7 @@ export function SessionReplay() {
   const sessions = useSessionStore((s) => s.sessions);
   const loadSessions = useSessionStore((s) => s.loadSessions);
   const [showGhostPicker, setShowGhostPicker] = useState(false);
+  const [exportError, setExportError] = useState<string | null>(null);
 
   const {
     session,
@@ -42,8 +43,16 @@ export function SessionReplay() {
 
   const sessionMeta = sessions.find((s) => s.id === sessionId);
 
+  const showExportError = (msg: string) => {
+    setExportError(msg);
+    setTimeout(() => setExportError(null), 3000);
+  };
+
   const handleExportMarkdown = () => {
-    if (!sessionMeta) return;
+    if (!sessionMeta) {
+      showExportError("Session metadata still loading — try again in a moment.");
+      return;
+    }
     const agg = sessionMeta.aggregates;
     const lines = [
       "# Pulse Session Summary",
@@ -72,15 +81,21 @@ export function SessionReplay() {
   };
 
   const handleExportPng = () => {
-    const canvas = document.querySelector<HTMLCanvasElement>(
-      ".u-over + canvas, .uplot canvas"
-    );
-    if (!canvas) return;
-    const url = canvas.toDataURL("image/png");
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `pulse-session-${sessionId?.slice(0, 8)}.png`;
-    a.click();
+    const uplotEl = document.querySelector(".uplot");
+    const canvas = uplotEl?.querySelector<HTMLCanvasElement>("canvas");
+    if (!canvas) {
+      showExportError("No chart found for PNG export.");
+      return;
+    }
+    try {
+      const url = canvas.toDataURL("image/png");
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `pulse-session-${sessionId?.slice(0, 8)}.png`;
+      a.click();
+    } catch {
+      showExportError("PNG export failed — canvas may be tainted.");
+    }
   };
 
   if (isLoading) {
@@ -143,6 +158,13 @@ export function SessionReplay() {
         />
       </div>
 
+      {/* Export error feedback */}
+      {exportError && (
+        <div className="bg-warning/10 text-warning text-xs font-body px-3 py-2 rounded-lg">
+          {exportError}
+        </div>
+      )}
+
       {/* Ghost picker modal */}
       {showGhostPicker && (
         <GhostPicker
@@ -192,7 +214,7 @@ function GhostPicker({
       <div className="bg-surface rounded-xl p-4">
         <div className="flex items-center justify-between mb-2">
           <span className="text-xs font-display text-muted uppercase tracking-wider">
-            Select Ghost Session
+            Baseline Comparison
           </span>
           <button
             onClick={onClose}
@@ -212,7 +234,7 @@ function GhostPicker({
     <div className="bg-surface rounded-xl p-4">
       <div className="flex items-center justify-between mb-3">
         <span className="text-xs font-display text-muted uppercase tracking-wider">
-          Select Ghost Session
+          Baseline Comparison
         </span>
         <button
           onClick={onClose}
@@ -221,6 +243,9 @@ function GhostPicker({
           Cancel
         </button>
       </div>
+      <p className="text-xs text-muted font-body mb-2">
+        Select a past session to compare against current playback. Differences will be shown as delta indicators.
+      </p>
       <div className="flex flex-col gap-1 max-h-48 overflow-y-auto">
         {sessions.map((s) => (
           <button
