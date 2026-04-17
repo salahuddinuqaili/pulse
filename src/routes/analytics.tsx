@@ -13,9 +13,11 @@ import { SessionList } from "../components/analytics/session-list";
 export function Analytics() {
   const [range, setRange] = useState<TimeRange>("1D");
   const [sessions, setSessions] = useState<SessionMetadata[]>([]);
+  const [timeRange, setTimeRange] = useState(() => getTimeRangeMs("1D"));
 
-  const loadSessions = useCallback(async (timeRange: TimeRange) => {
-    const { start, end } = getTimeRangeMs(timeRange);
+  const loadSessions = useCallback(async (tr: TimeRange) => {
+    const { start, end } = getTimeRangeMs(tr);
+    setTimeRange({ start, end });
     try {
       const result = await invoke<SessionMetadata[]>(
         "list_sessions_in_range",
@@ -49,7 +51,7 @@ export function Analytics() {
         <TimeRangeTabs selected={range} onChange={setRange} />
       </div>
 
-      <MultiMetricChart sessions={sessions} />
+      <MultiMetricChart sessions={sessions} timeRangeStart={timeRange.start} timeRangeEnd={timeRange.end} />
       <SessionList sessions={sessions} onDelete={handleDelete} />
     </div>
   );

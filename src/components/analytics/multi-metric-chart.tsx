@@ -9,9 +9,11 @@ const CHART_HEIGHT = 140;
 
 interface MultiMetricChartProps {
   sessions: SessionMetadata[];
+  timeRangeStart: number;
+  timeRangeEnd: number;
 }
 
-export function MultiMetricChart({ sessions }: MultiMetricChartProps) {
+export function MultiMetricChart({ sessions, timeRangeStart, timeRangeEnd }: MultiMetricChartProps) {
   const tempRef = useRef<HTMLDivElement>(null);
   const clockRef = useRef<HTMLDivElement>(null);
   const fanRef = useRef<HTMLDivElement>(null);
@@ -44,7 +46,10 @@ export function MultiMetricChart({ sessions }: MultiMetricChartProps) {
         sync: { key: syncKey.key },
       },
       scales: {
-        x: { time: true },
+        x: {
+          time: true,
+          range: [timeRangeStart / 1000, timeRangeEnd / 1000],
+        },
         y: { auto: true },
       },
       series: [
@@ -126,7 +131,7 @@ export function MultiMetricChart({ sessions }: MultiMetricChartProps) {
       chartsRef.current.forEach((c) => c.destroy());
       chartsRef.current = [];
     };
-  }, [sessions]);
+  }, [sessions, timeRangeStart, timeRangeEnd]);
 
   if (sessions.length === 0) {
     return (
