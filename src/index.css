@@ -27,6 +27,30 @@
   --radius-xl: 24px;
 }
 
+/* ── Theme: Neon-Max — amplified glow, green-tinted surfaces ── */
+html.theme-neon-max {
+  --color-background: #080C0A;
+  --color-surface: #101514;
+  --color-surface-low: #0C100E;
+  --color-surface-elevate: #182220;
+  --color-surface-highest: #2A3532;
+  --color-on-surface: #F0F5F2;
+  --color-muted: #A0B0A8;
+}
+
+/* ── Theme: System — follows OS preference, softened dark for light mode ── */
+@media (prefers-color-scheme: light) {
+  html.theme-system {
+    --color-background: #1A1A1F;
+    --color-surface: #222228;
+    --color-surface-low: #1E1E23;
+    --color-surface-elevate: #2A2A30;
+    --color-surface-highest: #3D3D42;
+    --color-on-surface: #E8E8EC;
+    --color-muted: #9999A3;
+  }
+}
+
 /* ── Base Styles ── */
 html, body, #root {
   height: 100%;

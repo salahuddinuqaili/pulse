@@ -1,3 +1,5 @@
+import { useCallback, useRef } from "react";
+
 interface ReplayTimelineProps {
   totalFrames: number;
   currentIndex: number;
@@ -11,25 +13,48 @@ export function ReplayTimeline({
   ghostLength,
   onSeek,
 }: ReplayTimelineProps) {
+  const barRef = useRef<HTMLDivElement>(null);
   const progress = totalFrames > 0 ? (currentIndex / (totalFrames - 1)) * 100 : 0;
   const ghostProgress =
     ghostLength && totalFrames > 0
       ? (Math.min(ghostLength, totalFrames) / totalFrames) * 100
       : null;
 
-  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const pct = x / rect.width;
-    const index = Math.round(pct * (totalFrames - 1));
-    onSeek(index);
-  };
+  const seekFromPointer = useCallback(
+    (clientX: number) => {
+      const rect = barRef.current?.getBoundingClientRect();
+      if (!rect || totalFrames <= 1) return;
+      const x = Math.max(0, Math.min(clientX - rect.left, rect.width));
+      const pct = x / rect.width;
+      const index = Math.round(pct * (totalFrames - 1));
+      onSeek(index);
+    },
+    [totalFrames, onSeek],
+  );
+
+  const handlePointerDown = useCallback(
+    (e: React.PointerEvent<HTMLDivElement>) => {
+      e.currentTarget.setPointerCapture(e.pointerId);
+      seekFromPointer(e.clientX);
+    },
+    [seekFromPointer],
+  );
+
+  const handlePointerMove = useCallback(
+    (e: React.PointerEvent<HTMLDivElement>) => {
+      if (e.buttons === 0) return;
+      seekFromPointer(e.clientX);
+    },
+    [seekFromPointer],
+  );
 
   return (
     <div className="bg-surface-elevate rounded-xl p-4">
       <div
-        className="relative w-full h-6 bg-surface rounded-full cursor-pointer"
-        onClick={handleClick}
+        ref={barRef}
+        className="relative w-full h-6 bg-surface rounded-full cursor-pointer touch-none"
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
       >
         {/* Ghost session extent */}
         {ghostProgress !== null && (
@@ -41,13 +66,13 @@ export function ReplayTimeline({
 
         {/* Progress fill */}
         <div
-          className="absolute top-0 left-0 h-full bg-primary/30 rounded-full transition-all duration-100"
+          className="absolute top-0 left-0 h-full bg-primary/30 rounded-full"
           style={{ width: `${progress}%` }}
         />
 
         {/* Playhead */}
         <div
-          className="absolute top-1/2 -translate-y-1/2 w-3 h-3 bg-primary rounded-full shadow-[0_0_8px_rgba(0,255,102,0.6)] transition-all duration-100"
+          className="absolute top-1/2 -translate-y-1/2 w-3 h-3 bg-primary rounded-full shadow-[0_0_8px_rgba(0,255,102,0.6)]"
           style={{ left: `calc(${progress}% - 6px)` }}
         />
       </div>

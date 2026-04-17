@@ -15,7 +15,7 @@ export function CompactOverlay() {
   const vramTotalGb = (vramTotal / 1024).toFixed(1);
 
   return (
-    <div className="h-full w-full bg-surface/60 backdrop-blur-[24px] p-4 flex flex-col gap-3 select-none"
+    <div className="h-full w-full bg-background p-4 flex flex-col gap-3 select-none"
       data-tauri-drag-region
     >
       {/* Header */}

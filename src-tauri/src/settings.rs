@@ -29,6 +29,12 @@ pub struct Settings {
     pub obs_ws_password: Option<String>,
     #[serde(default = "default_obs_port")]
     pub obs_ws_port: u16,
+    #[serde(default = "default_active_profile")]
+    pub active_profile: String,
+}
+
+fn default_active_profile() -> String {
+    "gaming".to_string()
 }
 
 fn default_mcp_enabled() -> bool {
@@ -89,6 +95,7 @@ impl Default for Settings {
             stream_deck_api_key: None,
             obs_ws_password: None,
             obs_ws_port: default_obs_port(),
+            active_profile: default_active_profile(),
         }
     }
 }
