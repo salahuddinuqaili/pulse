@@ -177,8 +177,8 @@ pub fn toggle_compact_overlay(app: tauri::AppHandle) -> Result<(), String> {
         // Overlay exists — close it
         overlay.close().map_err(|e| format!("Failed to close overlay: {e}"))?;
     } else {
-        // Create the overlay window
-        let url = tauri::WebviewUrl::App("/overlay".into());
+        // Create the overlay window — use hash route so the SPA index.html handles it
+        let url = tauri::WebviewUrl::App("/#/overlay".into());
         tauri::WebviewWindowBuilder::new(&app, "overlay", url)
             .title("Pulse Compact")
             .inner_size(320.0, 480.0)

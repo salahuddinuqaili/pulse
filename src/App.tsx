@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, HashRouter, Routes, Route } from "react-router-dom";
 
 import { useGpuListener } from "./hooks/use-gpu-listener";
 import { useTheme } from "./hooks/use-theme";
@@ -24,14 +24,14 @@ export default function App() {
   useEffect(() => { loadProfile(); }, [loadProfile]);
 
   // Compact overlay window renders without shell chrome
-  const isOverlay = window.location.pathname === "/overlay";
+  const isOverlay = window.location.hash.includes("/overlay");
   if (isOverlay) {
     return (
-      <BrowserRouter>
+      <HashRouter>
         <Routes>
           <Route path="/overlay" element={<CompactOverlay />} />
         </Routes>
-      </BrowserRouter>
+      </HashRouter>
     );
   }
 
