@@ -42,7 +42,7 @@ jobs:
           MAX_SIZE=$((15 * 1024 * 1024))
           for f in src-tauri/target/release/bundle/msi/*.msi src-tauri/target/release/bundle/nsis/*.exe; do
             size=$(stat -c%s "$f" 2>/dev/null || stat -f%z "$f" 2>/dev/null)
-            size_mb=$(echo "scale=2; $size / 1048576" | bc)
+            size_mb=$((size / 1048576))
             echo "$f: ${size_mb} MB"
             if [ "$size" -gt "$MAX_SIZE" ]; then
               echo "::error::Installer $f exceeds 15 MB limit (${size_mb} MB)"
