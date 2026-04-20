@@ -72,6 +72,6 @@ pub fn get_gpu_processes() -> Result<Vec<ProcessInfo>, String> {
     }
 
     // Sort by VRAM descending so the biggest consumers appear first
-    result.sort_by(|a, b| b.vram_mb.cmp(&a.vram_mb));
+    result.sort_by_key(|p| std::cmp::Reverse(p.vram_mb));
     Ok(result)
 }

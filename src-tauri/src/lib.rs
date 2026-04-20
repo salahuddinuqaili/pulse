@@ -87,10 +87,10 @@ pub fn run() {
             }
 
             // Hide main window if "start minimized to tray" is enabled
-            if saved.start_minimized {
-                if let Some(window) = app.get_webview_window("main") {
-                    let _ = window.hide();
-                }
+            if saved.start_minimized
+                && let Some(window) = app.get_webview_window("main")
+            {
+                let _ = window.hide();
             }
 
             if nvml_available {
