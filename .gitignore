@@ -25,3 +25,5 @@ src-tauri/gen/
 
 # Bundled binaries (downloaded at build time)
 src-tauri/resources/*.exe
+tsconfig.tsbuildinfo
+*.tsbuildinfo
